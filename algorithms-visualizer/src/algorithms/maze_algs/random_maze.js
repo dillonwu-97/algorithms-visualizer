@@ -1,6 +1,6 @@
 import React from 'react'
 import '../../setup/global'
-
+ 
 export default function random_maze() {
     // create setup to check adjacencies
     let visited = initialize_visited(global.rc, global.cc);
