@@ -128,21 +128,35 @@ export default function wilson() {
         temp3 = 0
         // walls[temp1[0]][temp1[1]] = 0
         // walls[temp2[0]][temp2[1]] = 0
+        // the issue with the random white blip is that there can be cases where two values are on
+        // the same row but not adjacent, i.e. they are far apart
+        
         if (temp1[0] == temp2[0]) {
             temp3 = temp1[1] + temp2[1]
             temp3 /= 2
-            maze.push([temp1[0], temp3])
-            walls[temp1[0]][temp3] = 0
+            if ( Math.abs(temp3 - temp1[1]) == 1) {
+                maze.push([temp1[0], temp3])
+                walls[temp1[0]][temp3] = 0
+            }
+            // if (Math.abs(temp1[1] - temp2[1]) != 1) {
+            //     console.log(temp1, temp2)
+            // }
         } else if (temp1[1] == temp2[1]) {
             temp3 = temp1[0] + temp2[0]
             temp3 /= 2
-            maze.push([temp3, temp1[1]])
-            walls[temp3][temp1[1]] = 0
+            // if (Math.abs(temp1[0] - temp2[0]) != 1) {
+            //     console.log(temp1, temp2)
+            // }
+            if (Math.abs(temp3 - temp1[0]) == 1) {
+                maze.push([temp3, temp1[1]])
+                walls[temp3][temp1[1]] = 0
+            }
         }
         // } else if (Math.abs(temp1[0] - temp2[0]) + Math.abs(temp1[1] - temp2[1]) == 4) {
         //     maze.push([temp2[0], temp1[1]])
         //     walls[temp2[0]][temp1[1]] = 0
         // }
+        // to see if there is any disconnect at all between vertices
         // if (i < res.length-1 && temp1[0] != temp2[0] && temp1[1] != temp2[1] &&
         //     temp2[0] != res[i+1][0] && temp2[1] != res[i+1][1]) {
         //         console.log(temp1, temp2, res[i+1])
