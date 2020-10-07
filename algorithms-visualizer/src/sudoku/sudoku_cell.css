@@ -1,0 +1,61 @@
+/* Doesnt look as clean */
+/* table {
+    margin:1em auto;
+}
+td {
+    height:30px;
+    width:30px;
+    border:1px solid;
+    text-align:center;
+}
+td:first-child {
+    border-left:solid;
+}
+td:nth-child(3n) {
+    border-right:solid ;
+}
+tr:first-child {
+    border-top:solid;
+}
+tr:nth-child(3n) td {
+    border-bottom:solid ;
+} */
+
+/* Looks cleaner */
+.back-counter {
+  margin:auto;
+  padding: 5px;
+  text-align: center;
+  font-size: 18px;
+}
+.button-div {
+  text-align: center;
+}
+table {
+  margin:1em auto;
+}
+td {
+  height: 2em;
+  width: 2em;
+  border: 1px solid #CCC;
+  text-align: center;
+  outline: none;
+  font-size: 18px;
+}
+
+td input {
+  font-size: 1em;
+  width: 1em;
+  border: none;
+  text-align: center;
+  outline: none;
+  font-size: 18px;
+}
+
+td:nth-child(3n) {
+  border-right: 3px solid #008A73;
+}
+
+tr:nth-child(3n) {
+  border-bottom: 3px solid #008A73;
+}
