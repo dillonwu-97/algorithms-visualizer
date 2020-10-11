@@ -9,7 +9,6 @@
     "@testing-library/user-event": "^7.1.2",
     "bootstrap": "^4.5.2",
     "disjoint-set": "^1.1.8",
-    "gh-pages": "^3.1.0",
     "heapq": "0.0.3",
     "jquery": "^1.12.4",
     "popper": "^1.0.1",
@@ -42,5 +41,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^3.1.0"
   }
 }
