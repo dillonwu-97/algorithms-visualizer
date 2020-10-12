@@ -3,11 +3,10 @@ import Make_grid from './pathfinder/setup/make_grid'
 import MyNavbar from './MyNavbar'
 import './App.css'
 import Sudoku_grid from './sudoku/sudoku_grid'
-import { BrowserRouter, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Link, Switch, HashRouter } from "react-router-dom";
 
 import pathfinderGif from './images/pathfinder_1.gif'
 import './images/images.css'
-
 
 function App() {
 	return (
@@ -18,9 +17,9 @@ function App() {
 			{/* https://dillonwu-97.github.io/algorithms-visualizer/#/sudoku */}
 			<BrowserRouter>
 				<Switch>
-					<Route exact path='/' component={Home}/>
-					<Route path='/pathfinder' component = {Pathfinder}/>
-					<Route path='/sudoku' component={Sudoku}/>
+					<Route exact path='/algorithms-visualizer' component={Home}/>
+					<Route exact path='/pathfinder' component = {Pathfinder}/>
+					<Route exact path='/sudoku' component={Sudoku}/>
 				</Switch>
 			</BrowserRouter>
 		</div>
@@ -32,7 +31,7 @@ function Home() {
 		<div>
 			<Link to={'/pathfinder'}>
 				<div className="pathfinder-gif">
-					<img class = "thumbnail" src={pathfinderGif} alt="" width="255px" height="190px"/>
+					<img class = "thumbnail" src={pathfinderGif} alt="" height="190px" width="250px"/>
 					Click me!
 				</div>
 			</Link>
