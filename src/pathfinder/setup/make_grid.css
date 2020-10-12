@@ -1,22 +1,24 @@
-.row {
+/* .row {
 	padding: 0;
 	border: 0;
-}
+} */
 
 .grid{
-	margin-top: center;
-	margin-right: center;
-	margin-bottom: center;
-	margin-left: 275px;
+	/* margin-left: 275px; */
 	text-align: center;
-	
-
 }
 
-.parent{
+.wrapper {
+	margin:auto;
+	justify-content: center;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+/* .parent{
 	margin: 0 auto;
 	text-align: center;
-}
+} */
 
 .container {
 	padding-bottom: 100px;
