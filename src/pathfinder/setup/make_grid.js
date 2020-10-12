@@ -290,7 +290,7 @@ export default class make_grid extends Component {
 		let maze_list = ["kruskal", "prim", "wilson"]
 		let alg_list = ["bfs", "dfs", "greedy", "astar", "dijkstra"]
 		return (
-			<div>
+			<div className="parent">
 				<div className = "grid" > 
 
 					{grid.map((row, row_index) => {

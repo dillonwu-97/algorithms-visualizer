@@ -1,14 +1,20 @@
 .row {
-	margin:auto;
 	padding: 0;
 	border: 0;
 }
 
 .grid{
-	margin-top: 50px;
-	/* margin-right: center; */
-	margin-bottom: 50px;
+	margin-top: center;
+	margin-right: center;
+	margin-bottom: center;
 	margin-left: 275px;
+	text-align: center;
+	
+
+}
+
+.parent{
+	margin: 0 auto;
 	text-align: center;
 }
 
