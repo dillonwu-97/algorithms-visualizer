@@ -15,13 +15,13 @@ function App() {
 			{/* Currently making this look prettier but  */}
 			{/* paths are https://dillonwu-97.github.io/algorithms-visualizer/#/pathfinder */}
 			{/* https://dillonwu-97.github.io/algorithms-visualizer/#/sudoku */}
-			<BrowserRouter>
+			<HashRouter>
 				<Switch>
-					<Route exact path='/algorithms-visualizer' component={Home}/>
+					<Route exact path='/' component={Home}/>
 					<Route exact path='/pathfinder' component = {Pathfinder}/>
 					<Route exact path='/sudoku' component={Sudoku}/>
 				</Switch>
-			</BrowserRouter>
+			</HashRouter>
 		</div>
 	);
 }
