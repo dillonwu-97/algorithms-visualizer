@@ -15,7 +15,7 @@ Todo:
 
 ## Sudoku
 1. add n queens and k knights and rename page to games
-2. cover algorithm
+2. integrate cover algorithm so that it can be visualized
 3. bits algorithm
 4. allow users to fill in various cells with value 
 
