@@ -1,5 +1,8 @@
 # Algorithms Visualizer  
 
+This is a website project that allows the user to visualize a motley of various algorithms.  
+The website can be found here: https://dillonwu-97.github.io/algorithms-visualizer
+
 ## General  
 1. Create a homepage for the visualizer -> a component that brings the user to the various parts of the website
 
@@ -15,7 +18,7 @@ Todo:
 
 ## Sudoku
 1. add n queens and k knights and rename page to games
-2. cover algorithm
+2. integrate cover algorithm so that it can be visualized
 3. bits algorithm
 4. allow users to fill in various cells with value 
 
