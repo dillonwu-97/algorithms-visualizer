@@ -5,7 +5,7 @@ import './App.css'
 import Sudoku_grid from './sudoku/sudoku_grid'
 import { BrowserRouter, Route, Link, Switch, HashRouter } from "react-router-dom";
 
-import pathfinderGif from './images/pathfinder_1.gif'
+import pathfinderGif from './images/pathfinder-slow1.gif'
 import './images/images.css'
 
 function App() {
@@ -28,12 +28,10 @@ function App() {
 
 function Home() {
 	return (
-		<div>
-			<Link to={'/pathfinder'}>
-				<div className="pathfinder-gif">
-					<img class = "thumbnail" src={pathfinderGif} alt="" height="190px" width="250px"/>
-					Click me!
-				</div>
+		<div className="pathfinder-gif" >
+			<Link style={{color: "white"}} to={'/pathfinder'}>
+				<img class = "thumbnail" src={pathfinderGif} alt="" />
+				<h3> Pathfinding Visualizer </h3>
 			</Link>
 		</div>
 	)

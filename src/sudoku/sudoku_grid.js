@@ -206,21 +206,17 @@ export default class Sudoku_grid extends Component {
                     {this.state.backtrack_count}
                 </div>
                 <div className = "button-div">
-                    Visualize
                     <button type="button" className="sudoku-solve-button" onClick={()=>this.visualize_puzzle("bruteforce")}>
-                        Brute Force
+                        Visualize Brute Force
                     </button>
-                    Instant 
                     <button type="button" className="sudoku-solve-button" onClick={()=>this.solve_puzzle("bruteforce")}>
-                        Brute Force
+                        Instant Brute Force
                     </button> 
-                    Visualize
                     <button type="button" className="sudoku-solve-button" onClick={()=>this.visualize_puzzle("smart")}>
-                        Smart Brute Force
+                        Visualize Smart Brute Force
                     </button>
-                    Instant 
                     <button type="button" className="sudoku-solve-button" onClick={()=>this.solve_puzzle("smart")}>
-                        Smart Brute Force
+                        Instant Smart Brute Force
                     </button> 
                     <button type="button" onClick={()=>this.resetboard()}>
                         Reset Board

@@ -292,27 +292,28 @@ export default class make_grid extends Component {
 		return (
 			<div className="parent">
 				<div className = "grid" > 
+					<div className= "wrapper">
+						{grid.map((row, row_index) => {
+							return (
+								<div className="row">
+								{row.map((col, col_index) => {
+									const cell = this.create_cell()
+									let {type, weight} = cell
+									if (row_index == start_i && col_index == start_j) {
+										type = 'cell-start'
+									} else if (row_index == end_i && col_index == end_j) {
+										type = 'cell-finish'
+									}
+									return (<Cell element_id={'cell-' + row_index + '-' + col_index}
+									type = {type} weight = {weight} row = {row_index} col = {col_index} 
+									onMouseMove={this.createWall} 
+									onClick={this.startEnd} />)
 
-					{grid.map((row, row_index) => {
-						return (
-							<div className="row">
-							{row.map((col, col_index) => {
-								const cell = this.create_cell()
-								let {type, weight} = cell
-								if (row_index == start_i && col_index == start_j) {
-									type = 'cell-start'
-								} else if (row_index == end_i && col_index == end_j) {
-									type = 'cell-finish'
-								}
-								return (<Cell element_id={'cell-' + row_index + '-' + col_index}
-								type = {type} weight = {weight} row = {row_index} col = {col_index} 
-								onMouseMove={this.createWall} 
-								onClick={this.startEnd} />)
-
-							})}
-							</div>
-						)
-					})}
+								})}
+								</div>
+							)
+						})}
+					</div>
 				</div>
 				<div>
 					" "
