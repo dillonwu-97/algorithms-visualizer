@@ -1,21 +1,21 @@
 import React, { Component } from 'react'
-import './sudoku_cell.css'
 import backtrack_bruteforce from './sudoku_algorithms/backtrack_bruteforce'
 import { Button } from 'react-bootstrap'
 import './sudoku_global'
-import backtrack_smart from './sudoku_algorithms/backtrack_smart'
+import backtrack_smart from './sudoku_algorithms/backtrack_smart.js'
 
-let table_size = [...Array(9).keys()]
+/************************* CSS imports *************************/
+// import { Dropdown, DropdownButton } from 'react-bootstrap';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'jquery/dist/jquery.min.js';
+// import 'bootstrap/dist/js/bootstrap.min.js';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+import './sudoku_cell.css'
+import './sudoku_grid.css'
+
 /****************************** Creating the sudoku configuration ******************************/
 
-function create_table() {
-	var table = new Array(9)
-	for (let i = 0; i < 9; i++) {
-		table[i] = new Array(9).fill(0)
-	}
-    return table
-    
-}
+let table_size = [...Array(9).keys()]
 
 // this variable is used to clear timeouts 
 global.vis = 0
@@ -33,6 +33,16 @@ global.board = [[0,0,5,3,0,0,0,0,0],
 [0,6,0,5,0,0,0,0,9],
 [0,0,4,0,0,0,0,3,0],
 [0,0,0,0,0,9,7,0,0]]
+
+// global.board = [[8,5,0,0,0,2,4,0,0],
+// [7,2,0,0,0,0,0,0,9],
+// [0,0,4,0,0,0,0,0,0],
+// [0,0,0,1,0,7,0,0,2],
+// [3,0,5,0,0,0,9,0,0],
+// [0,4,0,0,0,0,0,0,0],
+// [0,0,0,0,8,0,0,7,0],
+// [0,1,7,0,0,0,0,0,0],
+// [0,0,0,0,3,6,0,4,0]]
 /****************************** Class method ******************************/
 
 export default class Sudoku_grid extends Component {
@@ -57,10 +67,10 @@ export default class Sudoku_grid extends Component {
         global.backtrack_count = 0
         switch(type) {
             case "bruteforce":
-                backtrack_bruteforce(grid)
+                backtrack_bruteforce(grid, 1) // means I need to store the values for visualization
                 break
             case "smart":
-                backtrack_smart(grid)
+                backtrack_smart(grid, 1)
                 break        
         }
         var ret
@@ -120,10 +130,10 @@ export default class Sudoku_grid extends Component {
         global.backtrack_count = 0
         switch(type) {
             case "bruteforce":
-                backtrack_bruteforce(grid)
+                backtrack_bruteforce(grid, 0)
                 break
             case "smart":
-                backtrack_smart(grid)
+                backtrack_smart(grid, 0)
                 break        
         }
         // console.log(global.backtrack_count)
@@ -166,9 +176,60 @@ export default class Sudoku_grid extends Component {
 /****************************** Render method ******************************/
 
     render() {
+        let solve_type = ["bruteforce", "smart"]
         return (
+
             <div>
-                <div>
+
+                <nav class="navbar navbar-expand-lg bg-light">
+                    <div class= "navbar-collapse">
+                        <ul class="navbar-nav mr-auto nav-fill w-100">
+                            <li class="nav-item dropdown">
+                                <div class="dropdown">
+                                    <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">
+                                        Visualize
+                                    </button>
+                                    <div class = "dropdown-menu dropdown-menu-center" >
+                                        {solve_type.map((name) => {
+                                            return (
+                                                <a class="dropdown-item" onClick = {()=>this.visualize_puzzle(name)}>
+                                                    {name}
+                                                </a>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item active">
+                                <div>
+                                    <button type="button" onClick={()=>this.resetboard()}>
+                                        Reset Board
+                                    </button>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <div class="dropdown" className="button-div">
+                                    <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">
+                                        Instant
+                                    </button>
+                                    <div class = "dropdown-menu dropdown-menu-center" >
+                                        {solve_type.map((name) => {
+                                            return (
+                                                <div>
+                                                    <a class="dropdown-item" onClick = {()=>this.solve_puzzle(name)}>
+                                                        {name}
+                                                    </a>
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                
+                <div className="sudoku-grid">
                     <table>
                         {/* {console.log(this.state.board)} */}
                         {this.state.board.map((row, idx) => {
@@ -203,25 +264,9 @@ export default class Sudoku_grid extends Component {
                     </table>
                 </div> 
                 <div className="back-counter">
-                    {this.state.backtrack_count}
+                    Backtrack Counter: {this.state.backtrack_count}
                 </div>
-                <div className = "button-div">
-                    <button type="button" className="sudoku-solve-button" onClick={()=>this.visualize_puzzle("bruteforce")}>
-                        Visualize Brute Force
-                    </button>
-                    <button type="button" className="sudoku-solve-button" onClick={()=>this.solve_puzzle("bruteforce")}>
-                        Instant Brute Force
-                    </button> 
-                    <button type="button" className="sudoku-solve-button" onClick={()=>this.visualize_puzzle("smart")}>
-                        Visualize Smart Brute Force
-                    </button>
-                    <button type="button" className="sudoku-solve-button" onClick={()=>this.solve_puzzle("smart")}>
-                        Instant Smart Brute Force
-                    </button> 
-                    <button type="button" onClick={()=>this.resetboard()}>
-                        Reset Board
-                    </button>
-                </div>
+
             </div>
         )
     }

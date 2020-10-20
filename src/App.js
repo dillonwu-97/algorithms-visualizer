@@ -36,7 +36,7 @@ function Home() {
 					<h3> Pathfinding Visualizer </h3>
 				</Link>
 			</div>
-			<div className="pathfinder-gif" >
+			<div className="pathfinder-gif">
 				<Link style={{color: "white"}} to={'/sudoku'}>
 					<img class = "thumbnail" src={sudokuGif} alt="" />
 					<h3> Sudoku Visualizer </h3>
@@ -49,8 +49,6 @@ function Home() {
 function Pathfinder() {
 	return (
 		<div className = "app-main">
-			<h1> </h1>
-			<h1> </h1>
 			<Make_grid />
 		</div>
 	)
@@ -58,9 +56,9 @@ function Pathfinder() {
 
 function Sudoku() {
 	return (
-		<div className = "app-sudoku">
+		// <div className = "app-sudoku">
 			<Sudoku_grid />	
-		</div>
+		// </div>
 	)
 }
 

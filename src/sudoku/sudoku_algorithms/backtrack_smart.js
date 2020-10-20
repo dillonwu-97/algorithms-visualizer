@@ -1,5 +1,5 @@
 import React from 'react'
-import {find_next_cell, is_valid} from './lib'
+import {find_next_cell, is_valid} from './lib.mjs'
 import '../sudoku_global'
 
 /******************* Testing function ********************/
@@ -27,7 +27,7 @@ import '../sudoku_global'
 // imply(test, 0, 0, 1)
 /******************* Methods ********************/
 // "1" in global.values[3] stands for whether to add a backtrack counter or not
-export default function backtrack_smart(grid) {
+export default function backtrack_smart(grid, store_flag) {
     // function backtrack_smart(grid) {
     let i , j, ret, implied_values
     ret = find_next_cell(grid)
@@ -45,19 +45,25 @@ export default function backtrack_smart(grid) {
         if (is_valid(grid, i, j, e) ) {
             grid[i][j] = e
             implied_values = imply(grid, i, j, e)
-            global.values.push([i,j,e])
-            global.values = [...global.values,...implied_values]
+            if (store_flag == 1) {
+                global.values.push([i,j,e])
+                global.values = [...global.values,...implied_values]
+            }
             // global.values = [...global.values, ...implied_values]
-            if (backtrack_smart(grid, i, j)) {
+            if (backtrack_smart(grid, store_flag)) {
                 return true
             }
             // undoing the implied values
             grid[i][j] = 0
             for (let x = 0; x < implied_values.length; x++) {
                 grid[implied_values[x][0]][implied_values[x][1]] = 0
-                global.values.push([implied_values[x][0], implied_values[x][1], 0])
+                if (store_flag == 1) {
+                    global.values.push([implied_values[x][0], implied_values[x][1], 0])
+                }
             }
-            global.values.push([i,j,0,1])
+            if (store_flag == 1) {
+                global.values.push([i,j,0,1])
+            }
             global.backtrack_count ++;
         }
     }

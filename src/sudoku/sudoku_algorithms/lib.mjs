@@ -37,4 +37,32 @@ function is_valid(grid, row, col, e) {
 
     return true;
 }
-export {find_next_cell, is_valid}
+
+function shuffle(a) {
+    var j, x, i;
+    for (let i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
+}
+
+function create_table() {
+	var table = new Array(9)
+	for (let i = 0; i < 9; i++) {
+		table[i] = new Array(9).fill(0)
+	}
+    return table
+    
+}
+
+function debug_board(grid) {
+    for (let i = 0; i < 9; i++) {
+        console.log(grid[i].toString())
+    }
+}
+
+
+export {find_next_cell, is_valid, shuffle, create_table, debug_board}

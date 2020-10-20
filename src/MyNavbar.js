@@ -4,11 +4,11 @@ import './App.css'
 
 export default class MyNavbar extends Component {
 
-	render() {
-		return (
-			<nav class="nav navbar-dark bg-dark">
-				Pathfinding Visualizer
-			{/* <div class="container">
+	// render() {
+	// 	return (
+	// 		<nav class="nav navbar-dark bg-dark">
+	// 			Pathfinding Visualizer
+			/*{ <div class="container">
 				<div class="logo">
 					<a href="#">Algorithms Visualizer</a>
 				</div>
@@ -33,9 +33,9 @@ export default class MyNavbar extends Component {
 					<i></i>
 					<i></i>
 				</span>
-			</div> */}
-		</nav>
+			</div> } */ 
+		// </nav>
 
-		)
-	}
+		// )
+	// }
 }

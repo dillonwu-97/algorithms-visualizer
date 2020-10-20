@@ -1,23 +1,25 @@
 
 import React, {Component} from 'react';
 import Cell from './cell/cell'
-import './make_grid.css'
 import Bfs from '../algorithms/path_algs/bfs'
 import Dfs from '../algorithms/path_algs/dfs'
 import greedy from '../algorithms/path_algs/greedy'
 import astar from '../algorithms/path_algs/astar'
 import dijkstra from '../algorithms/path_algs/dijkstra'
-import './cell/cell.css'
 import random_maze from '../algorithms/maze_algs/random_maze'
 import random_kruskal from '../algorithms/maze_algs/random_kruskal'
 import random_prims from '../algorithms/maze_algs/random_prims'
 import wilson from '../algorithms/maze_algs/wilson'
 import './global'
+
+/****************************** CSS imports ******************************/
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'jquery/dist/jquery.min.js';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './cell/cell.css'
+import './make_grid.css'
 
 
 
@@ -316,16 +318,16 @@ export default class make_grid extends Component {
 					</div>
 				</div>
 				<div>
-					" "
+					   
 				</div>
 				<div class="container">
 					<div id="pathfinder-dropdown" class="row text-center">
 						<div class="col-4">
 							<div class="dropdown" >
-								<button class="btn btn-secondary dropdown-toggle" className="algorithms-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<button class="btn btn-secondary dropdown-toggle" className="algorithms-button" type="button" data-toggle="dropdown">
 									Select Algorithm
 								</button>
-								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								<div class="dropdown-menu">
 									{alg_list.map((alg) => {
 									// console.log(typeof(alg))
 										return (
@@ -356,10 +358,10 @@ export default class make_grid extends Component {
 						
 						<div class="col-4">
 							<div class="dropdown" >
-									<button class="btn btn-secondary dropdown-toggle" className="maze-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<button class="btn btn-secondary dropdown-toggle" className="maze-button" type="button" data-toggle="dropdown">
 										Select Maze
 									</button>
-									<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+									<div class="dropdown-menu">
 										<div>
 											<a class="dropdown-item" className="maze-menu" onClick = {this.make_maze}>
 												General Maze

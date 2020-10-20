@@ -1,10 +1,11 @@
-/* .row {
-	padding: 0;
-	border: 0;
-} */
+.parent {
+	width: 1280px;
+	height: 294px;
+	max-width: 100%;
+	min-height: 100%;
+}
 
 .grid{
-	/* margin-left: 275px; */
 	text-align: center;
 }
 
@@ -15,12 +16,8 @@
 	flex-wrap: wrap;
 }
 
-/* .parent{
-	margin: 0 auto;
-	text-align: center;
-} */
-
 .container {
+	padding-top: 20px;
 	padding-bottom: 100px;
 }
 

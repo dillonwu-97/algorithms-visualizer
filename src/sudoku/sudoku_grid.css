@@ -1,0 +1,32 @@
+.sudoku-grid {
+    margin-top: 100px;
+}  
+
+.navbar {
+    background-color: white;
+    font-family: 'Times New Roman';
+    font-size: 25px;
+}
+
+.dropdown-container {
+    position: relative;
+}
+
+.dropdown-item {
+    position: relative;
+    line-height: normal;
+}
+
+.dropdown-menu {
+  text-align: center;
+  background-color: white;
+  font-size: 20px;
+  position: relative;
+}
+
+.dropdown-menu-center {
+    left: 50% !important;
+    right: auto !important;
+    text-align: center !important;
+    transform: translate(-50%, 0) !important;
+  }

@@ -1,5 +1,5 @@
 import React from 'react'
-import {find_next_cell, is_valid} from './lib'
+import {find_next_cell, is_valid} from './lib.mjs'
 import '../sudoku_global'
 
 /******************* Testing function ********************/
@@ -19,9 +19,9 @@ import '../sudoku_global'
 // }
 // console.log(global.backtrack_count, val)
 
-export default function backtrack_bruteforce(grid) {
+export default function backtrack_bruteforce(grid, store_flag) {
 // function backtrack_bruteforce(grid) {
-    let i , j, ret
+    let i, j, ret
     ret = find_next_cell(grid)
     i = ret[0]
     j = ret[1]
@@ -32,13 +32,17 @@ export default function backtrack_bruteforce(grid) {
         if (is_valid(grid, i, j, e) ) {
             grid[i][j] = e
             // console.log(i,j,e)
-            global.values.push([i,j,e])
-            if (backtrack_bruteforce(grid, i, j)) {
+            if (store_flag == 1) {
+                global.values.push([i,j,e])
+            }
+            if (backtrack_bruteforce(grid, store_flag)) {
                 return true
             } 
             grid[i][j] = 0
             // console.log(i,j,e)
-            global.values.push([i,j,0, 1])
+            if (store_flag == 1) {
+                global.values.push([i,j,0, 1])
+            }
             global.backtrack_count ++;
         }
     }
