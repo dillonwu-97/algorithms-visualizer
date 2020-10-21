@@ -17,11 +17,10 @@ The website can be found here: https://dillonwu-97.github.io/algorithms-visualiz
 # TODO:
 
 ## General  
-1. Create a homepage for the visualizer -> a component that brings the user to the various parts of the website
+1. Create a title for the website
 
 ## Pathfinder  
 Todo:  
-1. div grid is not centered when I zoom in or out; figure out how to center it
 2. add weighted edges
 3. add counter with the number of nodes visited
 4. longest path algorithm
