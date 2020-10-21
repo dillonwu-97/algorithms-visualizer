@@ -7,6 +7,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "animejs": "^3.2.1",
     "bootstrap": "^4.5.2",
     "disjoint-set": "^1.1.8",
     "heapq": "0.0.3",

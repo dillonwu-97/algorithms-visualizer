@@ -14,26 +14,21 @@ import {create_puzzle, generate_config} from './sudoku_algorithms/generate_sudok
 import './sudoku_cell.css'
 import './sudoku_grid.css'
 
-/****************************** Creating the sudoku configuration ******************************/
-
-let table_size = [...Array(9).keys()]
+/****************************** Testing gound ******************************/
 
 // this variable is used to clear timeouts 
 global.vis = 0
 global.timeid = []
 
-// TODO:
-// Create a backtrack counter
-
-global.board = [[0,0,5,3,0,0,0,0,0],
-[8,0,0,0,0,0,0,2,0],
-[0,7,0,0,1,0,5,0,0],
-[4,0,0,0,0,5,3,0,0],
-[0,1,0,0,7,0,0,0,6],
-[0,0,3,2,0,0,0,8,0],
-[0,6,0,5,0,0,0,0,9],
-[0,0,4,0,0,0,0,3,0],
-[0,0,0,0,0,9,7,0,0]]
+// global.board = [[0,0,5,3,0,0,0,0,0],
+// [8,0,0,0,0,0,0,2,0],
+// [0,7,0,0,1,0,5,0,0],
+// [4,0,0,0,0,5,3,0,0],
+// [0,1,0,0,7,0,0,0,6],
+// [0,0,3,2,0,0,0,8,0],
+// [0,6,0,5,0,0,0,0,9],
+// [0,0,4,0,0,0,0,3,0],
+// [0,0,0,0,0,9,7,0,0]]
 
 // global.board = [[8,5,0,0,0,2,4,0,0],
 // [7,2,0,0,0,0,0,0,9],
@@ -44,6 +39,10 @@ global.board = [[0,0,5,3,0,0,0,0,0],
 // [0,0,0,0,8,0,0,7,0],
 // [0,1,7,0,0,0,0,0,0],
 // [0,0,0,0,3,6,0,4,0]]
+
+global.board = generate_config()
+create_puzzle(global.board)
+
 /****************************** Class method ******************************/
 
 export default class Sudoku_grid extends Component {
@@ -190,9 +189,7 @@ export default class Sudoku_grid extends Component {
     render() {
         let solve_type = ["bruteforce", "smart"]
         return (
-
             <div>
-
                 <nav class="navbar navbar-expand-lg bg-light">
                     <div class= "navbar-collapse">
                         <ul class="navbar-nav mr-auto nav-fill w-100">

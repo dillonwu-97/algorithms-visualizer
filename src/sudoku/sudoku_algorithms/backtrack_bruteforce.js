@@ -1,5 +1,5 @@
 import React from 'react'
-import {find_next_cell, is_valid} from './lib.mjs'
+import {find_next_cell, is_valid} from './lib'
 import '../sudoku_global'
 
 /******************* Testing function ********************/

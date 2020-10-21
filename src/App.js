@@ -56,9 +56,9 @@ function Pathfinder() {
 
 function Sudoku() {
 	return (
-		// <div className = "app-sudoku">
+		<div className = "app-sudoku">
 			<Sudoku_grid />	
-		// </div>
+		</div>
 	)
 }
 

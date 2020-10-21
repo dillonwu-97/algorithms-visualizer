@@ -9,7 +9,7 @@ If the current board has more than one solution, undo the last removal (step 3),
 Stop when you have tested all 81 positions.
 */
 // import React from 'react'
-import {find_next_cell, is_valid, shuffle, create_table, debug_board} from './lib.mjs'
+import {find_next_cell, is_valid, shuffle, create_table, debug_board} from './lib'
 import '../sudoku_global'
 
 
