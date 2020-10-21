@@ -14,12 +14,12 @@ The website can be found here: https://dillonwu-97.github.io/algorithms-visualiz
 * Creates a random sudoku configuration and solves it
 * Algorithms implemented: Bruteforce backtracking, Deductive backtracking
 
-# TODO:
+## TODO:
 
-## General  
+### General  
 1. Create a title for the website
 
-## Pathfinder  
+### Pathfinder  
 Todo:  
 2. add weighted edges
 3. add counter with the number of nodes visited
@@ -28,7 +28,7 @@ Todo:
 6. fix the shift highlighting
 7. disallow user to select walls as start or end nodes
 
-## Sudoku
+### Sudoku
 1. add n queens and k knights and rename page to games
 2. integrate cover algorithm so that it can be visualized
 3. bits algorithm
