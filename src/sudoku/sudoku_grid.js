@@ -3,6 +3,7 @@ import backtrack_bruteforce from './sudoku_algorithms/backtrack_bruteforce'
 import { Button } from 'react-bootstrap'
 import './sudoku_global'
 import backtrack_smart from './sudoku_algorithms/backtrack_smart.js'
+import {create_puzzle, generate_config} from './sudoku_algorithms/generate_sudoku.js'
 
 /************************* CSS imports *************************/
 // import { Dropdown, DropdownButton } from 'react-bootstrap';
@@ -172,6 +173,17 @@ export default class Sudoku_grid extends Component {
         // console.log(this.state.board)
     }
 
+    generateboard() {
+        let grid = generate_config()
+        create_puzzle(grid)
+        let original_grid = grid.map(i => i.slice())
+        this.setState({
+            board: grid,
+            original: original_grid,
+            backtrack_count:0
+        })
+    }
+
 
 /****************************** Render method ******************************/
 
@@ -204,6 +216,13 @@ export default class Sudoku_grid extends Component {
                                 <div>
                                     <button type="button" onClick={()=>this.resetboard()}>
                                         Reset Board
+                                    </button>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <button type="button" onClick={()=>this.generateboard()}>
+                                        Generate Board
                                     </button>
                                 </div>
                             </li>

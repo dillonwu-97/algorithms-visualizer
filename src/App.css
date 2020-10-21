@@ -1,16 +1,24 @@
-.pathfinder-gif {
-    background-color: lightblue !important;
+.algorithm {
+    background-color: lightcyan !important;
     /* background: red !important;  */ 
     /* when loading an external css for a page, need to use !important to override the elements from the other css page */
     margin: 100;
-    color: lightblue;
     height: 50%;
     width: 40%;
     border-radius: 10ch;
-    /* border-style: solid; */
-    /* text-align: center; */
+    border-style: solid;
+    text-align: center;
+    margin-top: 10px;
     overflow: hidden;
 
+}
+
+.algorithm:hover {
+    background-color: lightcoral !important;
+}
+
+.thumbnail {
+    margin-top: 5px;
 }
 
 img {

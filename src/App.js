@@ -30,13 +30,13 @@ function App() {
 function Home() {
 	return (
 		<div>
-			<div className="pathfinder-gif" >
+			<div className="algorithm" >
 				<Link style={{color: "white"}} to={'/pathfinder'}>
 					<img class = "thumbnail" src={pathfinderGif} alt="" />
 					<h3> Pathfinding Visualizer </h3>
 				</Link>
 			</div>
-			<div className="pathfinder-gif">
+			<div className="algorithm">
 				<Link style={{color: "white"}} to={'/sudoku'}>
 					<img class = "thumbnail" src={sudokuGif} alt="" />
 					<h3> Sudoku Visualizer </h3>

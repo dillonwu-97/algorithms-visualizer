@@ -10,14 +10,16 @@ Stop when you have tested all 81 positions.
 */
 // import React from 'react'
 import {find_next_cell, is_valid, shuffle, create_table, debug_board} from './lib.mjs'
+import '../sudoku_global'
+
 
 
 // console.log(generate_config())
-let board = generate_config()
-create_puzzle(board)
+// let board = generate_config()
+// create_puzzle(board)
 // Generates the initial configuration for the sudoku board
 
-export default function create_puzzle(board) {
+function create_puzzle(board) {
     let coordinates = []
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9;j++) {
@@ -25,7 +27,7 @@ export default function create_puzzle(board) {
         }
     }
     coordinates = shuffle(coordinates)
-    console.log(coordinates)
+    // console.log(coordinates)
     let curr_val = 0
     let temp_board = []
     for (let i = 0; i < coordinates.length; i++) {
@@ -82,34 +84,36 @@ function generate_config () {
 
 function test_one_solution(grid, fill_grid) {
     // function backtrack_bruteforce(grid) {
-        let i, j, ret
-        ret = find_next_cell(grid)
-        i = ret[0]
-        j = ret[1]
-        if (i == -1) {
-            global.total_solutions ++
-            // console.group(global.total_solutions)
-            // if we are JUST filling the grid, return true once we hit the end
-            if (fill_grid == 1) { return true }
-            // otherwise check if there is a second solution; if there is no second solution, return false
-            // if there is a second solution, return true
-            if (global.total_solutions >= 2) {
+    let i, j, ret
+    ret = find_next_cell(grid)
+    i = ret[0]
+    j = ret[1]
+    if (i == -1) {
+        global.total_solutions ++
+        // console.group(global.total_solutions)
+        // if we are JUST filling the grid, return true once we hit the end
+        if (fill_grid == 1) { return true }
+        // otherwise check if there is a second solution; if there is no second solution, return false
+        // if there is a second solution, return true
+        if (global.total_solutions >= 2) {
+            return true
+        } else {
+            return false
+        }
+    }
+    for (let e= 1; e < 10; e++) {
+        if (is_valid(grid, i, j, e) ) {
+            grid[i][j] = e
+            // console.log(i,j,e)
+            if (test_one_solution(grid, fill_grid)) {
                 return true
-            } else {
-                return false
-            }
+            } 
+            grid[i][j] = 0
+            // console.log(i,j,e)
+            global.backtrack_count ++;
         }
-        for (let e= 1; e < 10; e++) {
-            if (is_valid(grid, i, j, e) ) {
-                grid[i][j] = e
-                // console.log(i,j,e)
-                if (test_one_solution(grid, fill_grid)) {
-                    return true
-                } 
-                grid[i][j] = 0
-                // console.log(i,j,e)
-                global.backtrack_count ++;
-            }
-        }
-        return false
-    }   
+    }
+    return false
+}   
+
+export {generate_config, create_puzzle}
