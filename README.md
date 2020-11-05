@@ -21,7 +21,7 @@ The website can be found here: https://dillonwu-97.github.io/algorithms-visualiz
 
 ### Pathfinder  
 Todo:  
-1. fix bug where a previously clicked on cell becomes untraversable because the program thinks it is a wall
+1. fix bug where a previously clicked on cell becomes untraversable because the program thinks it is a wall(bug is probably async, await issue)
 2. add weighted edges
 3. add counter with the number of nodes visited
 4. longest path algorithm
