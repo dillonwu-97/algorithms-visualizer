@@ -3,12 +3,25 @@
 This is a website project that allows the user to visualize a motley of various algorithms.  
 The website can be found here: https://dillonwu-97.github.io/algorithms-visualizer
 
-## General  
-1. Create a homepage for the visualizer -> a component that brings the user to the various parts of the website
+## Features:
+### Pathfinding Visualizer
+* Finds the shortest path between two cells in the grid
+* Algorithms implemented: A*, Greedy, BFS, DFS, Dijkstra
+### Maze Generator
+* Creates a random procedurally generated maze
+* Algorithms implemented: Prim's MST, Kruskal's MST, Wilson (loop-erased random walk), Custom randomized iterator
+### Sudoku Solver
+* Creates a random sudoku configuration and solves it
+* Algorithms implemented: Bruteforce backtracking, Deductive backtracking
 
-## Pathfinder  
+## TODO:
+
+### General  
+1. Create a title for the website
+
+### Pathfinder  
 Todo:  
-1. div grid is not centered when I zoom in or out; figure out how to center it
+1. fix bug where a previously clicked on cell becomes untraversable because the program thinks it is a wall(bug is probably async, await issue)
 2. add weighted edges
 3. add counter with the number of nodes visited
 4. longest path algorithm
@@ -16,7 +29,7 @@ Todo:
 6. fix the shift highlighting
 7. disallow user to select walls as start or end nodes
 
-## Sudoku
+### Sudoku
 1. add n queens and k knights and rename page to games
 2. integrate cover algorithm so that it can be visualized
 3. bits algorithm
