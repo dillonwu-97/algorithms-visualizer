@@ -192,8 +192,8 @@ export default class make_grid extends Component {
 		} 
 	}
 
-	make_maze() {
-		this.reset()
+	async make_maze() {
+		await this.reset()
 		walls = random_maze()
 		this.animate_maze()
 	}
@@ -263,6 +263,7 @@ export default class make_grid extends Component {
 				document.getElementById(id).className = 'cell '
 			}
 		}
+		walls = []
 	}
 
 	// keeps the walls; resets the path colors

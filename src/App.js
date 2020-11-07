@@ -42,6 +42,9 @@ function Home() {
 					<h3> Sudoku Visualizer </h3>
 				</Link>
 			</div>
+			<div className="algorithm">
+				NQueens will be here
+			</div>
 		</div>
 	)
 }
@@ -60,6 +63,15 @@ function Sudoku() {
 			<Sudoku_grid />	
 		</div>
 	)
+}
+
+function NQueens() {
+	return (
+		<div className = "app-queens">
+			NQueens visualizer will be here
+		</div>
+	)
+	
 }
 
 export default App;
