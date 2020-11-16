@@ -57,6 +57,8 @@ export default class Sudoku_grid extends Component {
         this.solve_puzzle = this.solve_puzzle.bind(this)
         this.visualize_puzzle = this.visualize_puzzle.bind(this)
         this.resetboard = this.resetboard.bind(this)
+        this.receiveinput = this.receiveinput.bind(this)
+        this.customboard = this.customboard.bind(this)
     }
 
 /****************************** Solving the sudoku configuration ******************************/
@@ -128,19 +130,26 @@ export default class Sudoku_grid extends Component {
         let grid = this.state.board
         global.values = []
         global.backtrack_count = 0
+        var is_solvable
         switch(type) {
             case "bruteforce":
-                backtrack_bruteforce(grid, 0)
+                is_solvable = backtrack_bruteforce(grid, 0)
                 break
             case "smart":
-                backtrack_smart(grid, 0)
+                is_solvable = backtrack_smart(grid, 0)
                 break        
         }
         // console.log(global.backtrack_count)
-        this.setState({
-            board:grid,
-            backtrack_count: global.backtrack_count
-        })
+        if (is_solvable) {
+            this.setState({
+                board:grid,
+                backtrack_count: global.backtrack_count
+            })
+        } else {
+            this.setState({
+                backtrack_count: "NOT SOLVABLE"
+            })
+        }
     }
 
 /****************************** Board Updates ******************************/
@@ -165,6 +174,8 @@ export default class Sudoku_grid extends Component {
         // }
         // console.log("done")
         let grid = this.state.original.map(inner => inner.slice())
+        console.log(this.state.board)
+        console.log(this.state.original)
         this.setState({
             board: grid,
             backtrack_count: 0
@@ -172,6 +183,7 @@ export default class Sudoku_grid extends Component {
         // console.log(this.state.board)
     }
 
+    // generate a random board configuration
     generateboard() {
         let grid = generate_config()
         create_puzzle(grid)
@@ -180,6 +192,32 @@ export default class Sudoku_grid extends Component {
             board: grid,
             original: original_grid,
             backtrack_count:0
+        })
+    }
+
+    // Read input from the user for the board
+    receiveinput(event, x, y){
+        let grid = this.state.board    
+        // console.log(event.target.value)
+        try {
+            let new_number = parseInt(event.target.value)
+            if (new_number >= 1 && new_number <= 9) {
+                grid[x][y] = new_number
+            } else {
+                grid[x][y] = 0
+            }
+        } catch {
+            grid[x][y] = 0
+        }
+        this.setState({
+            board: grid
+        })
+    }
+
+    customboard() {
+        this.setState({
+            board: [...Array(9)].map(i=>Array(9).fill(0)),
+            original: [...Array(9)].map(i=>Array(9).fill(0))
         })
     }
 
@@ -213,6 +251,13 @@ export default class Sudoku_grid extends Component {
                                 <div>
                                     <button type="button" onClick={()=>this.resetboard()}>
                                         Reset Board
+                                    </button>
+                                </div>
+                            </li>
+                            <li class="nav-item active">
+                                <div>
+                                    <button type="button" onClick={()=>this.customboard()}>
+                                        Custom Board
                                     </button>
                                 </div>
                             </li>
@@ -252,27 +297,26 @@ export default class Sudoku_grid extends Component {
                             return(
                                 <tr>
                                     {row.map((unit, idy) => {
+                                        // console.log("unit is ", unit)
                                         {if (unit == 0) {
                                             // console.log(unit, idy)
                                             return (
                                             <td id = {'sudoku-'+idx+'-'+idy}>
                                                 {/* {console.log('sudoku-'+idx+'-'+idy)} */}
-                                                <input>
+                                                <input value="" onChange={(event)=>this.receiveinput(event, idx, idy)}>
                                                 </input>
                                             </td>
                                             )
                                         } else {
                                             return (
                                             <td id = {'sudoku-'+idx+'-'+idy}>
-                                                {unit}
+                                                <input value={unit} onChange={(event) => this.receiveinput(event, idx, idy)}>
+                                                    
+                                                </input>
+                                                {/* {unit} */}
                                             </td>
                                             )
                                         }}
-                                        // return (
-                                        // <td>
-                                        //     {j}
-                                        // </td>
-                                    // )
                                     })}
                                 </tr>
                             )
