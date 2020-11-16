@@ -1,26 +1,26 @@
 import React from 'react';
-import Make_grid from './pathfinder/setup/make_grid'
-import MyNavbar from './MyNavbar'
-import './App.css'
-import Sudoku_grid from './sudoku/sudoku_grid'
 import { BrowserRouter, Route, Link, Switch, HashRouter } from "react-router-dom";
-
-import pathfinderGif from './images/pathfinder-slow1.gif'
-import sudokuGif from './images/sudoku-slow.gif'
+import './App.css'
 import './images/images.css'
+
+// Pathfinder
+import Make_grid from './pathfinder/setup/make_grid'
+import pathfinderGif from './images/pathfinder-slow1.gif'
+
+// Sudoku
+import Sudoku_grid from './sudoku/sudoku_grid'
+import sudokuGif from './images/sudoku-slow.gif'
+import Sorting_grid from './sorting/sorting_grid';
 
 function App() {
 	return (
 		<div>
-			{/* <MyNavbar/> */}
-			{/* Currently making this look prettier but  */}
-			{/* paths are https://dillonwu-97.github.io/algorithms-visualizer/#/pathfinder */}
-			{/* https://dillonwu-97.github.io/algorithms-visualizer/#/sudoku */}
 			<HashRouter>
 				<Switch>
 					<Route exact path='/' component={Home}/>
 					<Route exact path='/pathfinder' component = {Pathfinder}/>
 					<Route exact path='/sudoku' component={Sudoku}/>
+					<Route exact path='/sorting' component={Sorting}/>
 				</Switch>
 			</HashRouter>
 		</div>
@@ -43,6 +43,11 @@ function Home() {
 				</Link>
 			</div>
 			<div className="algorithm">
+				<Link style={{color: "white"}} to={'/sorting'}>
+					<h3> Sorting Visualizer </h3>
+				</Link>
+			</div>
+			<div className="algorithm">
 				NQueens will be here
 			</div>
 		</div>
@@ -61,6 +66,14 @@ function Sudoku() {
 	return (
 		<div className = "app-sudoku">
 			<Sudoku_grid />	
+		</div>
+	)
+}
+
+function Sorting() {
+	return (
+		<div className = "app-sorting">
+			<Sorting_grid />
 		</div>
 	)
 }

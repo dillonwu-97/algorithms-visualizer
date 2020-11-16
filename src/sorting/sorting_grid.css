@@ -1,0 +1,16 @@
+.sorting-grid {
+    /* If bottom is 0px, then height = 75% means 75% from the bottom */
+    /* height: 75%;  */
+    bottom: 0px;
+    left: 100px;
+    position:absolute;
+}
+
+.bar {
+    display: inline-block;
+    /* width: 20px; */
+    height: 100px;
+    background-color: blue;
+    position: relative;
+    border: solid black 1px;
+}
