@@ -1,27 +1,27 @@
 {
   "files": {
     "main.css": "/algorithms-visualizer/static/css/main.a230c167.chunk.css",
-    "main.js": "/algorithms-visualizer/static/js/main.e5df1d52.chunk.js",
-    "main.js.map": "/algorithms-visualizer/static/js/main.e5df1d52.chunk.js.map",
+    "main.js": "/algorithms-visualizer/static/js/main.2176656e.chunk.js",
+    "main.js.map": "/algorithms-visualizer/static/js/main.2176656e.chunk.js.map",
     "runtime-main.js": "/algorithms-visualizer/static/js/runtime-main.d06e165b.js",
     "runtime-main.js.map": "/algorithms-visualizer/static/js/runtime-main.d06e165b.js.map",
     "static/css/2.d9ad5f5c.chunk.css": "/algorithms-visualizer/static/css/2.d9ad5f5c.chunk.css",
-    "static/js/2.3e1d4035.chunk.js": "/algorithms-visualizer/static/js/2.3e1d4035.chunk.js",
-    "static/js/2.3e1d4035.chunk.js.map": "/algorithms-visualizer/static/js/2.3e1d4035.chunk.js.map",
+    "static/js/2.4fac5c5e.chunk.js": "/algorithms-visualizer/static/js/2.4fac5c5e.chunk.js",
+    "static/js/2.4fac5c5e.chunk.js.map": "/algorithms-visualizer/static/js/2.4fac5c5e.chunk.js.map",
     "index.html": "/algorithms-visualizer/index.html",
-    "precache-manifest.b77b265958835233ef19204e6fc4174f.js": "/algorithms-visualizer/precache-manifest.b77b265958835233ef19204e6fc4174f.js",
+    "precache-manifest.5a4331d142e55b8f6ef04c1ef02b6599.js": "/algorithms-visualizer/precache-manifest.5a4331d142e55b8f6ef04c1ef02b6599.js",
     "service-worker.js": "/algorithms-visualizer/service-worker.js",
     "static/css/2.d9ad5f5c.chunk.css.map": "/algorithms-visualizer/static/css/2.d9ad5f5c.chunk.css.map",
     "static/css/main.a230c167.chunk.css.map": "/algorithms-visualizer/static/css/main.a230c167.chunk.css.map",
-    "static/js/2.3e1d4035.chunk.js.LICENSE.txt": "/algorithms-visualizer/static/js/2.3e1d4035.chunk.js.LICENSE.txt",
+    "static/js/2.4fac5c5e.chunk.js.LICENSE.txt": "/algorithms-visualizer/static/js/2.4fac5c5e.chunk.js.LICENSE.txt",
     "static/media/pathfinder-slow1.gif": "/algorithms-visualizer/static/media/pathfinder-slow1.45a9d4d9.gif",
     "static/media/sudoku-slow.gif": "/algorithms-visualizer/static/media/sudoku-slow.139d31f6.gif"
   },
   "entrypoints": [
     "static/js/runtime-main.d06e165b.js",
     "static/css/2.d9ad5f5c.chunk.css",
-    "static/js/2.3e1d4035.chunk.js",
+    "static/js/2.4fac5c5e.chunk.js",
     "static/css/main.a230c167.chunk.css",
-    "static/js/main.e5df1d52.chunk.js"
+    "static/js/main.2176656e.chunk.js"
   ]
 }
