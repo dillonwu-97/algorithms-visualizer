@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './sorting_grid.css'
 import bubblesort from './sorting_algorithms/bubblesort'
 import insertionsort from './sorting_algorithms/insertionsort'
+import mergesort from './sorting_algorithms/mergesort'
 
 const MAX_HEIGHT = window.innerHeight // 644 
 // const MAX_HEIGHT = 100
@@ -34,28 +35,50 @@ sort(algorithm) {
         case 'insertionsort':
             ret_values = insertionsort(this.state.array)
             break
+        case 'mergesort':
+            ret_values = mergesort(this.state.array)
+            break
     }
-    // let out, value_i, value_j, index_i, index_j, s_i, s_j
-    // NOTE: have to use let in the loop instead of defining above because:
-    // https://medium.com/@axionoso/watch-out-when-using-settimeout-in-for-loop-js-75a047e27a5f
-    for (let i = 0; i < ret_values.length; i++) {
-        // change height of the element
-        let out = ret_values[i]
-        
-        // ith element being swapped
-        let index_i = out[0][0]
-        let value_i = out[0][1]
-        let s_i = "array-" + index_i
 
-        // jth element being swapped
-        let index_j = out[1][0]
-        let value_j = out[1][1]
-        let s_j = "array-" + index_j
-        setTimeout(() => {
-            // console.log(i, s_i, s_j, Math.floor(MAX_HEIGHT * (value_i/(ARRAY_SIZE+1))))
-            document.getElementById(s_i).style.height = `${Math.floor(MAX_HEIGHT * (value_i/(ARRAY_SIZE+1)))}px`
-            document.getElementById(s_j).style.height = `${Math.floor(MAX_HEIGHT * (value_j/(ARRAY_SIZE+1)))}px`
-        }, i * 1000 / ARRAY_SIZE)
+    // mergesort is not an in place algorithm so it has its own visualization
+    if (algorithm == 'mergesort') {
+        for (let i = 0; i < ret_values.length; i++) {
+            let j = 0
+            // console.log(ret_values[i])
+            while (j < ret_values[i].length) {
+                let out = ret_values[i][j]
+                let index = out[0]
+                let value = out[1]
+                let s = "array-" + index
+                setTimeout(() => {
+                    document.getElementById(s).style.height = `${Math.floor(MAX_HEIGHT * (value/(ARRAY_SIZE+1)))}px`
+                }, i * 1000/ARRAY_SIZE)
+                j++
+            }
+        }
+    } else {
+        // let out, value_i, value_j, index_i, index_j, s_i, s_j
+        // NOTE: have to use let in the loop instead of defining above because:
+        // https://medium.com/@axionoso/watch-out-when-using-settimeout-in-for-loop-js-75a047e27a5f
+        for (let i = 0; i < ret_values.length; i++) {
+            // change height of the element
+            let out = ret_values[i]
+            
+            // ith element being swapped
+            let index_i = out[0][0]
+            let value_i = out[0][1]
+            let s_i = "array-" + index_i
+
+            // jth element being swapped
+            let index_j = out[1][0]
+            let value_j = out[1][1]
+            let s_j = "array-" + index_j
+            setTimeout(() => {
+                // console.log(i, s_i, s_j, Math.floor(MAX_HEIGHT * (value_i/(ARRAY_SIZE+1))))
+                document.getElementById(s_i).style.height = `${Math.floor(MAX_HEIGHT * (value_i/(ARRAY_SIZE+1)))}px`
+                document.getElementById(s_j).style.height = `${Math.floor(MAX_HEIGHT * (value_j/(ARRAY_SIZE+1)))}px`
+            }, i * 1000 / ARRAY_SIZE)
+        }
     }
 }
 
@@ -67,7 +90,7 @@ newArray() {
 
 /*********************************** Render Method ******************************/
     render() {
-        let algorithms = ['bubblesort', 'insertionsort']
+        let algorithms = ['bubblesort', 'insertionsort', 'mergesort']
         return (
             <div>
                 <button onClick={this.newArray}>
