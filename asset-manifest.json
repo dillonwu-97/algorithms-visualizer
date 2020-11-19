@@ -1,27 +1,27 @@
 {
   "files": {
-    "main.css": "/algorithms-visualizer/static/css/main.a230c167.chunk.css",
-    "main.js": "/algorithms-visualizer/static/js/main.2176656e.chunk.js",
-    "main.js.map": "/algorithms-visualizer/static/js/main.2176656e.chunk.js.map",
+    "main.css": "/algorithms-visualizer/static/css/main.9856530a.chunk.css",
+    "main.js": "/algorithms-visualizer/static/js/main.3e445523.chunk.js",
+    "main.js.map": "/algorithms-visualizer/static/js/main.3e445523.chunk.js.map",
     "runtime-main.js": "/algorithms-visualizer/static/js/runtime-main.d06e165b.js",
     "runtime-main.js.map": "/algorithms-visualizer/static/js/runtime-main.d06e165b.js.map",
     "static/css/2.d9ad5f5c.chunk.css": "/algorithms-visualizer/static/css/2.d9ad5f5c.chunk.css",
-    "static/js/2.4fac5c5e.chunk.js": "/algorithms-visualizer/static/js/2.4fac5c5e.chunk.js",
-    "static/js/2.4fac5c5e.chunk.js.map": "/algorithms-visualizer/static/js/2.4fac5c5e.chunk.js.map",
+    "static/js/2.8a3415fc.chunk.js": "/algorithms-visualizer/static/js/2.8a3415fc.chunk.js",
+    "static/js/2.8a3415fc.chunk.js.map": "/algorithms-visualizer/static/js/2.8a3415fc.chunk.js.map",
     "index.html": "/algorithms-visualizer/index.html",
-    "precache-manifest.5a4331d142e55b8f6ef04c1ef02b6599.js": "/algorithms-visualizer/precache-manifest.5a4331d142e55b8f6ef04c1ef02b6599.js",
+    "precache-manifest.1a4224a51bf61da1e08c99dfe00448c1.js": "/algorithms-visualizer/precache-manifest.1a4224a51bf61da1e08c99dfe00448c1.js",
     "service-worker.js": "/algorithms-visualizer/service-worker.js",
     "static/css/2.d9ad5f5c.chunk.css.map": "/algorithms-visualizer/static/css/2.d9ad5f5c.chunk.css.map",
-    "static/css/main.a230c167.chunk.css.map": "/algorithms-visualizer/static/css/main.a230c167.chunk.css.map",
-    "static/js/2.4fac5c5e.chunk.js.LICENSE.txt": "/algorithms-visualizer/static/js/2.4fac5c5e.chunk.js.LICENSE.txt",
+    "static/css/main.9856530a.chunk.css.map": "/algorithms-visualizer/static/css/main.9856530a.chunk.css.map",
+    "static/js/2.8a3415fc.chunk.js.LICENSE.txt": "/algorithms-visualizer/static/js/2.8a3415fc.chunk.js.LICENSE.txt",
     "static/media/pathfinder-slow1.gif": "/algorithms-visualizer/static/media/pathfinder-slow1.45a9d4d9.gif",
     "static/media/sudoku-slow.gif": "/algorithms-visualizer/static/media/sudoku-slow.139d31f6.gif"
   },
   "entrypoints": [
     "static/js/runtime-main.d06e165b.js",
     "static/css/2.d9ad5f5c.chunk.css",
-    "static/js/2.4fac5c5e.chunk.js",
-    "static/css/main.a230c167.chunk.css",
-    "static/js/main.2176656e.chunk.js"
+    "static/js/2.8a3415fc.chunk.js",
+    "static/css/main.9856530a.chunk.css",
+    "static/js/main.3e445523.chunk.js"
   ]
 }
