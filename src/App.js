@@ -29,7 +29,7 @@ function App() {
 
 function Home() {
 	return (
-		<div>
+		<div className="algorithm-matrix">
 			<div className="algorithm" >
 				<Link style={{color: "white"}} to={'/pathfinder'}>
 					<img class = "thumbnail" src={pathfinderGif} alt="" />
@@ -56,7 +56,7 @@ function Home() {
   
 function Pathfinder() {
 	return (
-		<div className = "app-main">
+		<div className = "app-pathfinder">
 			<Make_grid />
 		</div>
 	)

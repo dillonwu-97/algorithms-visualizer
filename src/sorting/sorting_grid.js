@@ -3,13 +3,15 @@ import './sorting_grid.css'
 import bubblesort from './sorting_algorithms/bubblesort'
 import insertionsort from './sorting_algorithms/insertionsort'
 import mergesort from './sorting_algorithms/mergesort'
+import selectionsort from './sorting_algorithms/selectionsort'
+import heapsort from './sorting_algorithms/heapsort'
 
 const MAX_HEIGHT = window.innerHeight // 644 
 // const MAX_HEIGHT = 100
 // 500 is ok for zoom = 100% on a normal window
 const MAX_WIDTH = window.innerWidth
 // const MAX_WIDTH = 500 // window.innerWidth = 1280 
-const ARRAY_SIZE = 20
+const ARRAY_SIZE = 200
 // 200 is padding on left and right side
 const BAR_WIDTH = (MAX_WIDTH - 200) / ARRAY_SIZE
 
@@ -38,6 +40,12 @@ sort(algorithm) {
         case 'mergesort':
             ret_values = mergesort(this.state.array)
             break
+        case 'selectionsort':
+            ret_values = selectionsort(this.state.array)
+            break
+        case 'heapsort':
+            ret_values = heapsort(this.state.array)
+            break
     }
 
     // mergesort is not an in place algorithm so it has its own visualization
@@ -51,7 +59,7 @@ sort(algorithm) {
                 let value = out[1]
                 let s = "array-" + index
                 setTimeout(() => {
-                    document.getElementById(s).style.height = `${Math.floor(MAX_HEIGHT * (value/(ARRAY_SIZE+1)))}px`
+                    document.getElementById(s).style.height = `${Math.floor(MAX_HEIGHT * (value/(ARRAY_SIZE * 1.1)))}px`
                 }, i * 1000/ARRAY_SIZE)
                 j++
             }
@@ -90,7 +98,7 @@ newArray() {
 
 /*********************************** Render Method ******************************/
     render() {
-        let algorithms = ['bubblesort', 'insertionsort', 'mergesort']
+        let algorithms = ['bubblesort', 'insertionsort', 'selectionsort', 'heapsort', 'mergesort']
         return (
             <div>
                 <button onClick={this.newArray}>
@@ -109,7 +117,7 @@ newArray() {
                             <div
                                 id = {"array-" + id}
                                 className="bar" 
-                                style={{width: BAR_WIDTH, height: MAX_HEIGHT * (value/(ARRAY_SIZE+1))}}
+                                style={{width: BAR_WIDTH, height: MAX_HEIGHT * (value/(ARRAY_SIZE * 1.1))}}
                             >
                                 {/* {console.log("array-"+id)} */}
                             </div>
