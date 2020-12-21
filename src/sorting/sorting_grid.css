@@ -1,3 +1,9 @@
+.sorting-background {
+    background-color: white;
+    color: white;
+    height: 100vh;
+}
+
 .sorting-grid {
     /* If bottom is 0px, then height = 75% means 75% from the bottom */
     /* height: 75%;  */

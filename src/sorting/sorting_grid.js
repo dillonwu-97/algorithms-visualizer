@@ -100,7 +100,7 @@ newArray() {
     render() {
         let algorithms = ['bubblesort', 'insertionsort', 'selectionsort', 'heapsort', 'mergesort']
         return (
-            <div>
+            <div className="sorting-background">
                 <button onClick={this.newArray}>
                     Create New Array
                 </button>

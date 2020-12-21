@@ -227,7 +227,7 @@ export default class Sudoku_grid extends Component {
     render() {
         let solve_type = ["bruteforce", "smart"]
         return (
-            <div>
+            <div className="sudoku-background">
                 <nav class="navbar navbar-expand-lg bg-light">
                     <div class= "navbar-collapse">
                         <ul class="navbar-nav mr-auto nav-fill w-100">
@@ -323,10 +323,9 @@ export default class Sudoku_grid extends Component {
                         })}
                     </table>
                 </div> 
-                <div className="back-counter">
+                <div className="back-counter" style={{"background-color": "white"}}>
                     Backtrack Counter: {this.state.backtrack_count}
                 </div>
-
             </div>
         )
     }
