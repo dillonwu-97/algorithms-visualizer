@@ -19,7 +19,7 @@ function App() {
 					<Route exact path='/pathfinder' component = {Pathfinder}/>
 					<Route exact path='/sudoku' component={Sudoku}/>
 					<Route exact path='/sorting' component={Sorting}/>
-					{/* <Route exact path='/trees' component = {Trees}/> */}
+					<Route exact path='/trees' component = {Trees}/>
 				</Switch>
 			</HashRouter>
 		</div>

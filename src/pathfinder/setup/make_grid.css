@@ -1,23 +1,28 @@
-.parent {
-	width: 1280px;
-	max-width: 100%;
-	min-height: 100%;
+.pathfinder {
+	background-color: blanchedalmond;
+	height: 100vh;
 }
 
-.grid{
-	text-align: center;
-}
-
-.wrapper {
-	margin:auto;
-	justify-content: center;
+.row{
+	margin: auto;
 	display: flex;
-	flex-wrap: wrap;
+	border-left: 1px solid white;
+	/* flex-direction: column; */
+	/* min-height: 18px; */
+	flex: 1;
 }
+
+
 
 .container {
 	padding-top: 20px;
+	display: flex;
+	justify-content: space-around;
+	flex-direction: row;
+	align-items: center;
+	background-color: blanchedalmond;
 }
+
 
 .btn-xlarge {
 	padding: 18px 28px;
@@ -29,6 +34,9 @@
 	background-color: deepskyblue;
 }
 
+#reset-button {
+	border: black;
+}
 
 .algorithms-button {
 	padding: 18px 28px;
@@ -38,6 +46,7 @@
        -moz-border-radius: 8px;
 			border-radius: 8px;
 	background-color: greenyellow;
+	border: black;
 }
 
 .algorithms-menu {
@@ -54,6 +63,7 @@
        -moz-border-radius: 8px;
 			border-radius: 8px;
 	background-color: rgb(145, 6, 126);
+	border: black;
 }
 
 .maze-menu {

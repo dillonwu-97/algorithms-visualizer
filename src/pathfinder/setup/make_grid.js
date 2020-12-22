@@ -10,7 +10,6 @@ import random_maze from '../algorithms/maze_algs/random_maze'
 import random_kruskal from '../algorithms/maze_algs/random_kruskal'
 import random_prims from '../algorithms/maze_algs/random_prims'
 import wilson from '../algorithms/maze_algs/wilson'
-import './global'
 
 /****************************** CSS imports ******************************/
 import { Dropdown, DropdownButton } from 'react-bootstrap';
@@ -20,8 +19,6 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './cell/cell.css'
 import './make_grid.css'
-
-
 
 const row_count = global.rc // TODO: allow for user to input these values
 const col_count = global.cc
@@ -60,6 +57,11 @@ export default class make_grid extends Component {
 		}
 		return cell
 	}
+
+	/***************************** Resizing Window *****************************/
+	// resize(event) {
+
+	// }
 
 	/************************* Pathfinding Methods *************************/
 	// runs bfs and returns the nodes visited path and backtrack path
@@ -280,6 +282,10 @@ export default class make_grid extends Component {
 	}
 
 	/****************************** Rendering *************************/
+	// componentDidMount() {
+	// 	window.addEventListener("resize", this.resize, false)
+	// }
+
 	render() {
 		// setup for grid
 		let grid = []
@@ -293,54 +299,87 @@ export default class make_grid extends Component {
 		let maze_list = ["kruskal", "prim", "wilson"]
 		let alg_list = ["bfs", "dfs", "greedy", "astar", "dijkstra"]
 		return (
-			<div className="parent">
+			<div className="pathfinder">
 				<div className = "grid" > 
-					<div className= "wrapper">
-						{grid.map((row, row_index) => {
-							return (
-								<div className="row">
-								{row.map((col, col_index) => {
-									const cell = this.create_cell()
-									let {type, weight} = cell
-									if (row_index == start_i && col_index == start_j) {
-										type = 'cell-start'
-									} else if (row_index == end_i && col_index == end_j) {
-										type = 'cell-finish'
-									}
-									return (<Cell element_id={'cell-' + row_index + '-' + col_index}
-									type = {type} weight = {weight} row = {row_index} col = {col_index} 
-									onMouseMove={this.createWall} 
-									onClick={this.startEnd} />)
+					{grid.map((row, row_index) => {
+						return (
+							<div className="row">
+							{row.map((col, col_index) => {
+								const cell = this.create_cell()
+								let {type, weight} = cell
+								if (row_index == start_i && col_index == start_j) {
+									type = 'cell-start'
+								} else if (row_index == end_i && col_index == end_j) {
+									type = 'cell-finish'
+								}
+								return (<Cell element_id={'cell-' + row_index + '-' + col_index}
+								type = {type} weight = {weight} row = {row_index} col = {col_index} 
+								onMouseMove={this.createWall} 
+								onClick={this.startEnd} />)
 
-								})}
-								</div>
-							)
-						})}
-					</div>
+							})}
+							
+							</div>
+						)
+					})}
 				</div>
 				<div>
-					   
 				</div>
+{/************************************ Buttons below *******************************/}
 				<div class="container">
-					<div id="pathfinder-dropdown" class="row text-center">
-						<div class="col-4">
-							<div class="dropdown" >
-								<button class="btn btn-secondary dropdown-toggle" className="algorithms-button" type="button" data-toggle="dropdown">
-									Select Algorithm
+{/************************************ Algorithm Button *******************************/}
+					<div>
+						<div class="dropdown" >
+							<button class="btn btn-secondary dropdown-toggle" className="algorithms-button" type="button" data-toggle="dropdown">
+								Select Algorithm
+							</button>
+							<div class="dropdown-menu">
+								{alg_list.map((alg) => {
+								// console.log(typeof(alg))
+									return (
+										<div>
+											<a class="dropdown-item" className="algorithms-menu" onClick = {()=>this.handleSearch(
+												start_i,
+												start_j,
+												end_i,
+												end_j,
+												walls,
+												alg)}>
+												Visualize {alg}
+											</a>
+											<div class="dropdown-divider"></div>
+										</div>
+										
+									)
+								})}
+							</div>
+						</div>
+					</div>
+{/************************************ Reset Button *******************************/}
+					<div>
+						<button type="button" class="btn btn-outline-secondary" className="btn-xlarge" id="reset-button"
+						onClick={()=>this.reset()}>
+							Reset
+						</button>
+					</div>
+{/************************************ Maze Button *******************************/}
+					<div>
+						<div class="dropdown" >
+								<button class="btn btn-secondary dropdown-toggle" className="maze-button" type="button" data-toggle="dropdown">
+									Select Maze
 								</button>
 								<div class="dropdown-menu">
-									{alg_list.map((alg) => {
-									// console.log(typeof(alg))
+									<div>
+										<a class="dropdown-item" className="maze-menu" onClick = {this.make_maze}>
+											General Maze
+										</a>
+										<div class="dropdown-divider"></div>
+									</div>
+									{maze_list.map((maze) => {
 										return (
 											<div>
-												<a class="dropdown-item" className="algorithms-menu" onClick = {()=>this.handleSearch(
-													start_i,
-													start_j,
-													end_i,
-													end_j,
-													walls,
-													alg)}>
-													Visualize {alg}
+												<a class="dropdown-item" className="maze-menu" onClick = {()=>this.dark_maze(maze)}>
+													{maze} maze
 												</a>
 												<div class="dropdown-divider"></div>
 											</div>
@@ -349,40 +388,6 @@ export default class make_grid extends Component {
 									})}
 								</div>
 							</div>
-						</div>
-						<div class="col-4">
-							<button type="button" class="btn btn-outline-secondary" className="btn-xlarge" id="reset button"
-							onClick={()=>this.reset()}>
-								Reset
-							</button>
-						</div>
-						
-						<div class="col-4">
-							<div class="dropdown" >
-									<button class="btn btn-secondary dropdown-toggle" className="maze-button" type="button" data-toggle="dropdown">
-										Select Maze
-									</button>
-									<div class="dropdown-menu">
-										<div>
-											<a class="dropdown-item" className="maze-menu" onClick = {this.make_maze}>
-												General Maze
-											</a>
-											<div class="dropdown-divider"></div>
-										</div>
-										{maze_list.map((maze) => {
-											return (
-												<div>
-													<a class="dropdown-item" className="maze-menu" onClick = {()=>this.dark_maze(maze)}>
-														{maze} maze
-													</a>
-													<div class="dropdown-divider"></div>
-												</div>
-												
-											)
-										})}
-									</div>
-								</div>
-						</div>
 					</div>
 				</div>
 			</div>

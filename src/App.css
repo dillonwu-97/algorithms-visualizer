@@ -47,13 +47,14 @@ h3 {
     font-size: .75cm;
 }
 
-.app-pathfinder {
+/* maybe i can delete this at some point */
+/* .app-pathfinder {
     padding-top:100px;
     background-color: blanchedalmond;
     height: 1000px;
     width: 2000px;
     overflow: visible;
-}
+} */
 
 
 /* Source: https://codepen.io/albizan/pen/mMWdWZ */

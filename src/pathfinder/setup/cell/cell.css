@@ -1,9 +1,14 @@
 .cell {
-	width: 15px;
-	height: 15px;
-	outline: 1px solid rgb(28, 43, 43);
+	/* width: 15px;
+	height: 15px; */
+	/* outline: 1px solid rgb(28, 43, 43);
+	float: left; */
+	display:flex;
+	flex:1;
+	pointer-events:auto;
 	background-color: white;
-	float: left;
+	outline: 1px solid black;
+	min-height: 18px;
 }
 
 .cell-finish {
