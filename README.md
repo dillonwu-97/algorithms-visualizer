@@ -13,6 +13,9 @@ The website can be found here: https://dillonwu-97.github.io/algorithms-visualiz
 ### Sudoku Solver
 * Creates a random sudoku configuration and solves it
 * Algorithms implemented: Bruteforce backtracking, Deductive backtracking
+### Sorting Visualizer
+* Visualize sorting
+* Algorithms implemented: Bubble, Insertion, Selection, Merge, Heap
 
 ## TODO:
 
@@ -25,7 +28,6 @@ Todo:
 2. add weighted edges
 3. add counter with the number of nodes visited
 4. longest path algorithm
-5. visualize the bad starts in wilson's loop erased random walk algorithm
 6. fix the shift highlighting
 7. disallow user to select walls as start or end nodes
 
@@ -33,5 +35,4 @@ Todo:
 1. add n queens and k knights and rename page to games
 2. integrate cover algorithm so that it can be visualized
 3. bits algorithm
-4. allow users to fill in various cells with value 
 
