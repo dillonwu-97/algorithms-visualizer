@@ -31,25 +31,25 @@ export default function bfs(start_i, start_j, end_i, end_j, walls) {
 		return_vals.push([out_i, out_j])
 		// appending in each direction
 		visited[out_i][out_j] = out.prev
-		if (out_i == end_i && out_j == end_j) {
+		if (out_i === end_i && out_j === end_j) {
 			console.log('bfs count: ', out.count)
 			return_vals.push(backtrack(start_i, start_j, end_i, end_j, visited))
 			break;
 		}
 		// console.log(out)
-		if (out_i > 0 && visited[out_i-1][out_j] == 0) {
+		if (out_i > 0 && visited[out_i-1][out_j] === 0) {
 			q.push({coord:[out_i-1, out_j], count: out.count+1, prev:out.coord})
 			visited [out_i-1][out_j] = 1 // to mark the node as in the process of being visited
 		}
-		if (out_j > 0 && visited[out_i][out_j-1] == 0) {
+		if (out_j > 0 && visited[out_i][out_j-1] === 0) {
 			q.push({coord:[out_i, out_j-1], count: out.count+1, prev:out.coord})
 			visited [out_i][out_j-1] = 1
 		}
-		if (out_i < row_count-1 && visited[out_i+1][out_j] == 0) {
+		if (out_i < row_count-1 && visited[out_i+1][out_j] === 0) {
 			q.push({coord:[out_i+1, out_j], count: out.count+1, prev:out.coord})
 			visited [out_i+1][out_j] = 1
 		}
-		if (out_j < col_count-1 && visited[out_i][out_j+1] == 0) {
+		if (out_j < col_count-1 && visited[out_i][out_j+1] === 0) {
 			q.push({coord:[out_i, out_j+1], count: out.count+1, prev:out.coord})
 			visited [out_i][out_j+1] = 1
 		}

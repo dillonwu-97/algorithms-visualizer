@@ -174,8 +174,8 @@ export default class Sudoku_grid extends Component {
         // }
         // console.log("done")
         let grid = this.state.original.map(inner => inner.slice())
-        console.log(this.state.board)
-        console.log(this.state.original)
+        // console.log(this.state.board)
+        // console.log(this.state.original)
         this.setState({
             board: grid,
             backtrack_count: 0

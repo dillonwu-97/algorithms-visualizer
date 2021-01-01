@@ -8,7 +8,8 @@ import Make_grid from './pathfinder/setup/make_grid'
 // Sudoku
 import Sudoku_grid from './sudoku/sudoku_grid'
 import Sorting_grid from './sorting/sorting_grid';
-import Trees from './trees/sandbox'
+import Tree from './trees/Tree'
+// import Tree from './trees/sandbox'
 
 function App() {
 	return (
@@ -19,7 +20,7 @@ function App() {
 					<Route exact path='/pathfinder' component = {Pathfinder}/>
 					<Route exact path='/sudoku' component={Sudoku}/>
 					<Route exact path='/sorting' component={Sorting}/>
-					<Route exact path='/trees' component = {Trees}/>
+					<Route exact path='/trees' component = {Tree}/>
 				</Switch>
 			</HashRouter>
 		</div>

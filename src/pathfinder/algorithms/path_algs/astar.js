@@ -41,11 +41,11 @@ export default function astar(start_i, start_j, end_i, end_j, walls) {
 		}
 		return_vals.push([out_i, out_j])
         // appending in each direction
-        if (visited[out_i][out_j] == 1 || min_graph[out_i][out_j] > out.count) {
+        if (visited[out_i][out_j] === 1 || min_graph[out_i][out_j] > out.count) {
             min_graph[out_i][out_j] = out.count
             visited[out_i][out_j] = out.prev
         }
-		if (out_i == end_i && out_j == end_j) {
+		if (out_i === end_i && out_j === end_j) {
 			// console.log(min_graph)
 			console.log('astar count: ', out.count)
 			return_vals.push(backtrack(start_i, start_j, end_i, end_j, visited))
@@ -54,7 +54,7 @@ export default function astar(start_i, start_j, end_i, end_j, walls) {
 		// console.log(out)
 		if (out_i > 0) {
 			distance = out.count + (manhattan(end_i, out_i-1, end_j, out_j)) 
-			if(visited[out_i-1][out_j] == 0) {
+			if(visited[out_i-1][out_j] === 0) {
 				heapq.push(q, [distance, {coord:[out_i-1, out_j], count: out.count+1, prev:out.coord}], cmp)
 				visited [out_i-1][out_j] = 1 // to mark the node as in the process of being visited
 				in_heap [out_i-1][out_j] = distance;
@@ -65,7 +65,7 @@ export default function astar(start_i, start_j, end_i, end_j, walls) {
 		}
 		if (out_j > 0){
 			distance = out.count + (manhattan(end_i, out_i, end_j, out_j-1))
-			if (visited[out_i][out_j-1] == 0) {
+			if (visited[out_i][out_j-1] === 0) {
 				heapq.push(q, [distance, {coord:[out_i, out_j-1], count: out.count+1, prev:out.coord}], cmp)
 				visited [out_i][out_j-1] = 1
 				in_heap [out_i][out_j-1]=distance;
@@ -76,7 +76,7 @@ export default function astar(start_i, start_j, end_i, end_j, walls) {
 		}
 		if (out_i < row_count-1) {
 			distance = out.count + (manhattan(end_i, out_i+1, end_j, out_j))
-			if (visited[out_i+1][out_j] == 0) {
+			if (visited[out_i+1][out_j] === 0) {
 				heapq.push(q, [distance, {coord:[out_i+1, out_j], count: out.count+1, prev:out.coord}], cmp)
 				visited [out_i+1][out_j] = 1
 				in_heap [out_i+1][out_j]=distance;
@@ -87,7 +87,7 @@ export default function astar(start_i, start_j, end_i, end_j, walls) {
 		}
 		if (out_j < col_count-1) {
 			distance = out.count + (manhattan(end_i, out_i, end_j, out_j+1))
-			if (visited[out_i][out_j+1] == 0) {
+			if (visited[out_i][out_j+1] === 0) {
 				heapq.push(q, [distance, {coord:[out_i, out_j+1], count: out.count+1, prev:out.coord}], cmp)
 				visited [out_i][out_j+1] = 1
 				in_heap [out_i][out_j+1]=distance;

@@ -22,7 +22,7 @@ export default function random_kruskal() {
     let points = [], maze = []
     for (let i = 1; i < global.rc-1; i++) {
         for (let j = 1; j < global.cc-1; j++) {
-            if (j % 2 == 1 && i % 2 == 1) {
+            if (j % 2 === 1 && i % 2 === 1) {
                 // need to connect all of the spaces
                 visited[i][j] = {"i":i, "j":j}
                 set.add(visited[i][j])
@@ -51,7 +51,7 @@ export default function random_kruskal() {
     for (let i = 0; i < points.length; i ++) {
         x = points[i][0]
         y = points[i][1]
-        if (walls[x+1][y] == 0 && walls[x-1][y] == 0){
+        if (walls[x+1][y] === 0 && walls[x-1][y] === 0){
             out_l = visited[x+1][y]
             out_r = visited[x-1][y]
             if (!set.connected(out_l, out_r)) {
@@ -60,7 +60,7 @@ export default function random_kruskal() {
                 set.union(out_l, out_r)
                 maze.push([x+1,y], [x,y], [x-1,y])
             }
-        } else if (walls[x][y+1] == 0 && walls[x][y-1] == 0) {
+        } else if (walls[x][y+1] === 0 && walls[x][y-1] === 0) {
             out_l = visited[x][y+1]
             out_r = visited[x][y-1]
             if (!set.connected(out_l, out_r)) {
@@ -80,7 +80,7 @@ export default function random_kruskal() {
     let ret_walls = []
     for (let i = 0; i < walls.length; i++) {
         for (let j = 0; j < walls[0].length; j++) {
-            if (walls[i][j] == 1) {
+            if (walls[i][j] === 1) {
                 ret_walls.push([i,j])
             }
         }

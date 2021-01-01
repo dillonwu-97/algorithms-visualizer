@@ -113,23 +113,23 @@ export default class make_grid extends Component {
 			let x = path[i][0]
 			let y = path[i][1]
 			const str = 'cell-' + x + '-' + y
-			if (document.getElementById(str).className == 'cell cell-start') {
-			// if (x == start_i && y == start_j) {
+			if (document.getElementById(str).className === 'cell cell-start') {
+			// if (x === start_i && y === start_j) {
 				// document.getElementById(str).className = 'cell cell-start'
 				continue
 			}
-			if (document.getElementById(str).className == 'cell cell-finish') {
-			// if (x == end_i && y == end_j) {
+			if (document.getElementById(str).className === 'cell cell-finish') {
+			// if (x === end_i && y === end_j) {
 				// document.getElementById(str).className = 'cell cell-finish'
 				continue
 			}
 			
-			// if (x == 15 && y == 20 || x == 15 && y==30) {
+			// if (x === 15 && y === 20 || x === 15 && y===30) {
 			// 	console.log("debugging ", document.getElementById(str).className)
 			// }
-			// if (document.getElementById(str).className== 'cell ') {
+			// if (document.getElementById(str).className=== 'cell ') {
 				// for some reason, having a console.log makes the color change, but not having this doesnt
-				// if (x == 15 && y == 20 || x == 15 && y==30) {
+				// if (x === 15 && y === 20 || x === 15 && y===30) {
 				// 	console.log("debugging ", document.getElementById(str).className, " ", x, " ", y)
 				// }
 			setTimeout(() => {
@@ -147,10 +147,10 @@ export default class make_grid extends Component {
 		for (let i = 0; i < path.length; i++) {
 			let x = path[i][0]
 			let y = path[i][1]
-			if (x == start_i && y == start_j) {
+			if (x === start_i && y === start_j) {
 				continue
 			}
-			if (x == end_i && y == end_j) {
+			if (x === end_i && y === end_j) {
 				continue
 			}
 			// console.log(x, y)
@@ -184,8 +184,8 @@ export default class make_grid extends Component {
 	createWall(event) {
 		if (event.shiftKey) {
 			const {id} = event.currentTarget // row and col are not returned for this
-			let r = parseInt(document.getElementById(id).getAttribute("row"))
-			let c = parseInt(document.getElementById(id).getAttribute("col"))
+			// let r = parseInt(document.getElementById(id).getAttribute("row"))
+			// let c = parseInt(document.getElementById(id).getAttribute("col"))
 			document.getElementById(id).className = 'cell cell-wall'
 			let a = id.split("-")[1]
 			let b = id.split("-")[2]
@@ -226,7 +226,7 @@ export default class make_grid extends Component {
 		const {id} = event.currentTarget // row and col are not returned for this
 		let r = parseInt(document.getElementById(id).getAttribute("row"))
 		let c = parseInt(document.getElementById(id).getAttribute("col"))
-		if (this.state.start_end == 0) {
+		if (this.state.start_end === 0) {
 			// reset the start colors
 			document.getElementById('cell-' + start_i + '-' + start_j).className = 'cell '
 			document.getElementById(id).className = 'cell cell-start'
@@ -273,8 +273,8 @@ export default class make_grid extends Component {
 		for (let i = 0; i < row_count; i++) {
 			for (let j = 0; j < col_count; j++) {
 				let id = 'cell-' + i + '-' + j;
-				if (document.getElementById(id).className == 'cell cell-visited' || 
-				document.getElementById(id).className == 'cell cell-backtrack') {
+				if (document.getElementById(id).className === 'cell cell-visited' || 
+				document.getElementById(id).className === 'cell cell-backtrack') {
 					document.getElementById(id).className = 'cell '
 				}
 			}
@@ -307,9 +307,9 @@ export default class make_grid extends Component {
 							{row.map((col, col_index) => {
 								const cell = this.create_cell()
 								let {type, weight} = cell
-								if (row_index == start_i && col_index == start_j) {
+								if (row_index === start_i && col_index === start_j) {
 									type = 'cell-start'
-								} else if (row_index == end_i && col_index == end_j) {
+								} else if (row_index === end_i && col_index === end_j) {
 									type = 'cell-finish'
 								}
 								return (<Cell element_id={'cell-' + row_index + '-' + col_index}

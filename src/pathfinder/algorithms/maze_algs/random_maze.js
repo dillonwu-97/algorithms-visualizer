@@ -53,7 +53,7 @@ export default function random_maze() {
     
     for (let i = 1; i < global.rc-1; i++) {
         for (let j = 1; j < global.cc-1; j++) {
-            if(visited[i][j] == 1) {
+            if(visited[i][j] === 1) {
                 maze.push([i,j])
             }
         }
@@ -75,9 +75,9 @@ function remove_islands_edge (visited) {
     for (let j = 1; j > -1; j--) {        
         for (let i = 1; i < global.cc-1; i++) {
             // console.log("i is: ", i)
-            if (visited[top_down_walls[j]][i] == 1 && checked[top_down_walls[j]][i] == 0) {
+            if (visited[top_down_walls[j]][i] === 1 && checked[top_down_walls[j]][i] === 0) {
                 q.push([top_down_walls[j],i])
-                while (q.length != 0) {
+                while (q.length !== 0) {
                     out = q.shift()
                     out_i = out[0]
                     out_j = out[1]
@@ -91,20 +91,20 @@ function remove_islands_edge (visited) {
                             x = out_i
                             y = out_j
                             // console.log ("wtf ", y)
-                            while (y > 0 && visited[x][y] == 1) {
+                            while (y > 0 && visited[x][y] === 1) {
                                 visited[x][y] = 0
                                 y-=1
                             }
-                            while (x > 0 && visited[x][out_j] == 1) {
+                            while (x > 0 && visited[x][out_j] === 1) {
                                 visited[x][out_j] = 0
                                 x-=1
                             }
                             x = out_i
-                            while (out_j < global.cc && visited[x][out_j] == 1) {
+                            while (out_j < global.cc && visited[x][out_j] === 1) {
                                 visited[x][out_j] = 0
                                 out_j+=1
                             }
-                            while (out_i < global.rc && visited[out_i][out_j] == 1) {
+                            while (out_i < global.rc && visited[out_i][out_j] === 1) {
                                 visited[out_j][out_j] = 0
                                 out_i+=1
                             }
@@ -116,7 +116,7 @@ function remove_islands_edge (visited) {
                         for (let y = -1; y < 2; y++) {
                             temp_i = out_i + x
                             temp_j = out_j + y
-                            if (visited[temp_i][temp_j] == 1 && checked[temp_i][temp_j] == 0 && temp_i != 0 && temp_j != 0 && temp_i != global.rc-1 && temp_j!=global.cc-1) {
+                            if (visited[temp_i][temp_j] === 1 && checked[temp_i][temp_j] === 0 && temp_i !== 0 && temp_j !== 0 && temp_i !== global.rc-1 && temp_j!==global.cc-1) {
                                 q.push([temp_i,temp_j])
                                 checked[temp_i] [temp_j] = 1
                             } 
@@ -137,26 +137,26 @@ function remove_islands(visited) {
     let checked = initialize_visited(global.rc, global.cc)
     for (let i = 0; i < global.rc; i++) {
         for (let j = 0; j < global.cc; j++) {
-            if (checked[i][j] == 0 && visited[i][j] == 0) {  
+            if (checked[i][j] === 0 && visited[i][j] === 0) {  
                 q.push([i, j])
-                while (q.length!=0) {
+                while (q.length!==0) {
                     // console.log(visited)
                     out = q.shift()
                     out_i = out[0]
                     out_j = out[1]
-                    if (out_i > 0 && checked[out_i-1][out_j] == 0 && visited[out_i-1][out_j] == 0) {
+                    if (out_i > 0 && checked[out_i-1][out_j] === 0 && visited[out_i-1][out_j] === 0) {
                         q.push([out_i-1, out_j])
                         checked[out_i-1][out_j] = 1
                     }
-                    if (out_j > 0 && checked[out_i][out_j-1] == 0 && visited[out_i][out_j-1] == 0) {
+                    if (out_j > 0 && checked[out_i][out_j-1] === 0 && visited[out_i][out_j-1] === 0) {
                         q.push([out_i, out_j-1])
                         checked[out_i][out_j-1] = 1
                     }
-                    if (out_i < global.rc-1 && checked[out_i+1][out_j] == 0 && visited[out_i+1][out_j] == 0) {
+                    if (out_i < global.rc-1 && checked[out_i+1][out_j] === 0 && visited[out_i+1][out_j] === 0) {
                         q.push([out_i+1, out_j])
                         checked[out_i+1][out_j] = 1
                     }
-                    if (out_j < global.cc-1 && checked[out_i][out_j+1] == 0 && visited[out_i][out_j+1] == 0) {
+                    if (out_j < global.cc-1 && checked[out_i][out_j+1] === 0 && visited[out_i][out_j+1] === 0) {
                         q.push([out_i, out_j+1])
                         checked[out_i][out_j+1] = 1
                     }    
@@ -168,16 +168,16 @@ function remove_islands(visited) {
                 // need to make sure it is not drilling the borders
 
                 let o;
-                if (out_i+1 < global.rc-2 && visited[out_i+1][out_j] == 1) {
+                if (out_i+1 < global.rc-2 && visited[out_i+1][out_j] === 1) {
                     o = drill (out_i+1, out_j, visited, checked)
-                } else if (out_i-1 > 1 && visited[out_i-1][out_j]==1){
+                } else if (out_i-1 > 1 && visited[out_i-1][out_j]=== 1){
                     o = drill (out_i-1, out_j, visited, checked)
-                } else if (out_j+1 < global.cc-2 && visited[out_i][out_j+1] == 1) {
+                } else if (out_j+1 < global.cc-2 && visited[out_i][out_j+1] === 1) {
                     o = drill (out_i, out_j+1, visited, checked)
-                } else if (out_j-1 > 1 && visited[out_i][out_j-1] == 1) {
+                } else if (out_j-1 > 1 && visited[out_i][out_j-1] === 1) {
                     o = drill (out_i, out_j-1, visited, checked)
                 }
-                if (o !== undefined) {
+                if (o != undefined) {
                     visited = o.visited
                     checked = o.checked
                 }
@@ -194,14 +194,14 @@ function remove_islands(visited) {
 function drill(i, j,visited, checked) {
 
     visited[i][j] = 1
-    while(i < global.rc-1 && visited[i][j] == 1) {
+    while(i < global.rc-1 && visited[i][j] === 1) {
         // console.log("row ", i, j)
         visited[i][j] = 0
         checked[i][j] = 0
         i+=1
     }
     visited[i][j] = 1
-    while(j < global.cc-1 && visited[i][j] == 1) {
+    while(j < global.cc-1 && visited[i][j] === 1) {
         // console.log("column ", i,j)
         visited[i][j] = 0
         checked[i][j] = 0
@@ -230,11 +230,11 @@ function check_adjacencies(row, col, visited) {
     for (let i = -1; i < 2; i++) {
         for (let j = -1; j < 2; j++) {
             try {
-                if (i==-1 && j == -1 || i == 1 && j == -1 || i==1 && j==1 || i==-1&&j==1) {
-                    if (visited[row+i][col+j] == 1) {
+                if (i===-1 && j === -1 || i === 1 && j === -1 || i===1 && j===1 || i===-1&&j===1) {
+                    if (visited[row+i][col+j] === 1) {
                         count +=2;
                     }
-                } else if (visited[row + i][col + j] == 1) {
+                } else if (visited[row + i][col + j] === 1) {
                     count+=1;
                 }
                 // console.log(count)

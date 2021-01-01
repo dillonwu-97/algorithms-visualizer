@@ -20,7 +20,7 @@ export default function wilson() {
     let maze = [], total_vertices = 0, to_visit = []
     for (let i = 1; i < global.rc-1; i++) {
         for (let j = 1; j < global.cc-1; j++) {
-            if (j % 2 == 1 && i % 2 == 1) {
+            if (j % 2 === 1 && i % 2 === 1) {
                 // need to connect all of the spaces
                 total_vertices ++;
                 to_visit.push([i,j])
@@ -59,7 +59,7 @@ export default function wilson() {
     visited[rand_i][rand_j] = 1
     // console.log("start ", rand_value, complete)
     for (let i = 0; i < to_visit.length; i++) {
-        if (visited[ to_visit[i][0] ][ to_visit[i][1] ] != 0) {
+        if (visited[ to_visit[i][0] ][ to_visit[i][1] ] !== 0) {
             // console.log("skip ", to_visit[i])
             continue
         } else {
@@ -69,7 +69,7 @@ export default function wilson() {
             current[s]= to_visit[i]
             visited[to_visit[i][0]][to_visit[i][1]] = 1
         }
-        while (q.length != 0) {
+        while (q.length !== 0) {
             out = q.shift()
             x = out[0]
             y = out[1]
@@ -80,8 +80,8 @@ export default function wilson() {
                 order =get_maze(x,y,visited)
                 // DEBUG
                 // for (let x = 1; x < order.length; x++) {
-                //     if (order[x-1][0] != order[x][0]){
-                //         if (order[x-1][1] != order[x][1]) {
+                //     if (order[x-1][0] !== order[x][0]){
+                //         if (order[x-1][1] !== order[x][1]) {
                 //             console.log("order is :", order)
                 //         }
                 //     }
@@ -110,7 +110,7 @@ export default function wilson() {
                     s = rand_value.toString()
                 }
                 // console.log(rand_value[0], visited[temp[0]][temp[1]][0], rand_value[1], visited[temp[0]][temp[1]][1])
-                // if (rand_value[0] == visited[temp[0]][temp[1]][0] && rand_value[1] == visited[temp[0]][temp[1]][1]) {
+                // if (rand_value[0] === visited[temp[0]][temp[1]][0] && rand_value[1] === visited[temp[0]][temp[1]][1]) {
                 //     console.log('ALERT!!!!!!!')
                 // }
                 visited[rand_value[0]][rand_value[1]] = temp // connect the REPEATED value to the NEW value    
@@ -131,34 +131,34 @@ export default function wilson() {
         // the issue with the random white blip is that there can be cases where two values are on
         // the same row but not adjacent, i.e. they are far apart
         
-        if (temp1[0] == temp2[0]) {
+        if (temp1[0] === temp2[0]) {
             temp3 = temp1[1] + temp2[1]
             temp3 /= 2
-            if ( Math.abs(temp3 - temp1[1]) == 1) {
+            if ( Math.abs(temp3 - temp1[1]) === 1) {
                 maze.push([temp1[0], temp3])
                 walls[temp1[0]][temp3] = 0
             }
-            // if (Math.abs(temp1[1] - temp2[1]) != 1) {
+            // if (Math.abs(temp1[1] - temp2[1]) !== 1) {
             //     console.log(temp1, temp2)
             // }
-        } else if (temp1[1] == temp2[1]) {
+        } else if (temp1[1] === temp2[1]) {
             temp3 = temp1[0] + temp2[0]
             temp3 /= 2
-            // if (Math.abs(temp1[0] - temp2[0]) != 1) {
+            // if (Math.abs(temp1[0] - temp2[0]) !== 1) {
             //     console.log(temp1, temp2)
             // }
-            if (Math.abs(temp3 - temp1[0]) == 1) {
+            if (Math.abs(temp3 - temp1[0]) === 1) {
                 maze.push([temp3, temp1[1]])
                 walls[temp3][temp1[1]] = 0
             }
         }
-        // } else if (Math.abs(temp1[0] - temp2[0]) + Math.abs(temp1[1] - temp2[1]) == 4) {
+        // } else if (Math.abs(temp1[0] - temp2[0]) + Math.abs(temp1[1] - temp2[1]) === 4) {
         //     maze.push([temp2[0], temp1[1]])
         //     walls[temp2[0]][temp1[1]] = 0
         // }
         // to see if there is any disconnect at all between vertices
-        // if (i < res.length-1 && temp1[0] != temp2[0] && temp1[1] != temp2[1] &&
-        //     temp2[0] != res[i+1][0] && temp2[1] != res[i+1][1]) {
+        // if (i < res.length-1 && temp1[0] !== temp2[0] && temp1[1] !== temp2[1] &&
+        //     temp2[0] !== res[i+1][0] && temp2[1] !== res[i+1][1]) {
         //         console.log(temp1, temp2, res[i+1])
         //     }
         maze.push(res[i])
@@ -169,7 +169,7 @@ export default function wilson() {
     let ret_walls = []
     for (let i = 0; i < walls.length; i++) {
         for (let j = 0; j < walls[0].length; j++) {
-            if (walls[i][j] == 1) {
+            if (walls[i][j] === 1) {
                 ret_walls.push([i,j])
             }
         }
@@ -184,7 +184,7 @@ export default function wilson() {
 
 function get_maze(x, y, visited) {
     let o = [[x,y]], temp
-    while (visited[x][y] != 1) {
+    while (visited[x][y] !== 1) {
         temp = visited[x][y]
         // console.log(x, y, temp)
         o.push(visited[x][y])
@@ -196,7 +196,7 @@ function get_maze(x, y, visited) {
 
 function backtrack(back_start_i, back_start_j, back_end_i, back_end_j, visited, current) {
     let out, s
-    while (back_start_i != back_end_i || back_start_j != back_end_j) {
+    while (back_start_i !== back_end_i || back_start_j !== back_end_j) {
         out = visited[back_start_i][back_start_j]
         visited[back_start_i][back_start_j] = 0
         s = [back_start_i, back_start_j].toString()
@@ -215,24 +215,24 @@ function random_adjacent(x, y, visited){
     let temp, prev, list = []
     prev = visited[x][y]
     // 2 directions to travel in 
-    if (x == 1 && y == 1 || x==global.rc-2 && y == global.cc-2 || x == 1 && y == global.cc-2 || x== global.rc-2 && y == 1) {
-        if (x == 1 && y == 1) {
+    if (x === 1 && y === 1 || x===global.rc-2 && y === global.cc-2 || x === 1 && y === global.cc-2 || x=== global.rc-2 && y === 1) {
+        if (x === 1 && y === 1) {
             list = [[x+2,y], [x,y+2]]
-        } else if (x == global.rc-2 && y == global.cc-2){
+        } else if (x === global.rc-2 && y === global.cc-2){
             list = [[x-2,y],[x,y-2]]
-        } else if (x == 1 && y==global.cc-2) {
+        } else if (x === 1 && y===global.cc-2) {
             list=[[x+2,y],[x,y-2]]
-        } else if (x==global.rc-2 && y ==1) {
+        } else if (x===global.rc-2 && y ===1) {
             list = [[x-2,y],[x,y+2]]
         }
-    } else if (x == 1 || y == 1 || x == global.rc-2 || y == global.cc-2) {
+    } else if (x === 1 || y === 1 || x === global.rc-2 || y === global.cc-2) {
         // 3 directions to travel in
-        if (x == 1 || x == global.rc-2) {
-            x == 1? list.push([x+2,y]) : list.push([x-2,y])
+        if (x === 1 || x === global.rc-2) {
+            x === 1? list.push([x+2,y]) : list.push([x-2,y])
             list.push([x,y+2])
             list.push([x,y-2])
         } else {
-            y == 1? list.push([x,y+2]) : list.push([x,y-2])
+            y === 1? list.push([x,y+2]) : list.push([x,y-2])
             list.push([x+2,y])
             list.push([x-2,y])
         }
@@ -241,7 +241,7 @@ function random_adjacent(x, y, visited){
         list = [[x+2,y],[x-2,y],[x,y-2],[x,y+2]]
     }
     list = shuffle(list)
-    if (list[0][0] == prev[0] && list[0][1] == prev[1]) {
+    if (list[0][0] === prev[0] && list[0][1] === prev[1]) {
         // console.log(list[0], prev, "SAME", list[1])
         // console.log(prev, [x,y], list[1])
         return list[1]

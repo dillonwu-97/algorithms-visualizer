@@ -38,14 +38,14 @@ export default function backtrack_smart(grid, store_flag) {
     // console.log("next cell is ", ret)
     i = ret[0]
     j = ret[1]
-    if (i == -1) {
+    if (i === -1) {
         return true
     }
     for (let e= 1; e < 10; e++) {
         if (is_valid(grid, i, j, e) ) {
             grid[i][j] = e
             implied_values = imply(grid, i, j, e)
-            if (store_flag == 1) {
+            if (store_flag === 1) {
                 global.values.push([i,j,e])
                 global.values = [...global.values,...implied_values]
             }
@@ -57,11 +57,11 @@ export default function backtrack_smart(grid, store_flag) {
             grid[i][j] = 0
             for (let x = 0; x < implied_values.length; x++) {
                 grid[implied_values[x][0]][implied_values[x][1]] = 0
-                if (store_flag == 1) {
+                if (store_flag === 1) {
                     global.values.push([implied_values[x][0], implied_values[x][1], 0])
                 }
             }
-            if (store_flag == 1) {
+            if (store_flag === 1) {
                 global.values.push([i,j,0,1])
             }
             global.backtrack_count ++;
@@ -81,31 +81,31 @@ function imply(grid, i, j, e) {
     let all_values = new Set([...Array(10).keys()])
     all_values.delete(0)
     let flag = 1
-    while (flag == 1) {
+    while (flag === 1) {
         flag = 0
         let possible_values = [...Array(9)].map(i=>Array(9).fill(0))
         for (let sec = 0; sec < sectors.length; sec++) {
             for (let i = sectors[sec][0]; i < sectors[sec][1]; i++) {
                 for (let j = sectors[sec][2]; j < sectors[sec][3]; j++) {
-                    if (grid[i][j] == 0) {
+                    if (grid[i][j] === 0) {
                         complete_set = new Set();
                         // adding values for rows and columns
                         for (let x = 0; x < 9; x++) {  
                             // add the values it CAN NOT be             
-                            if (grid[i][x] != 0) {complete_set.add(grid[i][x])}
-                            if (grid[x][j] != 0) {complete_set.add(grid[x][j])}
+                            if (grid[i][x] !== 0) {complete_set.add(grid[i][x])}
+                            if (grid[x][j] !== 0) {complete_set.add(grid[x][j])}
                         }
                         // adding the values for the respective box
                         // add the values it CAN NOT be             
                         for (let x = sectors[sec][0]; x < sectors[sec][1]; x++) {
                             for (let y = sectors[sec][2]; y < sectors[sec][3]; y++) {
-                                if (grid[x][y] != 0) {complete_set.add(grid[x][y])}
+                                if (grid[x][y] !== 0) {complete_set.add(grid[x][y])}
                             }
                         }
                         possible_values[i][j] = [...complete_set] // possible_values[i][j] contains values it cannot be
                         // possible_values[i][j] contains values it can be
                         possible_values[i][j] = new Set([...all_values].filter(x => !possible_values[i][j].includes(x) ));
-                        if (possible_values[i][j].size == 1) {
+                        if (possible_values[i][j].size === 1) {
                             v = possible_values[i][j].values().next().value
                             if (is_valid(grid, i, j, v)) {
                                 // console.log("found one", v)

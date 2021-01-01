@@ -22,7 +22,7 @@ export default function random_prims() {
     let maze = []
     for (let i = 1; i < global.rc-1; i++) {
         for (let j = 1; j < global.cc-1; j++) {
-            if (j % 2 == 1 && i % 2 == 1) {
+            if (j % 2 === 1 && i % 2 === 1) {
                 walls[i][j] = 0
             } else {
                 walls[i][j] = 1
@@ -65,18 +65,18 @@ export default function random_prims() {
         x = out[0]
         y = out[1]
         console.log("rand num ", rand_int, ' x ', x, ' y ', y)
-        if (x == 0 || y == 0 || x == global.rc-1 || y == global.cc -1) {
+        if (x === 0 || y === 0 || x === global.rc-1 || y === global.cc -1) {
             continue
         }
         // if one of the two spaces are visited
-        if (visited[x+1][y] == 0 && visited[x-1][y] == 1 || visited[x+1][y] == 1 && visited[x-1][y] == 0){
+        if (visited[x+1][y] === 0 && visited[x-1][y] === 1 || visited[x+1][y] === 1 && visited[x-1][y] === 0){
             // append walls adjacent to the new cell
             maze.push([x,y])
-            if (visited[x+1][y] == 0) {
+            if (visited[x+1][y] === 0) {
                 ret_val = append_adj(wall_list, x+1,y, in_wall_list, walls)
                 visited[x+1][y] = 1
                 maze.push([x+1,y])
-            } else if (visited[x-1][y] == 0) {
+            } else if (visited[x-1][y] === 0) {
                 ret_val = append_adj(wall_list, x-1,y, in_wall_list, walls)
                 visited[x-1][y] = 1
                 maze.push([x-1,y])
@@ -86,13 +86,13 @@ export default function random_prims() {
             walls[x][y] = 0
             visited[x][y] = 1
             
-        } else if (visited[x][y+1] == 0 && visited[x][y-1] == 1 || visited[x][y+1] == 1 && visited[x][y-1] == 0) {
+        } else if (visited[x][y+1] === 0 && visited[x][y-1] === 1 || visited[x][y+1] === 1 && visited[x][y-1] === 0) {
             maze.push([x,y])
-            if (visited[x][y+1] == 0) {
+            if (visited[x][y+1] === 0) {
                 ret_val = append_adj(wall_list, x,y+1, in_wall_list, walls)
                 visited[x][y+1] = 1
                 maze.push([x,y+1])
-            } else if (visited[x][y-1] == 0) {
+            } else if (visited[x][y-1] === 0) {
                 ret_val = append_adj(wall_list, x,y-1, in_wall_list, walls)
                 visited[x][y-1] = 1
                 maze.push([x,y-1])
@@ -115,7 +115,7 @@ export default function random_prims() {
     let ret_walls = []
     for (let i = 0; i < walls.length; i++) {
         for (let j = 0; j < walls[0].length; j++) {
-            if (walls[i][j] == 1) {
+            if (walls[i][j] === 1) {
                 ret_walls.push([i,j])
             }
         }
@@ -131,12 +131,12 @@ export default function random_prims() {
 function append_adj(a,row,col, in_a, walls) {
     console.log("before ", a, " ", row, " ", col)
     for (let i = -1; i <=1; i+=2) {
-        if (walls[row+i][col] == 1 && in_a[row+i][col] == 0) {
+        if (walls[row+i][col] === 1 && in_a[row+i][col] === 0) {
             a.push([row+i,col])
             in_a[row+i][col] = 1
 
         }
-        if (walls[row][col+i] == 1 && in_a[row][col+i]==0) {
+        if (walls[row][col+i] === 1 && in_a[row][col+i]===0) {
             a.push([row,col+i])
             in_a[row][col+i] = 1
         }

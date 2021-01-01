@@ -39,14 +39,10 @@ function create_puzzle(board) {
         });
         // debug_board(temp_board)
         let val = test_one_solution(temp_board, 0) // fill_grid parameter is 0
-        if (val == true) {
+        if (val === true) {
             // console.log("broke the grid ")
             board[coordinates[i][0]][coordinates[i][1]] = curr_val
         }
-        
-        // for easy puzzle: break at 30
-        // for medium puzzle: break at 60
-        // for hard puzzle: dont break
         
     }
     return board
@@ -75,7 +71,7 @@ function generate_config () {
 
     // solve the rest of the boxes
     test_one_solution(board, 1)
-    debug_board(board)
+    // debug_board(board)
 
     return board
 
@@ -88,11 +84,11 @@ function test_one_solution(grid, fill_grid) {
     ret = find_next_cell(grid)
     i = ret[0]
     j = ret[1]
-    if (i == -1) {
+    if (i === -1) {
         global.total_solutions ++
         // console.group(global.total_solutions)
         // if we are JUST filling the grid, return true once we hit the end
-        if (fill_grid == 1) { return true }
+        if (fill_grid === 1) { return true }
         // otherwise check if there is a second solution; if there is no second solution, return false
         // if there is a second solution, return true
         if (global.total_solutions >= 2) {

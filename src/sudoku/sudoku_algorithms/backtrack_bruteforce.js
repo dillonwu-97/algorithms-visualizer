@@ -25,14 +25,14 @@ export default function backtrack_bruteforce(grid, store_flag) {
     ret = find_next_cell(grid)
     i = ret[0]
     j = ret[1]
-    if (i == -1) {
+    if (i === -1) {
         return true
     }
     for (let e= 1; e < 10; e++) {
         if (is_valid(grid, i, j, e) ) {
             grid[i][j] = e
             // console.log(i,j,e)
-            if (store_flag == 1) {
+            if (store_flag === 1) {
                 global.values.push([i,j,e])
             }
             if (backtrack_bruteforce(grid, store_flag)) {
@@ -40,7 +40,7 @@ export default function backtrack_bruteforce(grid, store_flag) {
             } 
             grid[i][j] = 0
             // console.log(i,j,e)
-            if (store_flag == 1) {
+            if (store_flag === 1) {
                 global.values.push([i,j,0, 1])
             }
             global.backtrack_count ++;
