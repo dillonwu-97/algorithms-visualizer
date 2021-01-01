@@ -1,6 +1,7 @@
 import *  as d3 from "d3"
 import React, { Component } from 'react'
 import { useEffect, useRef, useState } from 'react'
+import { Link } from "react-router-dom"
 import { useSpring, animated } from 'react-spring'
 
 // Useful resource for learning d3 and react https://wattenberger.com/blog/react-and-d3
@@ -50,7 +51,7 @@ function useInterval(callback, delay) {
 const circleCount = 10
 
 const generateDataset = () => {
-    return Array(circleCount).fill(0).map(i=>[Math.round(Math.random() * 100), Math.round(Math.random() * 100)])
+    return Array(circleCount).fill(0).map(i=>[Math.random() * 100, Math.random() * 100])
 }
 
 const generateVisible = () => {
@@ -69,10 +70,21 @@ const AllCircles = () => {
         createVisible(generateVisible())
     }
 
+    console.log("circle dataset value is ", circleDataset[0])
+    const link = d3.linkHorizontal()({
+        source:circleDataset[0],
+        destination: circleDataset[1]
+    })
+
     return (
         <div>
             {console.log(visibleCircles)}
             <svg>
+                <path
+                    d = {link}
+                    fill={'none'}
+                    stroke= {'black'}
+                />
                 {circleDataset.map((val, index) => (
                     <Circle
                         x = {val[0]}
@@ -113,18 +125,50 @@ const Circle = ({ x, y, visible}) => {
     )
 }
 
-export default class Trees extends Component {
+const circleDataset = generateDataset()
+// const link = d3.linkHorizontal() ({
+//     source: circleDataset[0],
+//     target: circleDataset[1]
+// })
+
+
+export default class Tree extends Component {
 
     constructor(){
         super()
         this.state = {
+            nodes: circleDataset
         }
     }
-
     render() {
+        let c = []
+        let color
+        for (let i = 0; i < circleDataset.length;i++) {
+            if (i == 0) {color = "red"}
+            else {color = "blue"}
+            c.push(<circle 
+                r = {"5"}
+                cx = {circleDataset[i][0]}
+                cy = {circleDataset[i][1]}
+                fill = {color}
+                />)
+            if (i == 1) {break;}
+        }
+        const link = d3.linkHorizontal() ({
+            source: this.state.nodes[0],
+            target: this.state.nodes[1]
+        })
+        console.log(circleDataset[0], link)
         return (
             <div>
-                <AllCircles />
+                {/* <AllCircles /> */}
+                <svg>
+                    <path 
+                        d = {link}
+                        stroke = {'black'}
+                    />
+                    {c}
+                </svg>
             </div>
         )
     }
