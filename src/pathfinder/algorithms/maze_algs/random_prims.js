@@ -37,10 +37,6 @@ export default function random_prims() {
         walls[i][0] = 1
         walls[i][global.cc-1] = 1
     }
-    // for (let i = 0; i < global.rc; i++) {
-    //     console.log(walls[i].toString())
-    //     // console.log('\n')
-    // }
     
     // picking a random point and marking it as part of the maze
     // 31 rows, 51 columns; 2n+1 formula so random starts at 29-1 // 14 = 15, 49-1//2 = 24; +1 to avoid edges
@@ -111,7 +107,6 @@ export default function random_prims() {
     }
 
 
-    // console.log(set.extract())
     let ret_walls = []
     for (let i = 0; i < walls.length; i++) {
         for (let j = 0; j < walls[0].length; j++) {
@@ -121,8 +116,6 @@ export default function random_prims() {
         }
     }
 
-    // // console.log(maze)
-    // // console.log( {"maze": maze, "walls": ret_walls})
     return {"maze": maze, "walls": ret_walls}
     
 }

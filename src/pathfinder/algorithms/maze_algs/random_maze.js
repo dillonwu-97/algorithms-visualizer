@@ -13,13 +13,11 @@ export default function random_maze() {
                 if (check_adjacencies(i, j, visited)) {
                     visited[i][j] = 1
                 }
-                // visited[i][j]=1
             }
         }
     }
 
     // make sure there are no islands
-
     for (let i = 0; i < global.cc; i++) {
         maze.push([0,i])
         maze.push([global.rc-1,i])
@@ -207,17 +205,7 @@ function drill(i, j,visited, checked) {
         checked[i][j] = 0
         j+=1
     }
-    // while(i > 0 && visited[i][j] == 1) {
-    //     console.log("row ", i, j)
-    //     visited[i][j] = 0
-    //     i-=1
-    // }
-    // visited[i][j] = 1
-    // while(j < 0 && visited[i][j] == 1) {
-    //     console.log("column ", i,j)
-    //     visited[i][j] = 0
-    //     j-=1
-    // }
+    
     let o = {visited, checked}
     return o
 }

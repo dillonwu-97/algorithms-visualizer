@@ -71,12 +71,7 @@ export default function random_kruskal() {
             }
         }
     }
-    // for (let i = 0; i < global.rc; i++) {
-    //     console.log(walls[i].toString())
-    //     // console.log('\n')
-    // }
     
-    // console.log(set.extract())
     let ret_walls = []
     for (let i = 0; i < walls.length; i++) {
         for (let j = 0; j < walls[0].length; j++) {
@@ -86,8 +81,6 @@ export default function random_kruskal() {
         }
     }
 
-    // console.log(maze)
-    // console.log( {"maze": maze, "walls": ret_walls})
     return {"maze": maze, "walls": ret_walls}
     
 }
