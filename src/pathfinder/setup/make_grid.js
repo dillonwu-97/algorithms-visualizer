@@ -82,9 +82,6 @@ export default class make_grid extends Component {
 		switch (algorithm) {
 			case "bfs":
 				ret = Bfs(start_i, start_j, end_i, end_j, walls_unique)
-				for (let k = 0; k < ret.length; k++) {
-					console.log(ret[k])
-				}
 				break
 			case "dfs":
 				ret = Dfs(start_i, start_j, end_i, end_j, walls_unique)
@@ -126,7 +123,6 @@ export default class make_grid extends Component {
 		
 			setTimeout(() => {
 				document.getElementById(str).className = 'cell cell-visited'
-				console.log("Position is: ", x, y)
 			},10 * i)
 		}
 		return 10 * path.length
@@ -215,7 +211,6 @@ export default class make_grid extends Component {
 		const {id} = event.currentTarget // row and col are not returned for this
 		let r = parseInt(document.getElementById(id).getAttribute("row"))
 		let c = parseInt(document.getElementById(id).getAttribute("col"))
-		console.log("Starting startEnd event ", r, c, id)
 		if (this.state.start_end === 0) {
 			// reset the start colors
 			if (document.getElementById('cell-' + start_i + '-' + start_j).className !== 'cell cell-wall') {
@@ -248,7 +243,6 @@ export default class make_grid extends Component {
 			end_i = r
 			end_j = c
 		}
-		console.log("Finishing startEnd event")
 		
 	}
 
@@ -264,12 +258,10 @@ export default class make_grid extends Component {
 
 	// clears the entire grid
 	reset() {
-		console.log("Calling reset")
 		walls = []
 		for (let i = 0; i < row_count; i++) {
 			for (let j = 0; j < col_count; j++) {
 				let id = 'cell-' + i + '-' + j;
-				console.log("Inside reset: ", id)
 				document.getElementById(id).className = 'cell '
 			}
 		}
@@ -277,7 +269,6 @@ export default class make_grid extends Component {
 
 	// keeps the walls; resets the path colors
 	reset_paths() {
-		console.log("Calling reset paths")
 		for (let i = 0; i < row_count; i++) {
 			for (let j = 0; j < col_count; j++) {
 				let id = 'cell-' + i + '-' + j;
