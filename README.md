@@ -21,6 +21,8 @@ The website can be found here: https://dillonwu-97.github.io/algorithms-visualiz
 
 ### General  
 1. Create a title for the website
+2. Create test cases to ensure correctness for the algorithms
+3. Improve commenting and code optimization
 
 ### Pathfinder  
 Todo:  
