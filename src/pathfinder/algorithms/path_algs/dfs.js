@@ -1,5 +1,5 @@
 import React from 'react';
-import { backtrack, initialize_visited } from './general'
+import { backtrack, initialize_visited } from '../helpers'
 import '../../setup/global'
 
 // TODO: Improve so that it has wall detection

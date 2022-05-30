@@ -1,7 +1,8 @@
 import '../../setup/global'
+import { shuffle, initialize_visited, get_walls } from '../helpers'
 
 /*
-Choose any vertex at random and add it to the UST.
+Choose any vertex at random and add it to the UST (Uniform spanning tree)
 Select any vertex that is not already in the UST and perform a random walk until you encounter a vertex that is in the UST.
 Add the vertices and edges touched in the random walk to the UST.
 Repeat 2 and 3 until all vertices have been added to the UST.
@@ -76,15 +77,12 @@ export default function wilson() {
                 //TODO: disallow direction reversals
                 rand_value = random_adjacent(x, y, visited)
                 s = rand_value.toString()
-                // console.log("not in complete ", s, current, s in current)
                 temp = [x,y]
                 while (s in current) {
                     back_ret = backtrack(temp[0], temp[1], rand_value[0], rand_value[1], visited, current)
                     visited = back_ret.v
                     current = back_ret.c
                     temp = rand_value // store this REPEATED value
-                    
-                    // HAVE TO MAKE SURE RAND_VALUE IS NOT IN CURRENT AS WELL
                     rand_value = random_adjacent(temp[0], temp[1], visited) // get the NEW value
                     s = rand_value.toString()
                 }
@@ -122,15 +120,7 @@ export default function wilson() {
         maze.push(res[i])
     }
 
-
-    let ret_walls = []
-    for (let i = 0; i < walls.length; i++) {
-        for (let j = 0; j < walls[0].length; j++) {
-            if (walls[i][j] === 1) {
-                ret_walls.push([i,j])
-            }
-        }
-    }
+    let ret_walls = get_walls(walls)
     return {"maze": maze, "walls": ret_walls}
     
 }
@@ -162,24 +152,30 @@ function backtrack(back_start_i, back_start_j, back_end_i, back_end_j, visited, 
 function random_adjacent(x, y, visited){
     let prev, list = []
     prev = visited[x][y]
-    // 2 directions to travel in 
-    if (x === 1 && y === 1) {
-        list = [[x+2,y], [x,y+2]]
-    } else if (x === global.rc-2 && y === global.cc-2){
-        list = [[x-2,y],[x,y-2]]
-    } else if (x === 1 && y===global.cc-2) {
-        list=[[x+2,y],[x,y-2]]
-    } else if (x===global.rc-2 && y ===1) {
-        list = [[x-2,y],[x,y+2]]
-    } else if (x === 1 || x === global.rc-2) {
+    // Special case where we hit a corner so there are now two different directions we can go in
+    if (x === 1 && y === 1 || x===global.rc-2 && y === global.cc-2 || x === 1 && y === global.cc-2 || x=== global.rc-2 && y === 1) {
+        if (x === 1 && y === 1) {
+            list = [[x+2,y], [x,y+2]]
+        } else if (x === global.rc-2 && y === global.cc-2){
+            list = [[x-2,y],[x,y-2]]
+        } else if (x === 1 && y===global.cc-2) {
+            list=[[x+2,y],[x,y-2]]
+        } else if (x===global.rc-2 && y ===1) {
+            list = [[x-2,y],[x,y+2]]
+        }
+    // special case where it is not a corner, but it is the side of a maze so there are three directions to move in
+    } else if (x === 1 || y === 1 || x === global.rc-2 || y === global.cc-2) {
         // 3 directions to travel in
-        x === 1? list.push([x+2,y]) : list.push([x-2,y])
-        list.push([x,y+2])
-        list.push([x,y-2])
-    } else if (y === 1 || y === global.cc - 2) {
-        y === 1? list.push([x,y+2]) : list.push([x,y-2])
-        list.push([x+2,y])
-        list.push([x-2,y])
+        if (x === 1 || x === global.rc-2) {
+            x === 1? list.push([x+2,y]) : list.push([x-2,y])
+            list.push([x,y+2])
+            list.push([x,y-2])
+        } else {
+            y === 1? list.push([x,y+2]) : list.push([x,y-2])
+            list.push([x+2,y])
+            list.push([x-2,y])
+        }
+    // otherwise, we can go in any direction
     } else {
         // 4 directions to travel in
         list = [[x+2,y],[x-2,y],[x,y-2],[x,y+2]]
@@ -191,23 +187,4 @@ function random_adjacent(x, y, visited){
         return list[0]
     }
 
-}
-
-function initialize_visited(row_count, col_count) {
-	var visited = new Array(row_count)
-	for (let i = 0; i < row_count; i++) {
-		visited[i] = new Array(col_count).fill(0)
-	}
-	return visited
-}
-
-function shuffle(a) {
-    var j, x;
-    for (let i = a.length - 1; i > 0; i--) {
-        j = Math.floor(Math.random() * (i + 1));
-        x = a[i];
-        a[i] = a[j];
-        a[j] = x;
-    }
-    return a;
 }

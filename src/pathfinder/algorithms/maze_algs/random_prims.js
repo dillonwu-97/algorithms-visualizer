@@ -1,9 +1,6 @@
-import React from 'react'
+import { get_walls, initialize_visited } from '../helpers';
 import '../../setup/global'
 
-// global.rc = 19
-// global.cc = 19
-// random_prims()
 /*
 Start with a grid full of walls.
 Pick a cell, mark it as part of the maze. Add the walls of the cell to the wall list.
@@ -44,7 +41,6 @@ export default function random_prims() {
     let rand_i = 2 * Math.floor(Math.random() * Math.floor( (global.rc-1) /2)) + 1
     let rand_j = 2 * Math.floor(Math.random() * Math.floor( (global.cc-1) / 2)) + 1
     console.log(rand_i, " ", rand_j)
-    // in_wall_list[rand_i][rand_j] = 1
     visited[rand_i][rand_j]=1
     let rand_int, out, x, y, ret_val
     let wall_list = []
@@ -100,50 +96,23 @@ export default function random_prims() {
         }
 
     }
-    
-    for (let i = 0; i < global.rc; i++) {
-        console.log(walls[i].toString())
-        // console.log('\n')
-    }
 
-
-    let ret_walls = []
-    for (let i = 0; i < walls.length; i++) {
-        for (let j = 0; j < walls[0].length; j++) {
-            if (walls[i][j] === 1) {
-                ret_walls.push([i,j])
-            }
-        }
-    }
-
+    let ret_walls = get_walls(walls)
     return {"maze": maze, "walls": ret_walls}
     
 }
 
 
 function append_adj(a,row,col, in_a, walls) {
-    console.log("before ", a, " ", row, " ", col)
     for (let i = -1; i <=1; i+=2) {
         if (walls[row+i][col] === 1 && in_a[row+i][col] === 0) {
             a.push([row+i,col])
             in_a[row+i][col] = 1
-
         }
         if (walls[row][col+i] === 1 && in_a[row][col+i]===0) {
             a.push([row,col+i])
             in_a[row][col+i] = 1
         }
     }
-    console.log("after ", a)
-    
     return {"a": a, "in_a":in_a}
-}
-
-
-function initialize_visited(row_count, col_count) {
-	var visited = new Array(row_count)
-	for (let i = 0; i < row_count; i++) {
-		visited[i] = new Array(col_count).fill(0)
-	}
-	return visited
 }

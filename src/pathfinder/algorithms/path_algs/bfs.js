@@ -1,4 +1,4 @@
-import { backtrack, initialize_visited } from './general'
+import { backtrack, initialize_visited } from '../helpers'
 import '../../setup/global'
 
 // BFS Implementation 

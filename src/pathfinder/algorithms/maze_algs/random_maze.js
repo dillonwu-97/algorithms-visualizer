@@ -1,4 +1,4 @@
-import React from 'react'
+import { initialize_visited } from '../helpers';
 import '../../setup/global'
  
 export default function random_maze() {
@@ -60,8 +60,6 @@ export default function random_maze() {
     return maze
 }
 
-// new strategy: 
-// go along each edge of the graph and if you ever hit an edge, then create an opening?
 function remove_islands_edge (visited) {
     let q = []
     let out, out_i, out_j, temp_i, temp_j, x, y;
@@ -79,16 +77,12 @@ function remove_islands_edge (visited) {
                     out = q.shift()
                     out_i = out[0]
                     out_j = out[1]
-                    // console.log(out_i, out_j, checked[out_i][out_j])
                     // condition: cannot be adjacent to each other
                     // wall detection mechanism
                     if (out_j in right_left_walls || out_i in top_down_walls) {
                         if (Math.abs(i - out_j) > 0 || Math.abs(top_down_walls[j] -out_i) > 0) {
-                            // console.log("breakpoint ", out_i, out_j)
-                            
                             x = out_i
                             y = out_j
-                            // console.log ("wtf ", y)
                             while (y > 0 && visited[x][y] === 1) {
                                 visited[x][y] = 0
                                 y-=1
@@ -138,7 +132,6 @@ function remove_islands(visited) {
             if (checked[i][j] === 0 && visited[i][j] === 0) {  
                 q.push([i, j])
                 while (q.length!==0) {
-                    // console.log(visited)
                     out = q.shift()
                     out_i = out[0]
                     out_j = out[1]
@@ -158,10 +151,7 @@ function remove_islands(visited) {
                         q.push([out_i, out_j+1])
                         checked[out_i][out_j+1] = 1
                     }    
-                    // console.log(visited)
-                    // console.log(checked)
                 }
-                // console.log(out_i, out_j)
                 // drill until you hit a 0 or are out of range
                 // need to make sure it is not drilling the borders
 
@@ -179,9 +169,6 @@ function remove_islands(visited) {
                     visited = o.visited
                     checked = o.checked
                 }
-                // console.log(o)
-
-                
             }
         }
     }
@@ -193,14 +180,12 @@ function drill(i, j,visited, checked) {
 
     visited[i][j] = 1
     while(i < global.rc-1 && visited[i][j] === 1) {
-        // console.log("row ", i, j)
         visited[i][j] = 0
         checked[i][j] = 0
         i+=1
     }
     visited[i][j] = 1
     while(j < global.cc-1 && visited[i][j] === 1) {
-        // console.log("column ", i,j)
         visited[i][j] = 0
         checked[i][j] = 0
         j+=1
@@ -236,12 +221,4 @@ function check_adjacencies(row, col, visited) {
     }
     return true
 
-}
-
-function initialize_visited(row_count, col_count) {
-	var visited = new Array(row_count)
-	for (let i = 0; i < row_count; i++) {
-		visited[i] = new Array(col_count).fill(0)
-	}
-	return visited
 }
