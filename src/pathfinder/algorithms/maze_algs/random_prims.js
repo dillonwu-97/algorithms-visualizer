@@ -56,7 +56,6 @@ export default function random_prims() {
         out = wall_list.splice(rand_int,1)[0]
         x = out[0]
         y = out[1]
-        console.log("rand num ", rand_int, ' x ', x, ' y ', y)
         if (x === 0 || y === 0 || x === global.rc-1 || y === global.cc -1) {
             continue
         }

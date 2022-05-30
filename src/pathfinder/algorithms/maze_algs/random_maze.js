@@ -1,4 +1,4 @@
-import { initialize_visited } from '../helpers';
+import { IDIRECTION, JDIRECTION, UNVISITED, VISITING, initialize_visited } from '../helpers';
 import '../../setup/global'
  
 export default function random_maze() {
@@ -110,7 +110,7 @@ function remove_islands_edge (visited) {
                             temp_j = out_j + y
                             if (visited[temp_i][temp_j] === 1 && checked[temp_i][temp_j] === 0 && temp_i !== 0 && temp_j !== 0 && temp_i !== global.rc-1 && temp_j!==global.cc-1) {
                                 q.push([temp_i,temp_j])
-                                checked[temp_i] [temp_j] = 1
+                                checked[temp_i][temp_j] = 1
                             } 
                         }
                     }
@@ -123,10 +123,11 @@ function remove_islands_edge (visited) {
 
 function remove_islands(visited) {
 	let q = [] // using push and shift
-    let out; 
-    let out_i;
-    let out_j;
+    let out;
+    let o; 
+    let out_i, out_j, new_out_i, new_out_j
     let checked = initialize_visited(global.rc, global.cc)
+    let row_count = global.rc, col_count = global.cc
     for (let i = 0; i < global.rc; i++) {
         for (let j = 0; j < global.cc; j++) {
             if (checked[i][j] === 0 && visited[i][j] === 0) {  
@@ -135,37 +136,31 @@ function remove_islands(visited) {
                     out = q.shift()
                     out_i = out[0]
                     out_j = out[1]
-                    if (out_i > 0 && checked[out_i-1][out_j] === 0 && visited[out_i-1][out_j] === 0) {
-                        q.push([out_i-1, out_j])
-                        checked[out_i-1][out_j] = 1
-                    }
-                    if (out_j > 0 && checked[out_i][out_j-1] === 0 && visited[out_i][out_j-1] === 0) {
-                        q.push([out_i, out_j-1])
-                        checked[out_i][out_j-1] = 1
-                    }
-                    if (out_i < global.rc-1 && checked[out_i+1][out_j] === 0 && visited[out_i+1][out_j] === 0) {
-                        q.push([out_i+1, out_j])
-                        checked[out_i+1][out_j] = 1
-                    }
-                    if (out_j < global.cc-1 && checked[out_i][out_j+1] === 0 && visited[out_i][out_j+1] === 0) {
-                        q.push([out_i, out_j+1])
-                        checked[out_i][out_j+1] = 1
-                    }    
+                    for (let k = 0; k < IDIRECTION.length; k++) {
+                        new_out_i = out_i + IDIRECTION[k]
+                        new_out_j = out_j + JDIRECTION[k]
+                        if (new_out_i >= 0 && new_out_i < row_count && new_out_j >= 0 && new_out_j < col_count) {
+                            if (checked[new_out_i][new_out_j] == UNVISITED && visited[new_out_i][new_out_j] == UNVISITED) {
+                                q.push([new_out_i, new_out_j])
+                                checked[new_out_i][new_out_j] = VISITING
+                            }
+                        }
+                    }  
                 }
                 // drill until you hit a 0 or are out of range
                 // need to make sure it is not drilling the borders
 
-                let o;
-                if (out_i+1 < global.rc-2 && visited[out_i+1][out_j] === 1) {
-                    o = drill (out_i+1, out_j, visited, checked)
-                } else if (out_i-1 > 1 && visited[out_i-1][out_j]=== 1){
-                    o = drill (out_i-1, out_j, visited, checked)
-                } else if (out_j+1 < global.cc-2 && visited[out_i][out_j+1] === 1) {
-                    o = drill (out_i, out_j+1, visited, checked)
-                } else if (out_j-1 > 1 && visited[out_i][out_j-1] === 1) {
-                    o = drill (out_i, out_j-1, visited, checked)
+                for (let k = 0; k < 4; k++) {
+                    new_out_i = out_i + IDIRECTION[k]
+                    new_out_j = out_j + JDIRECTION[k]
+                    if (new_out_i >= 0 && new_out_i < row_count && new_out_j >= 0 && new_out_j < col_count) {
+                        if (visited[new_out_i][new_out_j] == VISITING) {
+                            o = drill (new_out_i, new_out_j, visited, checked)
+                            break
+                        }
+                    }
                 }
-                if (o != undefined) {
+                if (o !== undefined) {
                     visited = o.visited
                     checked = o.checked
                 }
@@ -203,14 +198,13 @@ function check_adjacencies(row, col, visited) {
     for (let i = -1; i < 2; i++) {
         for (let j = -1; j < 2; j++) {
             try {
-                if (i===-1 && j === -1 || i === 1 && j === -1 || i===1 && j===1 || i===-1&&j===1) {
+                if ((i===-1 && j === -1) || (i === 1 && j === -1) || (i===1 && j===1) || (i===-1 && j===1)) {
                     if (visited[row+i][col+j] === 1) {
                         count +=2;
                     }
                 } else if (visited[row + i][col + j] === 1) {
                     count+=1;
                 }
-                // console.log(count)
             } catch {
                 count +=1;
             }

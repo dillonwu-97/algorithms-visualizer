@@ -1,28 +1,19 @@
-import { backtrack, initialize_visited } from '../helpers'
+import { backtrack, initialize_visited, UNVISITED, IDIRECTION, JDIRECTION } from '../helpers'
 import '../../setup/global'
 
-// TODO: Improve so that it has wall detection
-// TODO: Improve so that it can detect errors
-
-
-// takes in some start and end location
-// takes in the row and column size of the grid
+// DFS graph search implementation
 export default function dfs(start_i, start_j, end_i, end_j, walls) {
-	let q = [] // using push and shift
+	let q = [] 
 	let row_count = global.rc
 	let col_count = global.cc
-	// visited, all are initialized to null 
-	// console.log(start_i, start_j, end_i, end_j, row_count)
 	let visited = initialize_visited(row_count, col_count);
 	q.push({coord: [start_i, start_j], count: 0, prev: [start_i, start_j]})
-	let out; 
+	let out, new_out_i, new_out_j; 
 	let return_vals = []; // return the list of nodes that were visited in order
 	while(q.length != 0) {
 		out = q.pop()
 		let out_i = out.coord[0]
 		let out_j = out.coord[1]
-		// console.log(walls)
-		// console.log(typeof([13,25]), typeof(walls[0]))
 		if (walls.includes([out_i, out_j].toString())) {
 			continue;
 		}
@@ -33,29 +24,20 @@ export default function dfs(start_i, start_j, end_i, end_j, walls) {
 		// appending in each direction
 		visited[out_i][out_j] = out.prev
 		if (out_i === end_i && out_j === end_j) {
-			// console.log('ended')
 			return_vals.push(backtrack(start_i, start_j, end_i, end_j, visited))
 			break;
 		}
-		// console.log(out_i, out_j, out_i, out_j+1, out_i-1, out_j, out_i, out_j-1, out_i+1,)
-		if (out_i < row_count-1 && visited[out_i+1][out_j] === 0) {
-			q.push({coord:[out_i+1, out_j], count: out.count+1, prev:out.coord})
-			// visited [out_i+1][out_j] = 1
-		}
-		if (out_j > 0 && visited[out_i][out_j-1] === 0) {
-			q.push({coord:[out_i, out_j-1], count: out.count+1, prev:out.coord})
-			// visited [out_i][out_j-1] = 1
-		}
-		if (out_i > 0 && visited[out_i-1][out_j] === 0) {
-			q.push({coord:[out_i-1, out_j], count: out.count+1, prev:out.coord})
-			// visited [out_i-1][out_j] = 1 // to mark the node as in the process of being visited
-		}
-		if (out_j < col_count-1 && visited[out_i][out_j+1] === 0) {
-			q.push({coord:[out_i, out_j+1], count: out.count+1, prev:out.coord})
-			// visited [out_i][out_j+1] = 1
+		for (let k = 0; k < 4; k++) {
+			new_out_i = out_i + IDIRECTION[k]
+			new_out_j = out_j + JDIRECTION[k]
+			if (new_out_i >= 0 || new_out_j >= 0 || new_out_i < row_count || new_out_j < col_count) {
+				if (visited[new_out_i][new_out_j] === UNVISITED) {
+					q.push({coord:[new_out_i, new_out_j], count: out.count+1, prev:out.coord})		
+				}
+			}
 		}
 	}
-	return return_vals // return_vals[-1] is the backtrack array; everything before that is order of traversal
+	return return_vals
 
 
 }
