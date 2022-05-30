@@ -10,15 +10,17 @@ import random_maze from '../algorithms/maze_algs/random_maze'
 import random_kruskal from '../algorithms/maze_algs/random_kruskal'
 import random_prims from '../algorithms/maze_algs/random_prims'
 import wilson from '../algorithms/maze_algs/wilson'
+import {create_grid} from './helpers'
 
 /****************************** CSS imports ******************************/
-import { Dropdown, DropdownButton } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'jquery/dist/jquery.min.js';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './cell/cell.css'
 import './make_grid.css'
+
+var assert = require('assert')
 
 const row_count = global.rc // TODO: allow for user to input these values
 const col_count = global.cc
@@ -28,6 +30,13 @@ let start_j = 20
 
 let end_i = 15
 let end_j = 30
+
+// TODO: Find a better way of solving this problem:
+// Currently, I need to do this because when a cell is rendered after a click, it might replace a wall with a clean block
+let prev_start_i = 15
+let prev_start_j = 20
+let prev_end_i = 15
+let prev_end_j = 30
 
 // for now, create walls that are hard coded and then color them in
 let walls = []
@@ -59,9 +68,6 @@ export default class make_grid extends Component {
 	}
 
 	/***************************** Resizing Window *****************************/
-	// resize(event) {
-
-	// }
 
 	/************************* Pathfinding Methods *************************/
 	// runs bfs and returns the nodes visited path and backtrack path
@@ -75,15 +81,15 @@ export default class make_grid extends Component {
 		let ret;
 		switch (algorithm) {
 			case "bfs":
-				// console.log(start_i, " ", start_j)
 				ret = Bfs(start_i, start_j, end_i, end_j, walls_unique)
+				for (let k = 0; k < ret.length; k++) {
+					console.log(ret[k])
+				}
 				break
 			case "dfs":
-				// console.log("dfs switch case")
 				ret = Dfs(start_i, start_j, end_i, end_j, walls_unique)
 				break
 			case "greedy":
-				// console.log("greedy")
 				ret = greedy(start_i, start_j, end_i, end_j, walls_unique)
 				break
 			case "astar":
@@ -96,9 +102,7 @@ export default class make_grid extends Component {
 		}
 		this.reset_paths()
 		let wait_time = this.animate_pathfind(ret)
-		// console.log(wait_time)
 		if (ret[ret.length-1][0][0] != undefined) {
-			// console.log(algorithm, " ", ret[ret.length-1].length)
 			setTimeout(() => {
 				this.animate_backtrack(ret[ ret.length - 1])
 			}, wait_time)
@@ -114,29 +118,16 @@ export default class make_grid extends Component {
 			let y = path[i][1]
 			const str = 'cell-' + x + '-' + y
 			if (document.getElementById(str).className === 'cell cell-start') {
-			// if (x === start_i && y === start_j) {
-				// document.getElementById(str).className = 'cell cell-start'
 				continue
 			}
 			if (document.getElementById(str).className === 'cell cell-finish') {
-			// if (x === end_i && y === end_j) {
-				// document.getElementById(str).className = 'cell cell-finish'
 				continue
 			}
-			
-			// if (x === 15 && y === 20 || x === 15 && y===30) {
-			// 	console.log("debugging ", document.getElementById(str).className)
-			// }
-			// if (document.getElementById(str).className=== 'cell ') {
-				// for some reason, having a console.log makes the color change, but not having this doesnt
-				// if (x === 15 && y === 20 || x === 15 && y===30) {
-				// 	console.log("debugging ", document.getElementById(str).className, " ", x, " ", y)
-				// }
+		
 			setTimeout(() => {
 				document.getElementById(str).className = 'cell cell-visited'
-				// this.animate_backtrack(path[ path.length - 1])
+				console.log("Position is: ", x, y)
 			},10 * i)
-			// }
 		}
 		return 10 * path.length
 
@@ -153,7 +144,6 @@ export default class make_grid extends Component {
 			if (x === end_i && y === end_j) {
 				continue
 			}
-			// console.log(x, y)
 			const str = 'cell-' + x + '-' + y
 			setTimeout(() => {
 				document.getElementById(str).className = 'cell cell-backtrack'
@@ -170,6 +160,7 @@ export default class make_grid extends Component {
 		}
 	}
 
+	// converts the color of cells in the maze to white
 	dark_animate_maze(maze) {
 		for (let i = 0; i < maze.length; i++) {
 			const str = 'cell-' + maze[i][0] + '-' + maze[i][1]
@@ -184,12 +175,9 @@ export default class make_grid extends Component {
 	createWall(event) {
 		if (event.shiftKey) {
 			const {id} = event.currentTarget // row and col are not returned for this
-			// let r = parseInt(document.getElementById(id).getAttribute("row"))
-			// let c = parseInt(document.getElementById(id).getAttribute("col"))
 			document.getElementById(id).className = 'cell cell-wall'
 			let a = id.split("-")[1]
 			let b = id.split("-")[2]
-			// console.log(a,b)
 			walls.push([a,b])
 		} 
 	}
@@ -200,7 +188,8 @@ export default class make_grid extends Component {
 		this.animate_maze()
 	}
 
-	dark_maze(maze_type) {
+	async dark_maze(maze_type) {
+		await this.reset()
 		let out;
 		this.darken()
 		switch(maze_type) {
@@ -226,9 +215,17 @@ export default class make_grid extends Component {
 		const {id} = event.currentTarget // row and col are not returned for this
 		let r = parseInt(document.getElementById(id).getAttribute("row"))
 		let c = parseInt(document.getElementById(id).getAttribute("col"))
+		console.log("Starting startEnd event ", r, c, id)
 		if (this.state.start_end === 0) {
 			// reset the start colors
-			document.getElementById('cell-' + start_i + '-' + start_j).className = 'cell '
+			if (document.getElementById('cell-' + start_i + '-' + start_j).className !== 'cell cell-wall') {
+				document.getElementById('cell-' + start_i + '-' + start_j).className = 'cell '
+				prev_start_i = r
+				prev_start_j = c
+			} else {
+				prev_start_i = start_i
+				prev_start_j = start_j
+			}
 			document.getElementById(id).className = 'cell cell-start'
 			this.setState({
 				start_end: 1
@@ -236,7 +233,14 @@ export default class make_grid extends Component {
 			start_i = r
 			start_j = c
 		} else {
-			document.getElementById('cell-' + end_i + '-' + end_j).className = 'cell '
+			if (document.getElementById('cell-' + end_i + '-' + end_j).className !== 'cell cell-wall') {
+				document.getElementById('cell-' + end_i + '-' + end_j).className = 'cell '
+				prev_end_i = r
+				prev_end_j = c
+			} else {
+				prev_end_i = end_i
+				prev_end_j = end_j
+			}
 			document.getElementById(id).className = 'cell cell-finish'
 			this.setState({
 				start_end: 0
@@ -244,6 +248,7 @@ export default class make_grid extends Component {
 			end_i = r
 			end_j = c
 		}
+		console.log("Finishing startEnd event")
 		
 	}
 
@@ -259,17 +264,20 @@ export default class make_grid extends Component {
 
 	// clears the entire grid
 	reset() {
+		console.log("Calling reset")
+		walls = []
 		for (let i = 0; i < row_count; i++) {
 			for (let j = 0; j < col_count; j++) {
 				let id = 'cell-' + i + '-' + j;
+				console.log("Inside reset: ", id)
 				document.getElementById(id).className = 'cell '
 			}
 		}
-		walls = []
 	}
 
 	// keeps the walls; resets the path colors
 	reset_paths() {
+		console.log("Calling reset paths")
 		for (let i = 0; i < row_count; i++) {
 			for (let j = 0; j < col_count; j++) {
 				let id = 'cell-' + i + '-' + j;
@@ -282,20 +290,10 @@ export default class make_grid extends Component {
 	}
 
 	/****************************** Rendering *************************/
-	// componentDidMount() {
-	// 	window.addEventListener("resize", this.resize, false)
-	// }
 
 	render() {
 		// setup for grid
-		let grid = []
-		for (let i = 0; i < row_count; i++) {
-			let temp = []
-			for (let j = 0; j < col_count; j++) {
-				temp.push(0)
-			}
-			grid.push(temp)
-		}
+		let grid = create_grid()
 		let maze_list = ["kruskal", "prim", "wilson"]
 		let alg_list = ["bfs", "dfs", "greedy", "astar", "dijkstra"]
 		return (
@@ -311,6 +309,8 @@ export default class make_grid extends Component {
 									type = 'cell-start'
 								} else if (row_index === end_i && col_index === end_j) {
 									type = 'cell-finish'
+								} else if (row_index === prev_start_i && col_index === prev_start_j || row_index === prev_end_i && col_index === prev_end_j) {
+									type = 'cell-wall'
 								}
 								return (<Cell element_id={'cell-' + row_index + '-' + col_index}
 								type = {type} weight = {weight} row = {row_index} col = {col_index} 
@@ -335,7 +335,6 @@ export default class make_grid extends Component {
 							</button>
 							<div class="dropdown-menu">
 								{alg_list.map((alg) => {
-								// console.log(typeof(alg))
 									return (
 										<div>
 											<a class="dropdown-item" className="algorithms-menu" onClick = {()=>this.handleSearch(
@@ -371,7 +370,7 @@ export default class make_grid extends Component {
 								<div class="dropdown-menu">
 									<div>
 										<a class="dropdown-item" className="maze-menu" onClick = {this.make_maze}>
-											General Maze
+											general maze
 										</a>
 										<div class="dropdown-divider"></div>
 									</div>

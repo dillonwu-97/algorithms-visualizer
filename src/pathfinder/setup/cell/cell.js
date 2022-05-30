@@ -5,7 +5,7 @@ import './cell.css'
 export default class cell extends Component { 
 
 	render() {
-		const {element_id, type, weight, row, col, onClick, onMouseDown, onMouseUp,
+		const {element_id, type, row, col, onClick,
 			onMouseMove} = this.props
 		return (
 			<div id={element_id} 

@@ -30,7 +30,7 @@ export default function dfs(start_i, start_j, end_i, end_j, walls) {
 		for (let k = 0; k < 4; k++) {
 			new_out_i = out_i + IDIRECTION[k]
 			new_out_j = out_j + JDIRECTION[k]
-			if (new_out_i >= 0 || new_out_j >= 0 || new_out_i < row_count || new_out_j < col_count) {
+			if (new_out_i >= 0 && new_out_j >= 0 && new_out_i < row_count && new_out_j < col_count) {
 				if (visited[new_out_i][new_out_j] === UNVISITED) {
 					q.push({coord:[new_out_i, new_out_j], count: out.count+1, prev:out.coord})		
 				}
