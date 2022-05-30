@@ -18,7 +18,7 @@ import 'jquery/dist/jquery.min.js';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './cell/cell.css'
-import './make_grid.css'
+import './maze_grid.css'
 
 var assert = require('assert')
 
@@ -42,7 +42,7 @@ let prev_end_j = 30
 let walls = []
 
 
-export default class make_grid extends Component {
+export default class pathfinder extends Component {
 	
 	constructor(props) {
 		super()

@@ -1,9 +1,9 @@
 import React from 'react';
-import { BrowserRouter, Route, Link, Switch, HashRouter } from "react-router-dom";
+import { Route, Link, Switch, HashRouter } from "react-router-dom";
 import './App.css'
 
 // Pathfinder
-import Make_grid from './pathfinder/setup/make_grid'
+import Maze_grid from './pathfinder/setup/maze_grid'
 
 // Sudoku
 import Sudoku_grid from './sudoku/sudoku_grid'
@@ -52,7 +52,7 @@ function Home() {
 function Pathfinder() {
 	return (
 		<div className = "app-pathfinder">
-			<Make_grid />
+			<Maze_grid />
 		</div>
 	)
 }
