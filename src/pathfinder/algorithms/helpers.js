@@ -1,6 +1,8 @@
 // Initialize the visited matrix
 const VISITING = 1
 const UNVISITED = 0
+const IDIRECTION = [-1, 0, 1, 0]
+const JDIRECTION = [0, -1, 0, 1]
 
 function initialize_visited(row_count, col_count) {
 	var visited = new Array(row_count)
@@ -52,4 +54,9 @@ function manhattan(x1, x2, y1, y2) {
     return Math.abs(x1-x2) + Math.abs(y1-y2)
 }
 
-export {manhattan, backtrack, initialize_visited, shuffle, get_walls, VISITING, UNVISITED}
+var cmp = function(x, y) {
+    return x[0] < y[0];
+}
+
+export {manhattan, backtrack, initialize_visited, shuffle, get_walls, cmp}
+export {VISITING, UNVISITED, IDIRECTION, JDIRECTION}

@@ -1,10 +1,9 @@
-import { backtrack, initialize_visited, VISITING, UNVISITED } from '../helpers'
+import { backtrack, initialize_visited, cmp, VISITING, UNVISITED, IDIRECTION, JDIRECTION } from '../helpers'
 import '../../setup/global'
 var heapq = require('heapq')
 
 
 export default function dijkstra(start_i, start_j, end_i, end_j, walls) {
-    var cmp = function(x, y) {return x[0] < y[0];}
 
     let row_count = global.rc
     let col_count = global.cc
@@ -33,12 +32,9 @@ export default function dijkstra(start_i, start_j, end_i, end_j, walls) {
 			break;
 		}
 
-		let i_dir = [-1, 0, 1, 0]
-		let j_dir = [0, -1, 0, 1]
-
-		for (let k = 0; k < i_dir.length; k++) {
-			new_out_i = out_i + i_dir[k]
-			new_out_j = out_j + j_dir[k]
+		for (let k = 0; k < IDIRECTION.length; k++) {
+			new_out_i = out_i + IDIRECTION[k]
+			new_out_j = out_j + JDIRECTION[k]
 			if (new_out_i >= 0 && new_out_i < row_count && new_out_j >= 0 && new_out_j < col_count) {
 				if (visited[new_out_i][new_out_j] == UNVISITED) {
 					distance = out.count + weight // 10 for uniform cost

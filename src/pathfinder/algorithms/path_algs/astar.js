@@ -1,19 +1,18 @@
-import React from 'react'
-import { backtrack, initialize_visited } from '../helpers'
+import { manhattan, backtrack, initialize_visited, cmp, IDIRECTION, JDIRECTION, UNVISITED, VISITING } from '../helpers'
 import '../../setup/global'
 var heapq = require('heapq')
 
 
 export default function astar(start_i, start_j, end_i, end_j, walls) {
 
-    var cmp = function(x, y) {
-		return x[0] < y[0];
-	}
-
     let row_count = global.rc
     let col_count = global.cc
 	let q = []
+	let new_out_i, new_out_j
 
+	// visited tracks the best previous node
+	// min_graph tracks the lowest value to a node
+	// in_heap tracks the distance??
     let visited = initialize_visited(row_count, col_count)
 	let min_graph = initialize_visited(row_count, col_count) // min graph is used to store the lowest value to a node
 	let in_heap = initialize_visited(row_count, col_count) // what is this used for?
@@ -27,7 +26,6 @@ export default function astar(start_i, start_j, end_i, end_j, walls) {
         out = out_pre[1]
 		let out_i = out.coord[0]
 		let out_j = out.coord[1]
-		in_heap[out_i][out_j] --;
 		if (walls.includes([out_i, out_j].toString())) {
 			continue;
 		}
@@ -37,61 +35,27 @@ export default function astar(start_i, start_j, end_i, end_j, walls) {
             min_graph[out_i][out_j] = out.count
             visited[out_i][out_j] = out.prev
         }
+		
 		if (out_i === end_i && out_j === end_j) {
 			return_vals.push(backtrack(start_i, start_j, end_i, end_j, visited))
 			break;
 		}
 
-		if (out_i > 0) {
-			distance = out.count + (manhattan(end_i, out_i-1, end_j, out_j)) 
-			if(visited[out_i-1][out_j] === 0) {
-				heapq.push(q, [distance, {coord:[out_i-1, out_j], count: out.count+1, prev:out.coord}], cmp)
-				visited [out_i-1][out_j] = 1 // to mark the node as in the process of being visited
-				in_heap [out_i-1][out_j] = distance;
-			} else if (distance < in_heap [out_i-1][out_j] ){
-				in_heap [out_i-1][out_j] = distance;
-				heapq.push(q, [distance, {coord:[out_i-1, out_j], count: out.count+1, prev:out.coord}], cmp)
-			}
-		}
-		if (out_j > 0){
-			distance = out.count + (manhattan(end_i, out_i, end_j, out_j-1))
-			if (visited[out_i][out_j-1] === 0) {
-				heapq.push(q, [distance, {coord:[out_i, out_j-1], count: out.count+1, prev:out.coord}], cmp)
-				visited [out_i][out_j-1] = 1
-				in_heap [out_i][out_j-1]=distance;
-			} else if (distance < in_heap [out_i][out_j-1]) {
-				in_heap [out_i][out_j-1] = distance;
-				heapq.push(q, [distance, {coord:[out_i, out_j-1], count: out.count+1, prev:out.coord}], cmp)
-			}
-		}
-		if (out_i < row_count-1) {
-			distance = out.count + (manhattan(end_i, out_i+1, end_j, out_j))
-			if (visited[out_i+1][out_j] === 0) {
-				heapq.push(q, [distance, {coord:[out_i+1, out_j], count: out.count+1, prev:out.coord}], cmp)
-				visited [out_i+1][out_j] = 1
-				in_heap [out_i+1][out_j]=distance;
-			} else if (distance < in_heap [out_i+1][out_j]) {
-				in_heap [out_i+1][out_j]=distance;
-				heapq.push(q, [distance, {coord:[out_i+1, out_j], count: out.count+1, prev:out.coord}], cmp)
-			}
-		}
-		if (out_j < col_count-1) {
-			distance = out.count + (manhattan(end_i, out_i, end_j, out_j+1))
-			if (visited[out_i][out_j+1] === 0) {
-				heapq.push(q, [distance, {coord:[out_i, out_j+1], count: out.count+1, prev:out.coord}], cmp)
-				visited [out_i][out_j+1] = 1
-				in_heap [out_i][out_j+1]=distance;
-			} else if (distance < in_heap [out_i][out_j+1]) {
-				in_heap [out_i][out_j+1]=distance;
-				heapq.push(q, [distance, {coord:[out_i, out_j+1], count: out.count+1, prev:out.coord}], cmp)
+		for (let k = 0; k < IDIRECTION.length; k++) {
+			new_out_i = out_i + IDIRECTION[k]
+			new_out_j = out_j + JDIRECTION[k]
+			if (new_out_i >= 0 && new_out_i < row_count && new_out_j >= 0 && new_out_j < col_count) {
+				distance = out.count + (manhattan(end_i, new_out_i, end_j, new_out_j))
+				if (visited[new_out_i][new_out_j] == UNVISITED) {
+					heapq.push(q, [distance, {coord:[new_out_i, new_out_j], count: out.count+1, prev:out.coord}], cmp)
+					visited [new_out_i][new_out_j] = 1 // to mark the node as in the process of being visited
+					in_heap [new_out_i][new_out_j] = distance;
+				} else if (distance < in_heap[new_out_i] [new_out_j]) {
+					in_heap [new_out_i][new_out_j] = distance
+					heapq.push(q, [distance, {coord:[new_out_i, new_out_j], count: out.count+1, prev:out.coord}], cmp)
+				}
 			}
 		}
 	}
-	return return_vals // return_vals[-1] is the backtrack array; everything before that is order of traversal
-
-
-}
-
-function manhattan(x1, x2, y1, y2) {
-    return Math.abs(x1-x2) + Math.abs(y1-y2)
+	return return_vals
 }

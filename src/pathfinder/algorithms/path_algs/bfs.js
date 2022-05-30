@@ -1,4 +1,4 @@
-import { backtrack, initialize_visited } from '../helpers'
+import { backtrack, initialize_visited, IDIRECTION, JDIRECTION, UNVISITED, VISITING } from '../helpers'
 import '../../setup/global'
 
 // BFS Implementation 
@@ -10,9 +10,6 @@ export default function bfs(start_i, start_j, end_i, end_j, walls) {
 	q.push({coord: [start_i, start_j], count: 0, prev: [start_i, start_j]})
 	let out, new_out_i, new_out_j 
 	let return_vals = []
-
-	let i_dir = [-1, 0, 1, 0]
-	let j_dir = [0, -1, 0, 1]
 
 	while(q.length != 0) {
 		out = q.shift()
@@ -28,15 +25,14 @@ export default function bfs(start_i, start_j, end_i, end_j, walls) {
 			break
 		}
 
-		for (let k = 0; k < i_dir.length; k++) {
-			new_out_i = out_i + i_dir[k]
-			new_out_j = out_j + j_dir[k]
+		for (let k = 0; k < IDIRECTION.length; k++) {
+			new_out_i = out_i + IDIRECTION[k]
+			new_out_j = out_j + JDIRECTION[k]
 			if (new_out_i >= 0 && new_out_i < row_count && new_out_j >= 0 && new_out_j < col_count) {
-				if (visited[new_out_i][new_out_j] == 0) {
+				if (visited[new_out_i][new_out_j] == UNVISITED) {
 					q.push({coord:[new_out_i, new_out_j], count: out.count+1, prev:out.coord})
-					visited[new_out_i][new_out_j] = 1
+					visited[new_out_i][new_out_j] = VISITING
 				}
-				
 			}
 		}
 	}

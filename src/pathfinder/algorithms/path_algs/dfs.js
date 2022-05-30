@@ -1,4 +1,3 @@
-import React from 'react';
 import { backtrack, initialize_visited } from '../helpers'
 import '../../setup/global'
 
