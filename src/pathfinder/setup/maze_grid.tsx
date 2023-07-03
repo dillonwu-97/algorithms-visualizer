@@ -51,6 +51,12 @@ interface pathfinderState {
 
 // TODO: Go through the code and find the places that I need to replace number with Node 
 
+// Maybe there should instead be a grid state that maps the Cells 
+// animation triggers a check on this grid
+// the grid state is built using the Node 
+// When the graph functions return or the maze functions return, this grid is updated; this update automatically causes the rerendering, 
+// this also solves the onclick crap 
+
 export default class pathfinder extends React.Component<{}, pathfinderState> {
 	
 	// Not sure what this should actually be, any or what???
@@ -198,7 +204,9 @@ export default class pathfinder extends React.Component<{}, pathfinderState> {
 		}
 		this.reset_paths() // why is it doing this?? if the graph has already been modified, then reset it basically. seems a bit extraneous which is bad? But not necessary to get rid of it 
 
-		this.setState({animating: true})
+		this.setState({animating: true}) // this will always rerender 
+		// if this is causing a rerender, then the cell type should be changed
+		// when do I setState animating to false again? 
 
 		// TODO: This must be replaced. I should not be animating using document.elementbyid stuff; call set state instead. 
 		let wait_time: number = this.animate_pathfind(ret) // this should instead animate differently based on type BACKTRACK vs type VISITED
