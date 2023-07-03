@@ -10,9 +10,10 @@ Repeat 2 and 3 until all vertices have been added to the UST.
 
 export default function wilson() {
     let visited = initialize_visited(global.rc, global.cc);
-    let walls = initialize_visited(global.rc, global.cc)
+    let walls = initialize_visited(global.rc, global.cc) // this feels like bad practice
     let x, y, q, out
     // randomize array
+    // what was the point of this randomization again?
     let maze = [], to_visit = []
     for (let i = 1; i < global.rc-1; i++) {
         for (let j = 1; j < global.cc-1; j++) {
@@ -23,6 +24,8 @@ export default function wilson() {
             }
         }
     }
+
+    // create a separate function for creating the walls i think
     for (let i = 0; i < global.cc; i++) {
         walls[0][i] = 1
         walls[global.rc-1][i] = 1
