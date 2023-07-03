@@ -11,7 +11,7 @@ import random_kruskal from '../algorithms/maze_algs/random_kruskal'
 import random_prims from '../algorithms/maze_algs/random_prims'
 import wilson from '../algorithms/maze_algs/wilson'
 import {create_grid} from './helpers'
-import { Node } from '../algorithms/path_algs/types'
+import { Node, nodeType } from '../algorithms/path_algs/types'
 
 /****************************** CSS imports ******************************/
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -45,8 +45,11 @@ let walls: number[][] = []
 // TODO: After fixing all the errors, move the functions around so that they make more sense
 
 interface pathfinderState {
-	start_end: number
+	start_end: number,
+	animating: boolean
 }
+
+// TODO: Go through the code and find the places that I need to replace number with Node 
 
 export default class pathfinder extends React.Component<{}, pathfinderState> {
 	
@@ -54,7 +57,8 @@ export default class pathfinder extends React.Component<{}, pathfinderState> {
 	constructor(props: any) {
 		super(props);
 		this.state = {
-			start_end: 0 // keeps track of start (0) or end (1)
+			start_end: 0, // keeps track of start (0) or end (1)
+			animating: false,
 		};
 		this.handleSearch = this.handleSearch.bind(this);
 		this.reset = this.reset.bind(this);
@@ -67,6 +71,7 @@ export default class pathfinder extends React.Component<{}, pathfinderState> {
 
 	/************************** General Use Methods **************************/
 	// create a cell
+	// probably dont need this
 	create_cell () {
 		const cell = {
 			type: "",
@@ -82,6 +87,7 @@ export default class pathfinder extends React.Component<{}, pathfinderState> {
 	// the pathfinding methods should probably exist separately? 
 
 	// keeps the walls; resets the path colors
+	// TODO: this does not keep the walls; this resets everything
 	reset_paths() {
 		for (let i = 0; i < row_count; i++) {
 			for (let j = 0; j < col_count; j++) {
@@ -113,6 +119,16 @@ export default class pathfinder extends React.Component<{}, pathfinderState> {
 	}
 
 	// pathfinding animation
+	// TODO: Next thing to fix
+	// basically this is bad design. I should instead be manipulating the state of the grid? 
+	// Not sure how it should work, but I should be setting the state of the cell instead of doing this getElementbyId shit. This is the current component that I have. I want to change the state of the cell component. So, I should set the state of the cell component to the animating state. The cell component checks to see if the state is animating. If it is animating, then I change the className in the react Component. This automatically causes the re-rendering to happen? 
+
+	// Idea: so instead of animate_pathfind, set the state of the Cell component to something else 
+	// After setting the state to something else, the cell individually re renders. It now changes to a different color
+	// After figuring this out, I can try to figure out the setTimeOut animation shit, which should probably happen in the Cell component
+	// How to set the state of multiple components at once? 
+
+	// Another todo is probably to code from a different branch
 	animate_pathfind(path: number[][]) {
 		// length is path - 1 because the last element of the input is the array for backtrack steps
 		for (let i = 0; i < path.length - 1; i++) {
@@ -148,11 +164,25 @@ export default class pathfinder extends React.Component<{}, pathfinderState> {
 		let walls_unique: string[] = Array.from(new Set(tempWalls));
 		// run bfs
 		let ret: any[][] = [];
+
+		let startNode: Node = {
+			row: start_i,
+			col: start_j,
+			type: nodeType.UNVISITED
+		}
+
+		let endNode: Node = {
+			row: end_i, 
+			col: end_j,
+			type: nodeType.UNVISITED
+		}
+
 		switch (algorithm) {
 			case "bfs":
-				ret = Bfs(start_i, start_j, end_i, end_j, walls_unique)
+				ret = Bfs(startNode, endNode, walls_unique)
 				break
 			case "dfs":
+				// ret = Dfs(startNode, endNode, walls_unique)
 				ret = Dfs(start_i, start_j, end_i, end_j, walls_unique)
 				break
 			case "greedy":
@@ -166,8 +196,13 @@ export default class pathfinder extends React.Component<{}, pathfinderState> {
 				break
 
 		}
-		this.reset_paths()
-		let wait_time: number = this.animate_pathfind(ret)
+		this.reset_paths() // why is it doing this?? if the graph has already been modified, then reset it basically. seems a bit extraneous which is bad? But not necessary to get rid of it 
+
+		this.setState({animating: true})
+
+		// TODO: This must be replaced. I should not be animating using document.elementbyid stuff; call set state instead. 
+		let wait_time: number = this.animate_pathfind(ret) // this should instead animate differently based on type BACKTRACK vs type VISITED
+		// TODO: Need to change this definitely 
 		if (ret[ret.length-1][0][0] != undefined) {
 			setTimeout(() => {
 				this.animate_backtrack(ret[ ret.length - 1])
@@ -175,16 +210,16 @@ export default class pathfinder extends React.Component<{}, pathfinderState> {
 		}
 	}
 
-		// clears the entire grid
-		reset() {
-			walls = []
-			for (let i = 0; i < row_count; i++) {
-				for (let j = 0; j < col_count; j++) {
-					let id = 'cell-' + i + '-' + j;
-					document.getElementById(id)!.className = 'cell '
-				}
+	// clears the entire grid
+	reset() {
+		walls = []
+		for (let i = 0; i < row_count; i++) {
+			for (let j = 0; j < col_count; j++) {
+				let id = 'cell-' + i + '-' + j;
+				document.getElementById(id)!.className = 'cell '
 			}
 		}
+	}
 
 	/************************* Animation Methods *************************/
 
