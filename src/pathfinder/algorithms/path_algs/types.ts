@@ -1,4 +1,6 @@
 export enum nodeType {
+    START,
+    END,
     WALL,
     UNVISITED,
     VISITED,

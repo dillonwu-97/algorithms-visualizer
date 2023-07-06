@@ -1,33 +1,37 @@
 .cell {
-	/* width: 15px;
-	height: 15px; */
-	/* outline: 1px solid rgb(28, 43, 43);
-	float: left; */
-	display:flex;
-	flex:1;
-	pointer-events:auto;
-	background-color: white;
+	display: flex;
+	flex: 1;
+	pointer-events: auto;
 	outline: 1px solid black;
 	min-height: 18px;
 }
 
-.cell-finish {
+.cell.unvisited {
+	/* width: 15px;
+	height: 15px; */
+	/* outline: 1px solid rgb(28, 43, 43);
+	float: left; */
+	background-color: white;
+}
+
+.cell.end {
 	background-color: tomato;
 }
 
-.cell-start {
+.cell.start {
 	background-color: blue;
 }
 
-.cell-visited {
-	animation-name: visitedAnimation;
+.cell.visited {
+	/* animation-name: visitedAnimation;
 	animation-duration: 1s;
 	animation-timing-function: ease-out;
 	animation-delay: 0;
 	animation-direction: alternate;
 	animation-iteration-count: 1;
 	animation-fill-mode: forwards;
-	animation-play-state: running;
+	animation-play-state: running; */
+	background-color: rgba(230, 219, 65, 0.75);
 }
 
 @keyframes visitedAnimation {
@@ -53,14 +57,16 @@
   }
 
 .cell-backtrack {
-	animation-name: shortestPath;
+	/* animation-name: shortestPath;
 	animation-duration: 1s;
 	animation-timing-function: ease-out;
 	animation-delay: 0;
 	animation-direction: alternate;
 	animation-iteration-count: 1;
 	animation-fill-mode: forwards;
-	animation-play-state: running;
+	animation-play-state: running; */
+
+	background-color:rgb(48, 221, 5);
 }
 
 @keyframes shortestPath {

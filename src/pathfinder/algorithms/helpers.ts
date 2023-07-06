@@ -1,3 +1,4 @@
+import { Node, nodeType } from './path_algs/types'
 // Initialize the visited matrix
 const VISITING: number = 1;
 const UNVISITED: number = 0;
@@ -58,5 +59,53 @@ var cmp = function(x: number[], y: number[]) {
     return x[0] < y[0];
 }
 
-export {manhattan, backtrack, initialize_visited, shuffle, get_walls, cmp}
+var initNode = (row: number, col: number, type: number): Node => {
+    let ret: Node = {
+        row: row,
+        col: col,
+        type: type
+    }
+    return ret;
+}
+
+var initNodeGraph = (rowCount: number, colCount: number):Node[][] => {
+    let graph: Node [][] = [];
+	for (let i = 0; i < rowCount; i++) {
+		let tempArr: Node [] = [];
+		for (let j = 0; j < colCount; j++) {
+			let tempNode: Node = {
+				row: i,
+				col: j,
+				type: nodeType.UNVISITED
+			};
+			tempArr.push(tempNode);
+		}
+		graph.push(tempArr);
+	}
+
+    for (let i = 0; i < rowCount; i++) {
+		graph[i][0].type = nodeType.WALL;
+		graph[i][colCount-1].type = nodeType.WALL;
+	}
+	for (let i = 0; i < colCount; i++) {
+		graph[0][i].type = nodeType.WALL;
+		graph[rowCount-1][i].type = nodeType.WALL;
+	}
+    return graph;
+}
+
+var resetNodeGraph = (graph: Node[][]): Node[][] => {
+    for (let i = 0; i < graph.length; i++) {
+        for (let j = 0; j < graph[0].length; j++) {
+            if (graph[i][j].type === nodeType.VISITED || graph[i][j].type === nodeType.BACKTRACK) {
+                graph[i][j].type = nodeType.UNVISITED;
+            }
+        }
+    }
+    return graph;
+}
+
+
+
+export {manhattan, backtrack, initialize_visited, shuffle, get_walls, cmp, initNode, initNodeGraph, resetNodeGraph}
 export {VISITING, UNVISITED, IDIRECTION, JDIRECTION}

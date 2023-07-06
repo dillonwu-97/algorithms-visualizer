@@ -2,40 +2,14 @@ import {IDIRECTION, JDIRECTION } from '../helpers'
 import '../../setup/global'
 import { nodeType, Node, nodeMap } from './types'
 
-declare global {
-	var rc: any;
-	var cc: any;
-}
-
 // TODO: helper for creating a specific type of Node, i.e. a makeNode() function
 
-export default function bfs (startNode: Node, endNode: Node, wallsStr: string[]) {
-
-	// TODO: Move this to the helpers file since this will probably be reused constantly
-	console.log("Constructing visited")
-	let visited: Node [][] = [];
-	for (let i = 0; i < global.rc; i++) {
-		let tempArr: Node [] = [];
-		for (let j = 0; j < global.cc; j++) {
-			let tempNode: Node = {
-				row: i,
-				col: j,
-				type: nodeType.UNVISITED
-			}
-			tempArr.push(tempNode);
-		}
-		visited.push(tempArr);
-	}
-	visited[startNode.row][startNode.col] = startNode;
-	visited[endNode.row][endNode.col] = endNode;
-
-	// creating a backtrack graph
-	// this stores all of the nodes that are used to visit this current node
+export default function bfs (start: [number,number], end: [number,number], graph: Node[][]): Node[] {
 	console.log("Creating backtrack arr")
 	let backtrack: Node [][] = [];
-	for (let i = 0; i < global.rc; i++) {
+	for (let i = 0; i < 30; i++) {
 		let tempArr: Node [] = [];
-		for (let j = 0; j < global.cc; j++) {
+		for (let j = 0; j < 50; j++) {
 			let tempNode: Node = {
 				row: i,
 				col: j,
@@ -45,74 +19,57 @@ export default function bfs (startNode: Node, endNode: Node, wallsStr: string[])
 		}
 		backtrack.push(tempArr);
 	}
-	
 
-	// set the perimeter to be visited, find a way to maybe resolve this issue 
-	// Building the rest of the walls 
-	// TODO: Transform the string walls to regular walls
-	console.log("Creating walls")
-	for (let i = 0; i < global.rc; i++) {
-		visited[i][0].type = nodeType.WALL;
-		visited[i][global.cc-1].type = nodeType.WALL;
-	}
-	for (let i = 0; i < global.cc; i++) {
-		visited[0][i].type = nodeType.WALL;
-		visited[global.rc-1][i].type = nodeType.WALL;
-	}
-	for (let i = 0; i < wallsStr.length; i++) {
-		let numbers = wallsStr[i].split(",").map(Number)
-		visited[numbers[0]][numbers[1]].type = nodeType.WALL;
-	}
 
-	console.log(visited)
-
-	let returnVals: nodeMap = {
-		vNodes: [],
-		pNodes: [],
-		count: 0
-	}
-
+	let startNode: Node = graph[start[0]][start[1]];
 	////////////////////////
-	let retVals: number[][] = [];
 	let q: Node[] = [];
-	q.push(startNode) 
-	let out: Node; // Do I actually need to do this? 
+	let updateOrder: Node[] = [];
+	let out: Node; 
 	let newrow: number, newcol: number;
-	console.log("Starting bfs")
-	console.log(endNode, startNode, endNode.row, endNode.col)
+
+	q.push(startNode) 
 	while (q.length) {
 		
 		out = q.shift()!;
-		if (out == endNode) {
-			console.log("Finished")
+		if (out.row === end[0] && out.col === end[1]) {
+			graph[out.row][out.col].type = nodeType.END;
 			break;
 		}
-		returnVals.vNodes.push(out)
-		retVals.push([out.row, out.col]);
-		console.log(out, out.row, out.col)
+		updateOrder.push(out);
 		for (let i = 0; i < IDIRECTION.length; i++) {
 			newrow = out.row + IDIRECTION[i];
 			newcol = out.col + JDIRECTION[i];
-			if (visited[newrow][newcol].type == nodeType.UNVISITED) {
-				visited[newrow][newcol].type = nodeType.VISITED;
-				q.push(visited[newrow][newcol])
+			if (graph[newrow][newcol].type === nodeType.UNVISITED || graph[newrow][newcol].type === nodeType.END) {
+				graph[newrow][newcol].type = nodeType.VISITED;
+				q.push(graph[newrow][newcol])
 				backtrack[newrow][newcol].row = out.row;
 				backtrack[newrow][newcol].col = out.col;
 			}
 		}
 
 	}
-
-	console.log("Creating retVals")
+	console.log("Starting backtrack")
 	// Note: current design is that the last index of the return array contains the track for backtracking which is very bad design;
-	out = visited[endNode.row][endNode.col];
-	console.log(out)
-	while (out.row != startNode.row || out.col != startNode.col) {
-		retVals.push([out.row, out.col]);
+	let count: number =0;
+	out = graph[end[0]][end[1]];
+	out = backtrack[out.row][out.col];
+	console.log("Checking type: ", out)
+	while (true) {
+		if (out.row == start[0] && out.col == start[1]) {break;}
+		graph[out.row][out.col].type = nodeType.BACKTRACK;
+		updateOrder.push(out);
 		out = backtrack[out.row][out.col];
+		count++;
+		if (count >= 1000) {break;}
+		
 	}
-	console.log(out, startNode)
+	graph[end[0]][end[1]].type = nodeType.END;
+	console.log("Checking type: ", out)
+	console.log("Finishing backtrack")
 
-	return retVals;
+	// TODO: Maybe I do need a visit order 
+
+	return updateOrder
 
 }
