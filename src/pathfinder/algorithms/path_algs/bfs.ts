@@ -1,10 +1,12 @@
-import {IDIRECTION, JDIRECTION } from '../helpers'
+import {IDIRECTION, JDIRECTION, deepCopyGraph, initNode } from '../helpers'
 import '../../setup/global'
 import { nodeType, Node, nodeMap } from './types'
 
 // TODO: helper for creating a specific type of Node, i.e. a makeNode() function
 
-export default function bfs (start: [number,number], end: [number,number], graph: Node[][]): Node[] {
+export default function bfs (start: [number,number], end: [number,number], stateGraph: Node[][]): Node[] {
+
+	let newGrid: Node[][] = deepCopyGraph(stateGraph);
 	console.log("Creating backtrack arr")
 	let backtrack: Node [][] = [];
 	for (let i = 0; i < 30; i++) {
@@ -21,7 +23,7 @@ export default function bfs (start: [number,number], end: [number,number], graph
 	}
 
 
-	let startNode: Node = graph[start[0]][start[1]];
+	let startNode: Node = newGrid[start[0]][start[1]];
 	////////////////////////
 	let q: Node[] = [];
 	let updateOrder: Node[] = [];
@@ -33,40 +35,30 @@ export default function bfs (start: [number,number], end: [number,number], graph
 		
 		out = q.shift()!;
 		if (out.row === end[0] && out.col === end[1]) {
-			graph[out.row][out.col].type = nodeType.END;
+			newGrid[out.row][out.col].type = nodeType.END;
 			break;
 		}
 		updateOrder.push(out);
 		for (let i = 0; i < IDIRECTION.length; i++) {
 			newrow = out.row + IDIRECTION[i];
 			newcol = out.col + JDIRECTION[i];
-			if (graph[newrow][newcol].type === nodeType.UNVISITED || graph[newrow][newcol].type === nodeType.END) {
-				graph[newrow][newcol].type = nodeType.VISITED;
-				q.push(graph[newrow][newcol])
+			if (newGrid[newrow][newcol].type === nodeType.UNVISITED || newGrid[newrow][newcol].type === nodeType.END) {
+				newGrid[newrow][newcol].type = nodeType.VISITED;
+				q.push(newGrid[newrow][newcol])
 				backtrack[newrow][newcol].row = out.row;
 				backtrack[newrow][newcol].col = out.col;
 			}
 		}
 
 	}
-	console.log("Starting backtrack")
-	// Note: current design is that the last index of the return array contains the track for backtracking which is very bad design;
-	let count: number =0;
-	out = graph[end[0]][end[1]];
-	out = backtrack[out.row][out.col];
-	console.log("Checking type: ", out)
+	out = backtrack[end[0]][end[1]];
+	let newNode: Node; 
 	while (true) {
 		if (out.row == start[0] && out.col == start[1]) {break;}
-		graph[out.row][out.col].type = nodeType.BACKTRACK;
-		updateOrder.push(out);
+		newNode = initNode(out.row, out.col, nodeType.BACKTRACK);
+		updateOrder.push(newNode);
 		out = backtrack[out.row][out.col];
-		count++;
-		if (count >= 1000) {break;}
-		
 	}
-	graph[end[0]][end[1]].type = nodeType.END;
-	console.log("Checking type: ", out)
-	console.log("Finishing backtrack")
 
 	// TODO: Maybe I do need a visit order 
 

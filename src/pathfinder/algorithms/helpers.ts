@@ -2,8 +2,8 @@ import { Node, nodeType } from './path_algs/types'
 // Initialize the visited matrix
 const VISITING: number = 1;
 const UNVISITED: number = 0;
-const IDIRECTION: readonly number[] = [-1, 0, 1, 0];
-const JDIRECTION: readonly number[] = [0, -1, 0, 1];
+const IDIRECTION: readonly number[] = [-1, 1, 0, 0];
+const JDIRECTION: readonly number[] = [0, 0, -1, 1];
 
 /**
  * 
@@ -105,7 +105,20 @@ var resetNodeGraph = (graph: Node[][]): Node[][] => {
     return graph;
 }
 
+var deepCopyGraph = (graph: Node[][]): Node[][] => {
+    let ret: Node[][] = [];
+    let tempNode: Node;
+    for (let i = 0; i < graph.length; i++) {
+        let tempArr: Node[] = [];
+        for (let j = 0; j < graph[0].length; j++) { 
+            tempNode = initNode(graph[i][j].row, graph[i][j].col, graph[i][j].type);
+            tempArr.push(tempNode);
+        }
+        ret.push(tempArr);
+    }
+    return ret;
+}
 
 
-export {manhattan, backtrack, initialize_visited, shuffle, get_walls, cmp, initNode, initNodeGraph, resetNodeGraph}
+export {manhattan, backtrack, initialize_visited, shuffle, get_walls, cmp, initNode, initNodeGraph, resetNodeGraph, deepCopyGraph}
 export {VISITING, UNVISITED, IDIRECTION, JDIRECTION}

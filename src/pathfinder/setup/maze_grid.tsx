@@ -12,7 +12,7 @@ import random_prims from '../algorithms/maze_algs/random_prims'
 import wilson from '../algorithms/maze_algs/wilson'
 import {create_grid} from './helpers'
 import { Node, nodeType } from '../algorithms/path_algs/types'
-import {initNodeGraph, initNode, resetNodeGraph} from '../algorithms/helpers'
+import {initNodeGraph, initNode, resetNodeGraph, deepCopyGraph} from '../algorithms/helpers'
 
 /****************************** CSS imports ******************************/
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -41,12 +41,17 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 	// Not sure what this should actually be, any or what???
 	constructor(props: any) {
 		super(props);
+
+		// TODO: Find a better way to manage the start end location issues
+		let grid: Node[][] = initNodeGraph(30,50);
+		grid[15][20].type = nodeType.START;
+		grid[15][30].type = nodeType.END;
 		this.state = {
 			startFlag: true,
 			start: [15, 20],
 			end: [15, 30],
 			animating: false,
-			grid: initNodeGraph(30, 50)
+			grid: grid
 		};
 		this.handleSearch = this.handleSearch.bind(this);
 		this.startEnd = this.startEnd.bind(this)
@@ -60,15 +65,10 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 
 	handleSearch(algorithm: string) {
 
-		// TODO: Need to modify this
-		
-		let newGrid: Node[][] = this.state.grid
-		newGrid = resetNodeGraph(newGrid)
 		let updateOrder: Node[] = [];
 		switch (algorithm) {
 			case "bfs":
-				console.log(newGrid)
-				updateOrder = Bfs(this.state.start, this.state.end, newGrid)
+				updateOrder = Bfs(this.state.start, this.state.end, this.state.grid)
 				break
 			// case "dfs":
 			// 	// ret = Dfs(startNode, endNode, walls_unique)
@@ -84,20 +84,27 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 			// 	ret = dijkstra(start_i, start_j, end_i, end_j, walls_unique)
 			// 	break
 		}
-		console.log(updateOrder)
-
-		// TODO: Maybe instead of re rendering the grid, I can just re render each cell? 
-		updateOrder.map((x: Node, i: number) => {
-			setTimeout(() => {
-				this.setState(prevState => {
-					let tempGrid: Node[][] = [...prevState.grid];
-					tempGrid[x.row][x.col] = x;
-					console.log("hello")
-					console.log(tempGrid)
-					return { grid:tempGrid }
-				})
-			}, 5000 * i)
-		});
+		
+		let updateGrid = async (newGraph: Node[][]) => {
+			return new Promise<void>(resolve =>
+			  setTimeout(() => {
+					this.setState({
+				  		grid: newGraph
+					}, resolve);
+			  	}, 2)
+			)
+		}
+		  
+		let updateAll = async (updateOrder: Node[]) => {
+			for (let i = 0; i < updateOrder.length; i++) {
+				let tempGrid: Node[][] = [...this.state.grid];
+				tempGrid[updateOrder[i].row][updateOrder[i].col] = updateOrder[i];
+				// console.log(tempGrid)
+				await updateGrid([...tempGrid]);
+			}
+		}
+		  
+		updateAll(updateOrder);
 		
 	}
 
@@ -177,6 +184,14 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 			newGrid[this.state.end[0]][this.state.end[1]].type = nodeType.UNVISITED;
 			newGrid[r][c].type = nodeType.END;
 		}
+
+		for (let i = 0; i < newGrid.length; i++) {
+			for (let j = 0; j < newGrid[0].length; j++) {
+				if (newGrid[i][j].type === nodeType.VISITED || newGrid[i][j].type === nodeType.BACKTRACK) {
+					newGrid[i][j].type = nodeType.UNVISITED;
+				}
+			}
+		}
 		
 		this.setState({
 			start: newStart,
@@ -202,6 +217,7 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 		// setup for grid
 		let maze_list: string[] = ["kruskal", "prim", "wilson"]
 		let alg_list: string[] = ["bfs", "dfs", "greedy", "astar", "dijkstra"]
+		console.log("rendering")
 		return (
 			<div className="pathfinder">
 				<div className="grid">

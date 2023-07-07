@@ -56,7 +56,7 @@
 	}
   }
 
-.cell-backtrack {
+.cell.backtrack {
 	/* animation-name: shortestPath;
 	animation-duration: 1s;
 	animation-timing-function: ease-out;
@@ -88,6 +88,6 @@
 	}
   }
 
-.cell-wall {
+.cell.wall {
 	background-color: black;
 }
