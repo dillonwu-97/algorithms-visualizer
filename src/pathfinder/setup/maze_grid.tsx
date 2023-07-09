@@ -23,6 +23,8 @@ import './cell/cell.css'
 import './maze_grid.css'
 
 // TODO: After fixing all the errors, move the functions around so that they make more sense
+// TODO: Maybe instead of doing setstate n number of times, render each cell with some transition delay and color
+// so the transition delay value is passed to the cell, and the transition delay should be based on the index of the element in the array, transition delay should be a prop? 
 
 let walls:number[][] = []
 
@@ -31,10 +33,11 @@ interface PathfinderState {
 	start: [number, number],
 	end: [number, number]
 	grid: Node[][], // grid is ground truth 
-	animating: boolean
 }
 
 // TODO: Go through the code and find the places that I need to replace number with Node 
+// maybe the node has a value called transition delay, so just return the grid instead of the order
+// then, when rendering, the transition delay is passed as a prop to the cell 
 
 export default class pathfinder extends React.Component<{}, PathfinderState> {
 	
@@ -50,18 +53,35 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 			startFlag: true,
 			start: [15, 20],
 			end: [15, 30],
-			animating: false,
 			grid: grid
 		};
 		this.handleSearch = this.handleSearch.bind(this);
 		this.startEnd = this.startEnd.bind(this)
 		this.createWall = this.createWall.bind(this)
-		
-		this.make_maze = this.make_maze.bind(this)
-		this.dark_maze = this.dark_maze.bind(this)
+		this.makeMaze = this.makeMaze.bind(this)
+		this.updateGrid = this.updateGrid.bind(this)
+		this.updateAll = this.updateAll.bind(this)
 	}
 
 	/************************* Pathfinding Methods *************************/
+
+	updateGrid = async (newGraph: Node[][]) => {
+		return new Promise<void>(resolve =>
+		  setTimeout(() => {
+				this.setState({
+					  grid: newGraph
+				}, resolve);
+			  }, 0)
+		)
+	}
+
+	updateAll = async (updateOrder: Node[]) => {
+		for (let i = 0; i < updateOrder.length; i++) {
+			let tempGrid: Node[][] = [...this.state.grid];
+			tempGrid[updateOrder[i].row][updateOrder[i].col] = updateOrder[i];
+			await this.updateGrid([...tempGrid]);
+		}
+	}
 
 	handleSearch(algorithm: string) {
 
@@ -84,50 +104,12 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 			// 	ret = dijkstra(start_i, start_j, end_i, end_j, walls_unique)
 			// 	break
 		}
-		
-		let updateGrid = async (newGraph: Node[][]) => {
-			return new Promise<void>(resolve =>
-			  setTimeout(() => {
-					this.setState({
-				  		grid: newGraph
-					}, resolve);
-			  	}, 2)
-			)
-		}
 		  
-		let updateAll = async (updateOrder: Node[]) => {
-			for (let i = 0; i < updateOrder.length; i++) {
-				let tempGrid: Node[][] = [...this.state.grid];
-				tempGrid[updateOrder[i].row][updateOrder[i].col] = updateOrder[i];
-				// console.log(tempGrid)
-				await updateGrid([...tempGrid]);
-			}
-		}
-		  
-		updateAll(updateOrder);
+		this.updateAll(updateOrder);
 		
 	}
 
 	/************************* Animation Methods *************************/
-
-	animate_maze() {
-		for (let i = 0; i < walls.length; i++) {
-			const str = 'cell-' + walls[i][0] + '-' + walls[i][1]
-			setTimeout(() => {
-				document.getElementById(str)!.className = 'cell cell-wall'
-			},5 * i);
-		}
-	}
-
-	// converts the color of cells in the maze to white
-	dark_animate_maze(maze: number[][]) {
-		for (let i = 0; i < maze.length; i++) {
-			const str = 'cell-' + maze[i][0] + '-' + maze[i][1]
-			setTimeout(() => {
-				document.getElementById(str)!.className = 'cell '
-			},5 * i);
-		}
-	}
 
 	/****************************** Generate Walls *************************/
 
@@ -141,29 +123,22 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 		} 
 	}
 
-	async make_maze() {
-		walls = random_maze()
-		this.animate_maze()
-	}
-
-	async dark_maze(maze_type: string) {
-		let out;
-		this.darken()
+	async makeMaze(maze_type: string) {
+		let maze : Node[] = [];
 		switch(maze_type) {
 			case "kruskal":
-				out = random_kruskal()
+				maze = random_kruskal()
 				break
-			case "prim":
-				out = random_prims() // this returned an object, walls ends up being a number[][] type
-				break
-			case "wilson":
-				out = wilson()
-				break
+			// case "prim":
+			// 	out = random_prims() // this returned an object, walls ends up being a number[][] type
+			// 	break
+			// case "wilson":
+			// 	out = wilson()
+			// 	break
 		}
-		if (out != undefined) {
-			walls = out.walls // I think I was mixing types
-			this.dark_animate_maze(out.maze)
-		}
+		// console.log(maze)
+		this.updateAll(maze)
+		
 	}
 
 	/****************************** Mouse Click Methods *************************/
@@ -200,16 +175,6 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 			startFlag: !this.state.startFlag
 		})
 		
-	}
-
-	// darkens the entire grid
-	darken() {
-		for (let i = 0; i < 30; i++) {
-			for (let j = 0; j < 50; j++) {
-				let id = 'cell-' + i + '-' + j;
-				document.getElementById(id)!.className = 'cell cell-wall'
-			}
-		}
 	}
 
 	/****************************** Rendering *************************/
@@ -272,22 +237,16 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 						</button>
 					</div> */}
 {/************************************ Maze Button *******************************/}
-					{/* <div>
+					<div>
 						<div className="dropdown" >
 								<button className="maze-button" type="button" data-toggle="dropdown">
 									Select Maze
 								</button>
 								<div className="dropdown-menu">
-									<div>
-										<a className="maze-menu" onClick = {this.make_maze}>
-											general maze
-										</a>
-										<div className="dropdown-divider"></div>
-									</div>
 									{maze_list.map((maze) => {
 										return (
 											<div>
-												<a className="maze-menu" onClick = {()=>this.dark_maze(maze)}>
+												<a className="maze-menu" onClick = {()=>this.makeMaze(maze)}>
 													{maze} maze
 												</a>
 												<div className="dropdown-divider"></div>
@@ -297,7 +256,7 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 									})}
 								</div>
 							</div>
-					</div> */}
+					</div>
 				</div>
 			</div>
 		);

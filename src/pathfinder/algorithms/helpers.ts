@@ -16,7 +16,7 @@ const initialize_visited = (rc: number, cc: number): number[][] => {
 }
 
 // Shuffles an array
-function shuffle(a: number[]) {
+function shuffle(a: any[]) {
     let j: number;
     for (let i = a.length - 1; i > 0; i--) {
         j = Math.floor(Math.random() * (i + 1));
@@ -119,6 +119,13 @@ var deepCopyGraph = (graph: Node[][]): Node[][] => {
     return ret;
 }
 
+/**
+ * Create a copy of the node
+ */
+var copyNode = (n: Node): Node => {
+    return initNode(n.row, n.col, n.type);
+}
 
-export {manhattan, backtrack, initialize_visited, shuffle, get_walls, cmp, initNode, initNodeGraph, resetNodeGraph, deepCopyGraph}
+
+export {manhattan, backtrack, initialize_visited, shuffle, get_walls, cmp, copyNode, initNode, initNodeGraph, resetNodeGraph, deepCopyGraph}
 export {VISITING, UNVISITED, IDIRECTION, JDIRECTION}
