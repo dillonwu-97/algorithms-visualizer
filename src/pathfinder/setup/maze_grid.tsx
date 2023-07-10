@@ -11,7 +11,7 @@ import random_kruskal from '../algorithms/maze_algs/random_kruskal'
 import random_prims from '../algorithms/maze_algs/random_prims'
 import wilson from '../algorithms/maze_algs/wilson'
 import {create_grid} from './helpers'
-import { Node, nodeType } from '../algorithms/path_algs/types'
+import { Node, nodeType, pathRet } from '../algorithms/path_algs/types'
 import {initNodeGraph, initNode, resetNodeGraph, deepCopyGraph} from '../algorithms/helpers'
 
 /****************************** CSS imports ******************************/
@@ -31,13 +31,15 @@ let walls:number[][] = []
 interface PathfinderState {
 	startFlag: boolean,
 	start: [number, number],
-	end: [number, number]
+	end: [number, number],
 	grid: Node[][], // grid is ground truth 
 }
 
 // TODO: Go through the code and find the places that I need to replace number with Node 
 // maybe the node has a value called transition delay, so just return the grid instead of the order
-// then, when rendering, the transition delay is passed as a prop to the cell 
+// then, when rendering, the transition delay is passed as a prop to the cell
+// also, in order to do both visited and backtrack, maybe i can handle it by returning two different arrays. first, do the transition delay for the visited graph, and do a settimeout that equals the size of the visited array. afterwards, do another transition delay for the backtracking that is done 
+// this means that I should be returning an object containing an array of visited nodes, and an array of backtracking nodes 
 
 export default class pathfinder extends React.Component<{}, PathfinderState> {
 	
@@ -60,35 +62,37 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 		this.createWall = this.createWall.bind(this)
 		this.makeMaze = this.makeMaze.bind(this)
 		this.updateGrid = this.updateGrid.bind(this)
-		this.updateAll = this.updateAll.bind(this)
 	}
 
 	/************************* Pathfinding Methods *************************/
 
-	updateGrid = async (newGraph: Node[][]) => {
+	updateGrid = async (newGraph: Node[][], delay: number) => {
 		return new Promise<void>(resolve =>
 		  setTimeout(() => {
 				this.setState({
 					  grid: newGraph
 				}, resolve);
-			  }, 0)
+			  }, delay)
 		)
 	}
 
-	updateAll = async (updateOrder: Node[]) => {
-		for (let i = 0; i < updateOrder.length; i++) {
-			let tempGrid: Node[][] = [...this.state.grid];
-			tempGrid[updateOrder[i].row][updateOrder[i].col] = updateOrder[i];
-			await this.updateGrid([...tempGrid]);
-		}
-	}
+	// updateAll = async (updateOrder: Node[]) => {
+	// 	for (let i = 0; i < updateOrder.length; i++) {
+	// 		let tempGrid: Node[][] = [...this.state.grid];
+	// 		tempGrid[updateOrder[i].row][updateOrder[i].col] = updateOrder[i];
+	// 		await this.updateGrid([...tempGrid]);
+	// 	}
+	// }
 
-	handleSearch(algorithm: string) {
+	async handleSearch(algorithm: string) {
 
-		let updateOrder: Node[] = [];
+		let path: pathRet = {
+			vNodes: [],
+			bNodes: []
+		};
 		switch (algorithm) {
 			case "bfs":
-				updateOrder = Bfs(this.state.start, this.state.end, this.state.grid)
+				path = Bfs(this.state.start, this.state.end, this.state.grid)
 				break
 			// case "dfs":
 			// 	// ret = Dfs(startNode, endNode, walls_unique)
@@ -104,8 +108,24 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 			// 	ret = dijkstra(start_i, start_j, end_i, end_j, walls_unique)
 			// 	break
 		}
+
+		let vNodes: Node[] = path.vNodes;
+		let bNodes: Node[] = path.bNodes;
+		let vGrid: Node[][] = deepCopyGraph(this.state.grid);
+
+		for (let i = 0; i < vNodes.length; i++) {
+			vNodes[i].tdelay = i * 10;
+			vGrid[vNodes[i].row][vNodes[i].col] = vNodes[i];
+		}
 		  
-		this.updateAll(updateOrder);
+		await this.updateGrid(vGrid, 0);
+
+		let bGrid: Node[][] = deepCopyGraph(this.state.grid);
+		for (let i = 0; i < bNodes.length; i++) {
+			bNodes[i].tdelay = i * 10;
+			bGrid[bNodes[i].row][bNodes[i].col] = bNodes[i];
+		}
+		await this.updateGrid(bGrid, 10 * vNodes.length);
 		
 	}
 
@@ -124,6 +144,12 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 	}
 
 	async makeMaze(maze_type: string) {
+
+		// TODO: why does prevState cause different behavior? When using prevState, the animation will continue instead of halting
+		this.setState({
+			grid: initNodeGraph(30,50)
+		})
+
 		let maze : Node[] = [];
 		switch(maze_type) {
 			case "kruskal":
@@ -137,7 +163,23 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 			// 	break
 		}
 		// console.log(maze)
-		this.updateAll(maze)
+
+		let mGrid: Node[][] = deepCopyGraph(this.state.grid);
+		for (let i = 0; i < maze.length; i++) {
+			maze[i].tdelay = i * 5;
+			mGrid[maze[i].row][maze[i].col] = maze[i];
+		}
+		await this.updateGrid(mGrid, 0)
+
+		this.setState(prevState => {
+			prevState.grid[maze[0].row][maze[0].col].type = nodeType.START;
+			prevState.grid[maze[maze.length-1].row][maze[maze.length-1].col].type = nodeType.END;
+			return {
+				start: [maze[0].row, maze[0].col],
+				end: [maze[maze.length-1].row, maze[maze.length-1].col],
+				grid: prevState.grid
+			}
+		})
 		
 	}
 
@@ -150,31 +192,32 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 		let c: number = Number(event.currentTarget.getAttribute('data-col'))
 		let newStart: [number, number] = this.state.start;
 		let newEnd: [number, number] = this.state.end;
-		if (this.state.startFlag === true) {
-			newGrid[this.state.start[0]][this.state.start[1]].type = nodeType.UNVISITED;
-			newStart = [r,c];
-			newGrid[r][c].type = nodeType.START;
-		} else {
-			newEnd = [r,c];
-			newGrid[this.state.end[0]][this.state.end[1]].type = nodeType.UNVISITED;
-			newGrid[r][c].type = nodeType.END;
-		}
+		if (this.state.grid[r][c].type !== nodeType.WALL) {
+			if (this.state.startFlag === true) {
+				newGrid[this.state.start[0]][this.state.start[1]].type = nodeType.UNVISITED;
+				newStart = [r,c];
+				newGrid[r][c].type = nodeType.START;
+			} else {
+				newEnd = [r,c];
+				newGrid[this.state.end[0]][this.state.end[1]].type = nodeType.UNVISITED;
+				newGrid[r][c].type = nodeType.END;
+			}
 
-		for (let i = 0; i < newGrid.length; i++) {
-			for (let j = 0; j < newGrid[0].length; j++) {
-				if (newGrid[i][j].type === nodeType.VISITED || newGrid[i][j].type === nodeType.BACKTRACK) {
-					newGrid[i][j].type = nodeType.UNVISITED;
+			for (let i = 0; i < newGrid.length; i++) {
+				for (let j = 0; j < newGrid[0].length; j++) {
+					if (newGrid[i][j].type === nodeType.VISITED || newGrid[i][j].type === nodeType.BACKTRACK) {
+						newGrid[i][j].type = nodeType.UNVISITED;
+					}
 				}
 			}
+			
+			this.setState({
+				start: newStart,
+				end: newEnd,
+				grid: newGrid,
+				startFlag: !this.state.startFlag
+			})
 		}
-		
-		this.setState({
-			start: newStart,
-			end: newEnd,
-			grid: newGrid,
-			startFlag: !this.state.startFlag
-		})
-		
 	}
 
 	/****************************** Rendering *************************/
@@ -194,7 +237,7 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 
 								// Animation should change based on cell.type
 								return (
-									<Cell element_id={'cell-' + row_index + '-' + col_index} type = {cell.type} row = {row_index} col = {col_index} onClick = {this.startEnd} />
+									<Cell element_id={'cell-' + row_index + '-' + col_index} type = {cell.type} row = {row_index} col = {col_index} tdelay={cell.tdelay} onClick = {this.startEnd} />
 								)
 							})}
 							</div>

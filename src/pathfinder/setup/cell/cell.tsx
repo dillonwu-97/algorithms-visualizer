@@ -8,6 +8,7 @@ interface CellProps {
 	type: number,
 	row: number,
 	col: number,
+	tdelay: number,
 	onClick: (event: MouseEvent) => void
 }
 
@@ -21,13 +22,16 @@ interface CellState {
 export default class Cell extends Component<CellProps, CellState> { 
 
 	render() {
-		const {element_id, type, row, col, onClick} = this.props
+		const {element_id, type, row, col, tdelay, onClick} = this.props
 
 		return (
 			<div className = {'cell ' + nodeType[type].toLowerCase()}
 			data-row = {row}
 			data-col = {col}
 			onClick = {onClick}
+			style = {{
+				transitionDelay: `${tdelay}ms`
+			}}
 			>
 			</div>
 		)

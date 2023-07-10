@@ -10,6 +10,7 @@ For each wall, in some random order:
 If the cells divided by this wall belong to distinct sets:
 Remove the current wall.
 Join the sets of the formerly divided cells.
+I think there is a special case that needs to be handled for both the START and END node 
 */
 export default function random_kruskal(): Node[] {
     // create setup to check adjacencies
@@ -50,7 +51,6 @@ export default function random_kruskal(): Node[] {
         if (!set.connected(adjOne, adjTwo)) {
             graph[r][c].type = nodeType.UNVISITED;
             set.union(adjOne, adjTwo);
-            console.log(copyNode(adjOne))
             ret.push(copyNode(adjOne), copyNode(graph[r][c]), copyNode(adjTwo));
         }   
     }

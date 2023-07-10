@@ -59,11 +59,13 @@ var cmp = function(x: number[], y: number[]) {
     return x[0] < y[0];
 }
 
-var initNode = (row: number, col: number, type: number): Node => {
+var initNode = (row: number, col: number, type: number, weight: number = 1, tdelay: number = 0): Node => {
     let ret: Node = {
         row: row,
         col: col,
-        type: type
+        type: type,
+        weight: weight,
+        tdelay: tdelay
     }
     return ret;
 }
@@ -73,12 +75,7 @@ var initNodeGraph = (rowCount: number, colCount: number):Node[][] => {
 	for (let i = 0; i < rowCount; i++) {
 		let tempArr: Node [] = [];
 		for (let j = 0; j < colCount; j++) {
-			let tempNode: Node = {
-				row: i,
-				col: j,
-				type: nodeType.UNVISITED
-			};
-			tempArr.push(tempNode);
+			tempArr.push(initNode(i, j, nodeType.UNVISITED));
 		}
 		graph.push(tempArr);
 	}

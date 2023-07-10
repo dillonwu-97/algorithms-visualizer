@@ -11,15 +11,11 @@ export type Node = {
     row: number;
     col: number;
     type: nodeType;
+    tdelay: number;
     weight?: number;
 }
 
-/**
- * 
- * Information returned by the pathfinding algorithms 
- */
-export type nodeMap = {
+export type pathRet = {
     vNodes: Node[]; // all visited nodes
-    pNodes: Node[]; // nodes on the path
-    count: number; 
+    bNodes: Node[]; // all nodes in backtrack
 }

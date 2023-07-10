@@ -1,23 +1,22 @@
 import {IDIRECTION, JDIRECTION, deepCopyGraph, initNode } from '../helpers'
 import '../../setup/global'
-import { nodeType, Node, nodeMap } from './types'
+import { nodeType, Node, pathRet } from './types'
 
 // TODO: helper for creating a specific type of Node, i.e. a makeNode() function
 
-export default function bfs (start: [number,number], end: [number,number], stateGraph: Node[][]): Node[] {
+export default function bfs (start: [number,number], end: [number,number], stateGraph: Node[][]): pathRet {
 
+	let ret: pathRet = {
+		vNodes: [],
+		bNodes: []
+	}; 
 	let newGrid: Node[][] = deepCopyGraph(stateGraph);
 	console.log("Creating backtrack arr")
 	let backtrack: Node [][] = [];
 	for (let i = 0; i < 30; i++) {
 		let tempArr: Node [] = [];
 		for (let j = 0; j < 50; j++) {
-			let tempNode: Node = {
-				row: i,
-				col: j,
-				type: nodeType.UNVISITED
-			}
-			tempArr.push(tempNode);
+			tempArr.push(initNode(i, j, nodeType.UNVISITED));
 		}
 		backtrack.push(tempArr);
 	}
@@ -26,7 +25,6 @@ export default function bfs (start: [number,number], end: [number,number], state
 	let startNode: Node = newGrid[start[0]][start[1]];
 	////////////////////////
 	let q: Node[] = [];
-	let updateOrder: Node[] = [];
 	let out: Node; 
 	let newrow: number, newcol: number;
 
@@ -38,7 +36,7 @@ export default function bfs (start: [number,number], end: [number,number], state
 			newGrid[out.row][out.col].type = nodeType.END;
 			break;
 		}
-		updateOrder.push(out);
+		ret.vNodes.push(out);
 		for (let i = 0; i < IDIRECTION.length; i++) {
 			newrow = out.row + IDIRECTION[i];
 			newcol = out.col + JDIRECTION[i];
@@ -56,12 +54,12 @@ export default function bfs (start: [number,number], end: [number,number], state
 	while (true) {
 		if (out.row == start[0] && out.col == start[1]) {break;}
 		newNode = initNode(out.row, out.col, nodeType.BACKTRACK);
-		updateOrder.push(newNode);
+		ret.bNodes.push(newNode);
 		out = backtrack[out.row][out.col];
 	}
 
 	// TODO: Maybe I do need a visit order 
 
-	return updateOrder
+	return ret
 
 }
