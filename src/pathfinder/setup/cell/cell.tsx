@@ -23,7 +23,7 @@ export default class Cell extends Component<CellProps, CellState> {
 
 	render() {
 		const {element_id, type, row, col, tdelay, onClick} = this.props
-
+		// issue is that not everything is rendered at the same time for the maze
 		return (
 			<div className = {'cell ' + nodeType[type].toLowerCase()}
 			data-row = {row}
