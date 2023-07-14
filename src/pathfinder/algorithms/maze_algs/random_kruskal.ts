@@ -3,15 +3,6 @@ import { get_walls, shuffle, copyNode, initialize_visited, initNode, initNodeGra
 import { nodeType, Node } from '../../algorithms/path_algs/types'
 
 var disjointSet = require('disjoint-set')
-
-/*
-Create a list of all walls, and create a set for each cell, each containing just that one cell.
-For each wall, in some random order:
-If the cells divided by this wall belong to distinct sets:
-Remove the current wall.
-Join the sets of the formerly divided cells.
-I think there is a special case that needs to be handled for both the START and END node 
-*/
 export default function random_kruskal(): Node[] {
     // create setup to check adjacencies
     let set = disjointSet();
@@ -27,34 +18,44 @@ export default function random_kruskal(): Node[] {
             } else {
                 graph[i][j].type = nodeType.WALL;
                 points.push(graph[i][j]);
-                ret.push(copyNode(graph[i][j]));
             }
         }
     }
+    console.log(points.length)
     points = shuffle(points)
+    console.log(points.length)
     
     let r: number;
     let c: number;
     let adjOne: Node = initNode(0,0,nodeType.WALL);
     let adjTwo: Node = initNode(0,0,nodeType.WALL);
+    let flag: boolean = false;
     for (let i = 0; i < points.length; i++) {
-        console.log(points[i])
         r = points[i].row;
         c = points[i].col;
+        flag = false;
         if (graph[r+1][c].type === nodeType.UNVISITED && graph[r-1][c].type === nodeType.UNVISITED) {
+            flag = true;
             adjOne = graph[r+1][c];
             adjTwo = graph[r-1][c];
         } else if (graph[r][c+1].type === nodeType.UNVISITED && graph[r][c-1].type === nodeType.UNVISITED) {
+            flag = true;
             adjOne = graph[r][c+1];
             adjTwo = graph[r][c-1];
         }
-        if (!set.connected(adjOne, adjTwo)) {
+
+        // is the order changing upon returning?
+        if (flag == true && !set.connected(adjOne, adjTwo)) {
             graph[r][c].type = nodeType.UNVISITED;
             set.union(adjOne, adjTwo);
             ret.push(copyNode(adjOne), copyNode(graph[r][c]), copyNode(adjTwo));
         }   
     }
 
+    for (let i = ret.length -1; i >= 0; i--) {
+        ret[i].tdelay = Math.floor(i / 3) * 10;
+        ret[i].type = nodeType.UNVISITED;
+    }
     return ret;
     
 }

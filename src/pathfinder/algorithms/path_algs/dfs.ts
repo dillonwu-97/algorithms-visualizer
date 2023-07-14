@@ -1,26 +1,27 @@
-import {IDIRECTION, JDIRECTION, deepCopyGraph, initNode, initBacktrack } from '../helpers'
+import { backtrack, initialize_visited, UNVISITED, IDIRECTION, JDIRECTION, deepCopyGraph, initNode, initBacktrack } from '../helpers'
 import '../../setup/global'
 import { nodeType, Node, pathRet } from './types'
 
-export default function bfs (start: [number,number], end: [number,number], stateGraph: Node[][]): pathRet {
+// DFS graph search implementation
 
+
+export default function dfs (start: [number, number], end: [number,number], stateGraph: Node[][]): pathRet {
 	let ret: pathRet = {
 		vNodes: [],
 		bNodes: []
-	}; 
+	};
+
 	let newGrid: Node[][] = deepCopyGraph(stateGraph);
 	let backtrack: Node[][] = initBacktrack(30, 50);
 
-
-	let startNode: Node = newGrid[start[0]][start[1]];
+	let startNode: Node = newGrid[start[0]][start[1]]
 	let q: Node[] = [];
-	let out: Node; 
+	let out: Node;
 	let newrow: number, newcol: number;
 
-	q.push(startNode) 
+	q.push(startNode);
 	while (q.length) {
-		
-		out = q.shift()!;
+		out = q.pop()!;
 		if (out.row === end[0] && out.col === end[1]) {
 			newGrid[out.row][out.col].type = nodeType.END;
 			break;
@@ -49,5 +50,4 @@ export default function bfs (start: [number,number], end: [number,number], state
 	}
 
 	return ret
-
 }

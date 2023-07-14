@@ -59,6 +59,18 @@ var cmp = function(x: number[], y: number[]) {
     return x[0] < y[0];
 }
 
+var allWalls = (rowCount: number, colCount: number): Node[][] => {
+    let graph: Node [][] = [];
+	for (let i = 0; i < rowCount; i++) {
+		let tempArr: Node [] = [];
+		for (let j = 0; j < colCount; j++) {
+			tempArr.push(initNode(i, j, nodeType.WALL));
+		}
+		graph.push(tempArr);
+	}
+    return graph;
+}
+
 var initNode = (row: number, col: number, type: number, weight: number = 1, tdelay: number = 0): Node => {
     let ret: Node = {
         row: row,
@@ -92,6 +104,7 @@ var initNodeGraph = (rowCount: number, colCount: number):Node[][] => {
 }
 
 var resetNodeGraph = (graph: Node[][]): Node[][] => {
+    console.log("Resetting node graph")
     for (let i = 0; i < graph.length; i++) {
         for (let j = 0; j < graph[0].length; j++) {
             if (graph[i][j].type === nodeType.VISITED || graph[i][j].type === nodeType.BACKTRACK) {
@@ -116,6 +129,18 @@ var deepCopyGraph = (graph: Node[][]): Node[][] => {
     return ret;
 }
 
+var initBacktrack = (r: number, c: number): Node[][] => {
+    let backtrack: Node [][] = [];
+	for (let i = 0; i < r; i++) {
+		let tempArr: Node [] = [];
+		for (let j = 0; j < c; j++) {
+			tempArr.push(initNode(i, j, nodeType.UNVISITED));
+		}
+		backtrack.push(tempArr);
+	}
+    return backtrack;
+}
+
 /**
  * Create a copy of the node
  */
@@ -124,5 +149,5 @@ var copyNode = (n: Node): Node => {
 }
 
 
-export {manhattan, backtrack, initialize_visited, shuffle, get_walls, cmp, copyNode, initNode, initNodeGraph, resetNodeGraph, deepCopyGraph}
+export {allWalls, manhattan, backtrack, initialize_visited, shuffle, get_walls, cmp, copyNode, initBacktrack, initNode, initNodeGraph, resetNodeGraph, deepCopyGraph}
 export {VISITING, UNVISITED, IDIRECTION, JDIRECTION}
