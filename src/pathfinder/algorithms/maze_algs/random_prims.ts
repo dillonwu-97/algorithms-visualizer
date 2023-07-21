@@ -14,7 +14,7 @@ function _findNewEdge(graph: Node[][], cur: Node): Node | undefined {
     for (let i = 0; i < 4; i++) {
         newr = cur.row + xdir[i];
         newc = cur.col + ydir[i];
-        if (newr > 0 && newr < 30 && newc > 0 && newc < 50 && graph[newr][newc].type === nodeType.UNVISITED) {
+        if (newr > 0 && newr < graph.length && newc > 0 && newc < graph[0].length && graph[newr][newc].type === nodeType.UNVISITED) {
             candidates.push(graph[newr][newc]);
         }
     }
@@ -24,6 +24,10 @@ function _findNewEdge(graph: Node[][], cur: Node): Node | undefined {
     return candidates[Math.floor(Math.random() * candidates.length)]
 }
 
+/**
+ * Create a maze using prim's mst algorithm
+ * @returns 
+ */
 export default function random_prims(): Node[] {
     let graph: Node[][] = initNodeGraph(30, 50); 
     

@@ -4,6 +4,8 @@ const VISITING: number = 1;
 const UNVISITED: number = 0;
 const IDIRECTION: readonly number[] = [-1, 1, 0, 0];
 const JDIRECTION: readonly number[] = [0, 0, -1, 1];
+const XDIR: readonly number[] = [2, -2, 0, 0];
+const YDIR: readonly number[] = [0, 0, 2, -2];
 
 /**
  * 
@@ -16,7 +18,7 @@ const initialize_visited = (rc: number, cc: number): number[][] => {
 }
 
 // Shuffles an array
-function shuffle(a: any[]) {
+function shuffle(a: any[]): any[] {
     let j: number;
     for (let i = a.length - 1; i > 0; i--) {
         j = Math.floor(Math.random() * (i + 1));
@@ -41,7 +43,6 @@ function get_walls(walls: number[][]) {
 function backtrack(start_i: number, start_j: number, end_i: number, end_j:number, v: number[][][]) {
 	let ret = [[end_i, end_j]]
 	while(end_i != start_i || end_j != start_j) {
-		// console.log(end_i ,end_j)
 		ret.push(v[end_i][end_j])
 		let a = end_i
 		let b = end_j
@@ -150,4 +151,4 @@ var copyNode = (n: Node): Node => {
 
 
 export {allWalls, manhattan, backtrack, initialize_visited, shuffle, get_walls, cmp, copyNode, initBacktrack, initNode, initNodeGraph, resetNodeGraph, deepCopyGraph}
-export {VISITING, UNVISITED, IDIRECTION, JDIRECTION}
+export {VISITING, UNVISITED, IDIRECTION, JDIRECTION, XDIR, YDIR}

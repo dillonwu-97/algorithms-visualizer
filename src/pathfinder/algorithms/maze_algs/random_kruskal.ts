@@ -2,6 +2,7 @@ import '../../setup/global'
 import { get_walls, shuffle, copyNode, initialize_visited, initNode, initNodeGraph } from '../helpers'
 import { nodeType, Node } from '../../algorithms/path_algs/types'
 
+// TODO: probably can get rid of disjoint set with arrays 
 var disjointSet = require('disjoint-set')
 export default function random_kruskal(): Node[] {
     // create setup to check adjacencies
@@ -10,6 +11,7 @@ export default function random_kruskal(): Node[] {
     let ret: Node[] = [];
     let points: Node[] = []; // points are used to build the minimum spanning tree
     // TODO: Replace this with not hardcoded values
+    // TODO: Replace this with some helper function like create set? 
     for (let i = 1; i < 29; i++) {
         for (let j = 1; j < 49; j++) {
             if (j % 2 == 1 && i % 2 == 1) {
@@ -43,6 +45,8 @@ export default function random_kruskal(): Node[] {
             adjOne = graph[r][c+1];
             adjTwo = graph[r][c-1];
         }
+
+
 
         // is the order changing upon returning?
         if (flag == true && !set.connected(adjOne, adjTwo)) {
