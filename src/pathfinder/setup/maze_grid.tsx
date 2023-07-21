@@ -12,7 +12,7 @@ import random_prims from '../algorithms/maze_algs/random_prims'
 import wilson from '../algorithms/maze_algs/wilson'
 import {create_grid} from './helpers'
 import { Node, nodeType, pathRet } from '../algorithms/path_algs/types'
-import {initNodeGraph, initNode, resetNodeGraph, deepCopyGraph} from '../algorithms/helpers'
+import {allWalls, initNodeGraph, initNode, resetNodeGraph, deepCopyGraph} from '../algorithms/helpers'
 
 /****************************** CSS imports ******************************/
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -84,20 +84,34 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 	// 	}
 	// }
 
+	resetGrid = async() => {
+		return 
+	}
+
 	async handleSearch(algorithm: string) {
+
+		console.log("Handling search")
+
+		// TODO: Interestingly, the first method doesn't work but the second does. Why not, and what are the benefits / detractions from both methods? 
+		// this.setState(prevState => ({
+		// 	grid: resetNodeGraph(prevState.grid)
+		// }))
+		this.setState({
+			grid: resetNodeGraph(this.state.grid)
+		})
 
 		let path: pathRet = {
 			vNodes: [],
 			bNodes: []
 		};
+
 		switch (algorithm) {
 			case "bfs":
 				path = Bfs(this.state.start, this.state.end, this.state.grid)
 				break
-			// case "dfs":
-			// 	// ret = Dfs(startNode, endNode, walls_unique)
-			// 	ret = Dfs(start_i, start_j, end_i, end_j, walls_unique)
-			// 	break
+			case "dfs":
+				path = Dfs(this.state.start, this.state.end, this.state.grid)
+				break;
 			// case "greedy":
 			// 	ret = greedy(start_i, start_j, end_i, end_j, walls_unique)
 			// 	break
@@ -155,20 +169,24 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 			case "kruskal":
 				maze = random_kruskal()
 				break
-			// case "prim":
-			// 	out = random_prims() // this returned an object, walls ends up being a number[][] type
-			// 	break
-			// case "wilson":
-			// 	out = wilson()
-			// 	break
+			case "prim":
+				maze = random_prims() // this returned an object, walls ends up being a number[][] type
+				break
+			case "wilson":
+				maze = wilson(30, 50);
+				break
 		}
-		// console.log(maze)
 
+		console.log(maze);
+
+		await this.updateGrid(allWalls(30,50), 0);
 		let mGrid: Node[][] = deepCopyGraph(this.state.grid);
-		for (let i = 0; i < maze.length; i++) {
-			maze[i].tdelay = i * 5;
+
+		// Note: need to do this in reverse because there are repeats in the maze array
+		for (let i = maze.length -1; i >= 0; i--) {
 			mGrid[maze[i].row][maze[i].col] = maze[i];
 		}
+
 		await this.updateGrid(mGrid, 0)
 
 		this.setState(prevState => {
@@ -180,7 +198,6 @@ export default class pathfinder extends React.Component<{}, PathfinderState> {
 				grid: prevState.grid
 			}
 		})
-		
 	}
 
 	/****************************** Mouse Click Methods *************************/
