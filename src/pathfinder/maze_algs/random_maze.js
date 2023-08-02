@@ -1,5 +1,4 @@
-import { IDIRECTION, JDIRECTION, UNVISITED, VISITING, initialize_visited } from '../helpers';
-import '../../setup/global'
+import { IDIRECTION, JDIRECTION, UNVISITED, VISITING, initialize_visited } from '../algorithms/helpers';
  
 export default function random_maze() {
     // create setup to check adjacencies

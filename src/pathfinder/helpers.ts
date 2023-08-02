@@ -1,4 +1,4 @@
-import { Node, nodeType } from './path_algs/types'
+import { Node, nodeType } from './types'
 // Initialize the visited matrix
 const VISITING: number = 1;
 const UNVISITED: number = 0;
@@ -6,6 +6,20 @@ const IDIRECTION: readonly number[] = [-1, 1, 0, 0];
 const JDIRECTION: readonly number[] = [0, 0, -1, 1];
 const XDIR: readonly number[] = [2, -2, 0, 0];
 const YDIR: readonly number[] = [0, 0, 2, -2];
+
+function create_grid() {
+    let grid = []
+    for (let i = 0; i < 30; i++) {
+        let temp = []
+        for (let j = 0; j < 50; j++) {
+            temp.push(0)
+        }
+        grid.push(temp)
+    }
+    return grid
+}
+
+export { create_grid }
 
 /**
  * 

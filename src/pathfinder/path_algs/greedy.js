@@ -1,4 +1,4 @@
-import { backtrack, initialize_visited, manhattan, cmp, UNVISITED, VISITING, IDIRECTION, JDIRECTION } from '../helpers'
+import { backtrack, initialize_visited, manhattan, cmp, UNVISITED, VISITING, IDIRECTION, JDIRECTION } from '../algorithms/helpers'
 import '../../setup/global'
 var heapq = require('heapq')
 

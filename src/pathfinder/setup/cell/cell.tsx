@@ -1,6 +1,5 @@
 import React, {Component, MouseEvent} from 'react';
-import {nodeType} from '../../algorithms/path_algs/types'
-
+import {nodeType} from '../../types'
 import './cell.css'
 
 interface CellProps {

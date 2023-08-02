@@ -1,6 +1,5 @@
-import {nodeType, Node} from '../../algorithms/path_algs/types'
+import {nodeType, Node} from '../types'
 import { get_walls, copyNode, initialize_visited, initNode, initNodeGraph } from '../helpers';
-import '../../setup/global'
 
 /**
  * Find new edge from current position

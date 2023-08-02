@@ -1,18 +1,18 @@
 
 import React, {ReactElement, MouseEvent} from 'react';
 import Cell from './cell/cell'
-import Bfs from '../algorithms/path_algs/bfs'
-import Dfs from '../algorithms/path_algs/dfs'
-import greedy from '../algorithms/path_algs/greedy'
-import astar from '../algorithms/path_algs/astar'
-import dijkstra from '../algorithms/path_algs/dijkstra'
-import random_maze from '../algorithms/maze_algs/random_maze'
-import random_kruskal from '../algorithms/maze_algs/random_kruskal'
-import random_prims from '../algorithms/maze_algs/random_prims'
-import wilson from '../algorithms/maze_algs/wilson'
-import {create_grid} from './helpers'
-import { Node, nodeType, pathRet } from '../algorithms/path_algs/types'
-import {allWalls, initNodeGraph, initNode, resetNodeGraph, deepCopyGraph} from '../algorithms/helpers'
+import Bfs from '../path_algs/bfs'
+import Dfs from '../path_algs/dfs'
+import greedy from '../path_algs/greedy'
+import astar from '../path_algs/astar'
+import dijkstra from '../path_algs/dijkstra'
+import random_maze from '../maze_algs/random_maze'
+import random_kruskal from '../maze_algs/random_kruskal'
+import random_prims from '../maze_algs/random_prims'
+import wilson from '../maze_algs/wilson'
+import {create_grid} from '../helpers'
+import { Node, nodeType, pathRet } from '../types'
+import {allWalls, initNodeGraph, initNode, resetNodeGraph, deepCopyGraph} from '../helpers'
 
 /****************************** CSS imports ******************************/
 import 'bootstrap/dist/css/bootstrap.min.css';

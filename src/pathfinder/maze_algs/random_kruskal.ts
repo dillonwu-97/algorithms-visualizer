@@ -1,6 +1,5 @@
-import '../../setup/global'
 import { get_walls, shuffle, copyNode, initialize_visited, initNode, initNodeGraph } from '../helpers'
-import { nodeType, Node } from '../../algorithms/path_algs/types'
+import { nodeType, Node } from '../types'
 
 // TODO: probably can get rid of disjoint set with arrays 
 var disjointSet = require('disjoint-set')

@@ -1,6 +1,5 @@
-import '../../setup/global'
 import { XDIR, YDIR, shuffle, initialize_visited, get_walls, copyNode, initNode, initNodeGraph } from '../helpers'
-import {nodeType, Node} from '../../algorithms/path_algs/types'
+import {nodeType, Node} from '../types'
 
 /*
 Choose any vertex at random and add it to the UST (Uniform spanning tree)
